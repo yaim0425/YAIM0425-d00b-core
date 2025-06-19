@@ -2,7 +2,7 @@
 
 # 📦 "zzzYAIM0425 0000 lib"
 
-Este repositorio contiene el MOD "zzzYAIM0425 0000 lib", una **biblioteca base de utilidades** pensada para ser usada por otros MODs desarrollados por el usuario "YAIM904".
+Este repositorio contiene el MOD zzzYAIM0425 0000 lib, una **biblioteca base de utilidades** pensada para ser usada por otros MODs desarrollados por el usuario YAIM0425.
 
 > ⚠️ Este MOD no funciona de forma independiente. Su único propósito es proporcionar funciones, constantes y estructuras compartidas.
 
@@ -15,7 +15,7 @@ Este repositorio contiene el MOD "zzzYAIM0425 0000 lib", una **biblioteca base d
 
 ## 🧭 Propósito
 
-Estandarizar y centralizar elementos comunes que otros MODs del usuario "YAIM904" necesitarán para funcionar correctamente, facilitando:
+Estandarizar y centralizar elementos comunes que otros MODs del usuario YAIM0425 necesitarán para funcionar correctamente, facilitando:
 
 - Mantenimiento del código
 - Reutilización de lógica

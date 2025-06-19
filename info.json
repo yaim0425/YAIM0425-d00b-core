@@ -2,11 +2,10 @@
   "name": "zzzYAIM0425-0000-lib",
   "version": "0.0.1",
   "title": "zzzYAIM0425 0000 lib",
-  "author": "YAIM904",
+  "author": "YAIM0425",
   "factorio_version": "2.0",
-  "description": "Base utility library intended to be used by other MODs developed by the user YAIM904.",
+  "description": "Base utility library intended to be used by other MODs developed by the user YAIM0425.",
   "homepage": "https://github.com/YAIM1/zzzYAIM0425-0000-lib",
-  "contact": "",
   "dependencies": [
     "base",
 
