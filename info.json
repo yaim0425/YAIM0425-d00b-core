@@ -4,8 +4,8 @@
   "title": "zzzYAIM0425 0000 lib",
   "author": "YAIM0425",
   "factorio_version": "2.0",
-  "description": "Base utility library intended to be used by other MODs developed by the user YAIM0425.",
-  "homepage": "https://github.com/YAIM1/zzzYAIM0425-0000-lib",
+  "description": "Base utility library intended to be used by other MODs developed by the user YAIM0425. [[I accept suggestions]]",
+  "homepage": "https://github.com/yaim0425/zzzYAIM0425-0000-lib",
   "dependencies": [
     "base",
 
