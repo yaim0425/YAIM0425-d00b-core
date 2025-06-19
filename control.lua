@@ -79,14 +79,14 @@ function This_MOD.load_data()
 end
 
 --- Crea un consolidado de variables para usar en tiempo de ejecuión
---- @param Event table
+--- @param event table
 --- @param this_mod table
 --- @return table
-function GPrefix.create_data(Event, this_mod)
+function GPrefix.create_data(event, this_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Variable de salida
-    local Data = { Event = Event }
+    local Data = { Event = event }
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -95,17 +95,17 @@ function GPrefix.create_data(Event, this_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Entidad en el evento
-    if Event.entity and Event.entity.valid then
-        Data.Entity = Event.entity
-    elseif Event.created_entity and Event.created_entity.valid then
-        Data.Entity = Event.created_entity
+    if event.entity and event.entity.valid then
+        Data.Entity = event.entity
+    elseif event.created_entity and event.created_entity.valid then
+        Data.Entity = event.created_entity
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Identificar al jugador
-    if Event.player_index then
-        Data.Player = game.get_player(Event.player_index)
+    if event.player_index then
+        Data.Player = game.get_player(event.player_index)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -115,18 +115,32 @@ function GPrefix.create_data(Event, this_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Buscar y crear los forces
-    for Key, Value in pairs({ player = Data.Player, entity = Data.Entity }) do
-        if not GPrefix.is_string(Value.force) then
-            Data["Force_" .. Key] = Value.force
+    for Key, Entity in pairs({ player = Data.Player, entity = Data.Entity }) do
+        --- Agregar prefijo
+        Key = "Force_" .. Key
+
+        --- Cargar el force de forma directa
+        if not GPrefix.is_string(Entity.force) then
+            Data[Key] = Entity.force
         end
-        if GPrefix.is_string(Value.force) then
-            Data["Force_" .. Key] = game.forces[Value.force]
+
+        --- Cargar el force usando el nombre o id
+        if GPrefix.is_string(Entity.force) then
+            Data[Key] = game.forces[Entity.force]
         end
     end
 
-    --- Entidad y jugador son del mismo grupo
+    --- Reducir los forces a uno de ser posible
     if Data.Force_player == Data.Force_entity then
+        Data.Force = Data.Force_entity
+        Data.Force_entity = nil
+        Data.Force_player = nil
+    elseif Data.Force_player == nil and Data.Force_entity ~= nil then
+        Data.Force = Data.Force_entity
+        Data.Force_entity = nil
+    elseif Data.Force_player ~= nil and Data.Force_entity == nil then
         Data.Force = Data.Force_player
+        Data.Force_player = nil
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
