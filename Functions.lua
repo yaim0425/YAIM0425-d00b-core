@@ -161,12 +161,11 @@ function GPrefix.log(...)
     local Values = { ... }
 
     --- Validación básica
-    if #Values == 0 then return end
+    if GPrefix.get_length(Values) == 0 then return end
 
     --- Variable de salida
     local Output = ""
     local log_index = {}
-    local log_table = {}
     local log_printed = {}
 
     --- Devuelve la información dada en formato lua
@@ -225,7 +224,6 @@ function GPrefix.log(...)
         local String = ""
 
         --- Guardar la referencia de la tabla
-        table.insert(log_table, value)
         log_printed[table.concat(log_index, ".")] = value
 
         --- Recorrer los valores de la table
@@ -233,17 +231,17 @@ function GPrefix.log(...)
             --- Evitar las variables en uso
             local Flag = false
             Flag = Flag or element == log_index
-            Flag = Flag or element == log_table
             Flag = Flag or element == log_printed
             if Flag then goto JumpLog end
 
             --- Guardar el indice de la variable
-            table.insert(log_index, "[ " .. to_string(key) .. " ]")
+            Key = "[ " .. to_string(key) .. " ]"
+            table.insert(log_index, Key)
 
             --- Convertir la variable en cadena
             String = to_string(element)
             String = " = " .. string.gsub(String, "\n", "\n\t")
-            String = "[ " .. to_string(key) .. " ]" .. String
+            String = Key .. String
 
             --- Guardar la variable convertida en cadena
             table.insert(Table, String)
@@ -254,9 +252,6 @@ function GPrefix.log(...)
             --- Recepción del salto
             :: JumpLog ::
         end
-
-        --- Eliminar la referencia de la tabla
-        table.remove(log_table, #log_table)
 
         --- La tabla esta vacia
         if #Table == 0 then return "{ }" end
@@ -271,7 +266,9 @@ function GPrefix.log(...)
     for Index, Value in pairs(Values) do
         --- Establecer el nombre de la variable
         local String = nil
-        if GPrefix.is_table(Value) and Value.name then String = Value.name end
+        if GPrefix.is_table(Value) and Value.name then
+            String = Value.name
+        end
         if not String then String = Index end
 
         --- Variable para evitar la reimpresión
