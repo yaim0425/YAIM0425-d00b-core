@@ -1,6 +1,6 @@
 ![](./thumbnail.png)
 
-# 📦 "zzzYAIM0425 0000 lib"
+# 📦 zzzYAIM0425 0000 lib
 
 Este repositorio contiene el MOD zzzYAIM0425 0000 lib, una **biblioteca base de utilidades** pensada para ser usada por otros MODs desarrollados por el usuario yaim0425.
 
