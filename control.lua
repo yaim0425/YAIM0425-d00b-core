@@ -2,10 +2,7 @@
 --> control.lua <--
 ---------------------------------------------------------------------------------------------------
 
---- --- --- --- --- --- --- --- --- --- --- --- --- ---
 ---> Cargar las funciones y constantes
---- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
 require("Constants")
 require("Functions")
 require("util")
@@ -22,7 +19,7 @@ local This_MOD = {}
 
 ---------------------------------------------------------------------------------------------------
 
---- Procesar los datos
+--- Dar el formato deseado a la información
 function This_MOD.control()
     --- Clasificar la información de data.raw
     This_MOD.load_data()
@@ -30,6 +27,8 @@ end
 
 --- Clasificar la información de data.raw
 function This_MOD.load_data()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Agregar el suelo a GPrefix.Tiles
     local function addTitle(tile)
         local results = tile.mineable_properties.products
@@ -54,6 +53,10 @@ function This_MOD.load_data()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Renombrar las variables
     GPrefix.Items = prototypes.item
     GPrefix.Fluids = prototypes.fluid
@@ -71,6 +74,8 @@ function This_MOD.load_data()
     for _, recipe in pairs(prototypes.recipe) do
         addRecipe(recipe)
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Crea un consolidado de variables para usar en tiempo de ejecuión
