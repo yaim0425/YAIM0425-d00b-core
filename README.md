@@ -2,7 +2,7 @@
 
 # 📦 zzzYAIM0425 0000 lib
 
-This repository contains the MOD zzzYAIM0425 0000 lib, a **base utility library** intended to be used by other MODs developed by the user YAIM0425.
+This repository contains the MOD zzzYAIM0425 0000 lib, a **base utility library** intended to be used by other MODs developed by the user yaim0425.
 
 > ⚠️ This MOD does not work on its own. Its sole purpose is to provide shared functions, constants, and structures.
 
@@ -15,7 +15,7 @@ This repository contains the MOD zzzYAIM0425 0000 lib, a **base utility library*
 
 ## 🧭 Purpose
 
-To standardize and centralize common elements needed by other MODs created by YAIM0425, making it easier to:
+To standardize and centralize common elements needed by other MODs created by yaim0425, making it easier to:
 
 - Maintain code  
 - Reuse logic  
