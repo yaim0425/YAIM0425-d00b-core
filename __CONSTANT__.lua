@@ -24,6 +24,6 @@ for Key, Value in pairs(GPrefix.Unit) do
 end
 
 --- Prefijo a usar en los MODs
-GPrefix.Prefix = "zzzYAIM0425"
+GPrefix.name = "zzzYAIM0425"
 
 ---------------------------------------------------------------------------------------------------
