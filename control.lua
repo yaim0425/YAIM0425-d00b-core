@@ -8,24 +8,24 @@ require("Functions")
 require("util")
 
 ---------------------------------------------------------------------------------------------------
----> Dar el formato deseado a la información <---
+
 ---------------------------------------------------------------------------------------------------
 
 --- Contenedor de funciones y datos usados
 --- unicamente en este archivo
 local This_MOD = {}
 
----------------------------------------------------------------------------------------------------
-
----------------------------------------------------------------------------------------------------
-
---- Dar el formato deseado a la información
+--- Ejecutar las acciones propias de este archivo
 function This_MOD.control()
     --- Clasificar la información de data.raw
     This_MOD.load_data()
 end
 
---- Clasificar la información de data.raw
+---------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------
+
+--- Clasificar la información de prototypes
 function This_MOD.load_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -239,7 +239,7 @@ end
 
 ---------------------------------------------------------------------------------------------------
 
---- Dar el formato deseado a la información
+--- Ejecutar las acciones propias de este archivo
 This_MOD.control()
 
 ---------------------------------------------------------------------------------------------------
