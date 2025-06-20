@@ -6,7 +6,7 @@
 if GPrefix.is_nil then return end
 
 ---------------------------------------------------------------------------------------------------
----> Renombrar las funciones basicas <---
+---> Funciones basicas <---
 ---------------------------------------------------------------------------------------------------
 
 function GPrefix.is_nil(value) return type(value) == "nil" end
@@ -18,7 +18,7 @@ function GPrefix.is_function(value) return type(value) == "function" end
 function GPrefix.is_userdata(value) return type(value) == "userdata" end
 
 ---------------------------------------------------------------------------------------------------
----> Funciones independientes <---
+---> Funciones avanzadas <---
 ---------------------------------------------------------------------------------------------------
 
 --- Contar los elementos en la tabla
@@ -87,10 +87,6 @@ function GPrefix.pad_left(digits, value)
     return string.format("%0" .. digits .. "d", value)
 end
 
----------------------------------------------------------------------------------------------------
----> Funciones comunes <---
----------------------------------------------------------------------------------------------------
-
 --- Devuelve el elemento cuyo key y value se igual al dado
 --- @param array table # Tabla en la cual buscar
 --- @param key string # propiedad a buscar
@@ -144,10 +140,6 @@ function GPrefix.get_tables(array, key, value)
     get_table(array)
     return #Result > 0 and Result or nil
 end
-
----------------------------------------------------------------------------------------------------
----> Funciones para el depurado <---
----------------------------------------------------------------------------------------------------
 
 --- Escribe en factorio-current.log la informacion contenida
 --- en la variable dada
