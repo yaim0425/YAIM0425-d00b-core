@@ -10,17 +10,11 @@ if GPrefix.is_nil then return end
 ---------------------------------------------------------------------------------------------------
 
 function GPrefix.is_nil(value) return type(value) == "nil" end
-
 function GPrefix.is_table(value) return type(value) == "table" end
-
 function GPrefix.is_string(value) return type(value) == "string" end
-
 function GPrefix.is_number(value) return type(value) == "number" end
-
 function GPrefix.is_boolean(value) return type(value) == "boolean" end
-
 function GPrefix.is_function(value) return type(value) == "function" end
-
 function GPrefix.is_userdata(value) return type(value) == "userdata" end
 
 ---------------------------------------------------------------------------------------------------
@@ -34,7 +28,7 @@ function GPrefix.is_userdata(value) return type(value) == "userdata" end
 ---- Conteo de los elementos de la tabla
 ---- o nil si se poduce un error o la tabla esta vacia
 function GPrefix.get_length(array)
-    --- Valdación básica
+    --- Valdación
     if not GPrefix.is_table(array) then
         return nil
     end
@@ -58,7 +52,7 @@ end
 ---- __integer:__ Posición de la primera coincidencia con el valor
 ---- __nil:__ El valor dado no es valido
 function GPrefix.get_key(array, value)
-    --- Valdación básica
+    --- Valdación
     if not GPrefix.is_table(array) then return nil end
     if GPrefix.is_nil(value) then return nil end
 
@@ -105,7 +99,7 @@ end
 ---- Array de la primera coincidencia con los valores dados
 ---- o nil si se poduce un error o no lo encuentra
 function GPrefix.get_table(array, key, value)
-    --- Valdación básica
+    --- Valdación
     if not GPrefix.is_table(array) then return nil end
     if GPrefix.is_nil(key) then return nil end
 
