@@ -80,9 +80,9 @@ end
 
 --- Crea un consolidado de variables para usar en tiempo de ejecuión
 --- @param event table
---- @param this_mod table
+--- @param that_mod table
 --- @return table
-function GPrefix.create_data(event, this_mod)
+function GPrefix.create_data(event, that_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Variable de salida
@@ -154,8 +154,8 @@ function GPrefix.create_data(event, this_mod)
     Data.gPrefix = storage[GPrefix.name]
 
     --- Espacio guardable para este MOD
-    Data.gPrefix[this_mod.name] = Data.gPrefix[this_mod.name] or {}
-    Data.gMOD = Data.gPrefix[this_mod.name]
+    Data.gPrefix[that_mod.name] = Data.gPrefix[that_mod.name] or {}
+    Data.gMOD = Data.gPrefix[that_mod.name]
 
     --- Crear el espacio guardable para los forces
     Data.gMOD.Forces = Data.gMOD.Forces or {}
@@ -164,8 +164,8 @@ function GPrefix.create_data(event, this_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Crear el espacio NO guardable para los forces
-    this_mod.Forces = this_mod.Forces or {}
-    Data.GForces = this_mod.Forces
+    that_mod.Forces = that_mod.Forces or {}
+    Data.GForces = that_mod.Forces
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
