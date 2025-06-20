@@ -75,8 +75,9 @@ end
 
 --- Cuenta la cantidad de números en el valor dado
 --- @param value integer # __Ejemplo:__ _123_
---- @return integer # __Ejemplo:__ _3_
+--- @return any # __Ejemplo:__ _3_
 function GPrefix.digit_count(value)
+    if not GPrefix.is_number(value) then return nil end
     if value == 0 then return 1 end
     if value < 0 then return GPrefix.digit_count(-1 * value) + 1 end
     return math.floor(math.log(value, 10) + 1)
