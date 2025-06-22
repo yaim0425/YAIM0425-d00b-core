@@ -126,17 +126,17 @@ GPrefix.log(recipe) --> factorio-current.log
 return
 ">>>
 {
-    [ '1' ] = {
+    [ 1 ] = {
         [ 'type' ] = 'fluid',
         [ 'name' ] = 'oil',
         [ 'amount' ] = 10
     },
-    [ '2' ] = {
+    [ 2 ] = {
         [ 'type' ] = 'item',
         [ 'name' ] = 'iron-ore',
         [ 'amount' ] = 3
     },
-    [ '3' ] = {
+    [ 3 ] = {
         [ 'type' ] = 'item',
         [ 'name' ] = 'iron-plate',
         [ 'amount' ] = 5
