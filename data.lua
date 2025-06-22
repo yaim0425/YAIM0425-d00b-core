@@ -41,6 +41,10 @@ function This_MOD.start()
 
     --- Clasificar la información de data.raw
     This_MOD.filter_data()
+
+    --- Darle el formato deseado a las opciones
+    --- de configuración de los mods
+    This_MOD.load_setting()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -374,6 +378,29 @@ function This_MOD.filter_data()
 
     --- Imprimir un informe de lo eliminados
     if #Delete >= 1 then log(Info) end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Darle el formato deseado a las opciones de configuración de los mods
+function This_MOD.load_setting()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Inicializar el contenedor
+    GPrefix.Setting = {}
+
+    --- Recorrer las opciones de configuración
+    for key, value in pairs(settings.startup) do
+        --- Separar los datos esperados
+        local prefix = GPrefix.name .. "%-"
+        local id, name = key:match(prefix .. "(%d+)%-(.+)")
+
+        --- Validar los datos obtenidos
+        if id and name then
+            GPrefix.Setting[id] = GPrefix.Setting[id] or {}
+            GPrefix.Setting[id][name] = value
+        end
+    end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
