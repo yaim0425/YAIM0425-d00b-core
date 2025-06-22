@@ -98,7 +98,7 @@ local attack_parameters = {
     }
 }
 
-GPrefix.get_table(attack_parameters, "beam", "laser-beam")
+GPrefix.get_tables(attack_parameters, "beam", "laser-beam")
 return
 {
     {
@@ -122,23 +122,25 @@ local recipe = {
 	{type="item", name="iron-plate", amount=5}
 }
 
-GPrefix.get_tables(recipe)
+GPrefix.log(recipe) --> factorio-current.log
 return
+">>>
 {
-	{
+	[ 1 ] = {
         [ 'type' ] = 'fluid',
         [ 'name' ] = 'oil',
         [ 'amount' ] = 10
     },
-	{
+	[ 2 ] = {
         [ 'type' ] = 'item',
         [ 'name' ] = 'iron-ore',
         [ 'amount' ] = 3
     },
-	{
+	[ 3 ] = {
         [ 'type' ] = 'item',
         [ 'name' ] = 'iron-plate',
         [ 'amount' ] = 5
     }
 }
+<<<"
 ```
