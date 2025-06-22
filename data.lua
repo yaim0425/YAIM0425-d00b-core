@@ -33,9 +33,9 @@ local This_MOD = {}
 function This_MOD.start()
     --- Darle formato a lo minado
     for _, values in pairs(data.raw) do
-        for _, element in pairs(values) do
-            This_MOD.format_results(element)
-            This_MOD.format_icons(element)
+        for _, value in pairs(values) do
+            This_MOD.format_results(value)
+            This_MOD.format_icons(value)
         end
     end
 
