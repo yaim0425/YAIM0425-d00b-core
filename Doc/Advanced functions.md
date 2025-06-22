@@ -57,9 +57,9 @@ return ""
 ### 🔹 `GPrefix.get_table(array, key, value)`
 ```
 local recipe = {
-	{type="fluid", name="oil", amount=10},
-	{type="item", name="iron-ore", amount=3},
-	{type="item", name="iron-plate", amount=5}
+    {type="fluid", name="oil", amount=10},
+    {type="item", name="iron-ore", amount=3},
+    {type="item", name="iron-plate", amount=5}
 }
 
 GPrefix.get_table(recipe, "type", "fluid")
@@ -117,13 +117,15 @@ return nil
 ### 🔹 `GPrefix.log(value1, ..., valueN)`
 ```
 local recipe = {
-	{type="fluid", name="oil", amount=10},
-	{type="item", name="iron-ore", amount=3},
-	{type="item", name="iron-plate", amount=5}
+    {type="fluid", name="oil", amount=10},
+    {type="item", name="iron-ore", amount=3},
+    {type="item", name="iron-plate", amount=5}
 }
 
 GPrefix.log(recipe) --> factorio-current.log
+GPrefix.log(recipe) --> factorio-current.log
 return
+">>>
 ">>>
 {
 	[ 1 ] = {
@@ -142,5 +144,6 @@ return
         [ 'amount' ] = 5
     }
 }
+<<<"
 <<<"
 ```
