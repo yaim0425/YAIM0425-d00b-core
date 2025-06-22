@@ -256,8 +256,8 @@ function This_MOD.change_orders()
             if not element.order then goto JumpElement end
 
             --- Agrupar
-            elements[element.subgroup] = elements[element.subgroup] or {}
-            table.insert(elements[element.subgroup], element)
+            Source[element.subgroup] = Source[element.subgroup] or {}
+            table.insert(Source[element.subgroup], element)
 
             Orders[element.subgroup] = Orders[element.subgroup] or {}
             table.insert(Orders[element.subgroup], element.order)
