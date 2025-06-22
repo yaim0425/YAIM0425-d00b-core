@@ -2,14 +2,20 @@
 
 ## 🔹 `GPrefix.digit_count(value)`
 
-Counts how many integer digits a number has. It ignores decimals and considers the minus sign (`-`) as an additional character in the count.
+Counts how many **characters** are present in a number, including:
+- Digits (`0–9`)
+- A minus sign (`-`) if present
+- A decimal point (`.`) if present
+
+⚠️ This function converts the number to a string and counts its characters.  
+It does **not** differentiate between integer or decimal parts—**all characters are counted**.
 
 ### 📌 Parameters
-- `value`: The numeric value (integer or decimal) to evaluate.
+- `value`: A numeric value (integer or decimal) to evaluate.
 
 ### 📦 Returns
-- An integer representing the number of digits **before the decimal point**.
-- `nil` if the value is not numeric.
+- An integer representing the total number of characters in the numeric value.
+- `nil` if the value is not a number.
 
 ### 🔍 Examples
 
@@ -18,13 +24,13 @@ GPrefix.digit_count(10)
 -- return 2
 
 GPrefix.digit_count(-10)
--- return 3  -- includes the "-" sign
+-- return 3
 
 GPrefix.digit_count(-1.60)
--- return 2  -- "-1" counts as two characters
+-- return 5
 
 GPrefix.digit_count(1.60)
--- return 1
+-- return 4
 
 GPrefix.digit_count("")
 -- return nil

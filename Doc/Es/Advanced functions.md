@@ -2,13 +2,16 @@
 
 ## 🔹 `GPrefix.digit_count(value)`
 
-Cuenta cuántos dígitos enteros tiene un número. Ignora los decimales y considera el signo negativo como un carácter adicional en el conteo.
+Cuenta cuántos **caracteres** tiene un número, incluyendo:
+- Dígitos (`0–9`)
+- El signo negativo (`-`) si existe
+- El punto decimal (`.`) si está presente
 
 ### 📌 Parámetros
-- `value`: El valor numérico (entero o decimal) a evaluar.
+- `value`: Valor numérico (entero o decimal) a evaluar.
 
 ### 📦 Retorna
-- Un número entero representando la cantidad de dígitos **antes del punto decimal**.
+- Un número entero representando la cantidad de caracteres del valor.
 - `nil` si el valor no es numérico.
 
 ### 🔍 Ejemplos
@@ -18,13 +21,13 @@ GPrefix.digit_count(10)
 -- return 2
 
 GPrefix.digit_count(-10)
--- return 3  -- incluye el signo "-"
+-- return 3
 
 GPrefix.digit_count(-1.60)
--- return 2  -- "-1" cuenta como dos caracteres
+-- return 5
 
 GPrefix.digit_count(1.60)
--- return 1
+-- return 4
 
 GPrefix.digit_count("")
 -- return nil
