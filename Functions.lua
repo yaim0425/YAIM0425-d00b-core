@@ -81,9 +81,7 @@ end
 --- @return any # __Ejemplo:__ _3_
 function GPrefix.digit_count(value)
     if not GPrefix.is_number(value) then return nil end
-    if value == 0 then return 1 end
-    if value < 0 then return GPrefix.digit_count(-1 * value) + 1 end
-    return math.floor(math.log(value, 10) + 1)
+    return string.len(tostring(value))
 end
 
 --- Agrega ceros a la izquierda hasta completar los digitos

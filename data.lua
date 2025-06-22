@@ -136,7 +136,7 @@ function This_MOD.change_orders()
 
     --- Cantidad de afectados
     N = GPrefix.get_length(data.raw["item-group"])
-    N = string.len(tostring(N)) + 1
+    N = GPrefix.digit_count(N) + 1
 
     --- Ordenear los orders
     table.sort(Orders)
@@ -184,7 +184,7 @@ function This_MOD.change_orders()
 
         --- Cantidad de afectados
         N = GPrefix.get_length(orders)
-        N = string.len(tostring(N)) + 1
+        N = GPrefix.digit_count(N) + 1
 
         --- Remplazar los orders
         for iKey, order in pairs(orders) do
@@ -274,7 +274,7 @@ function This_MOD.change_orders()
 
         --- Cantidad de afectados
         N = GPrefix.get_length(orders)
-        N = string.len(tostring(N)) + 1
+        N = GPrefix.digit_count(N) + 1
 
         --- Remplazar los orders
         for iKey, order in pairs(orders) do
