@@ -31,6 +31,9 @@ local This_MOD = {}
 
 --- Ejecutar las acciones propias de este archivo
 function This_MOD.start()
+    --- Darle formato a lo minado
+    This_MOD.format_results()
+
     --- Clasificar la información de data.raw
     This_MOD.filter_data()
 end
@@ -38,6 +41,27 @@ end
 ---------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------
+
+--- Darle formato a lo minado
+function This_MOD.format_results()
+    for _, values in pairs(data.raw) do
+        for _, value in pairs(values) do
+            local minable = value.minable
+            if minable and minable.result then
+                --- Dar el formato deseado
+                minable.results = { {
+                    type = "item",
+                    name = minable.result,
+                    amount = minable.count or 1
+                } }
+
+                --- Borrar
+                minable.result = nil
+                minable.count = nil
+            end
+        end
+    end
+end
 
 --- Clasificar la información de data.raw
 function This_MOD.filter_data()
