@@ -177,7 +177,7 @@ end
 local This_MOD = {}
 
 --- Ejecutar las acciones propias de este archivo
-function This_MOD.control()
+function This_MOD.start()
     --- Clasificar la información de data.raw
     This_MOD.load_data()
 end
@@ -243,6 +243,6 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Ejecutar las acciones propias de este archivo
-This_MOD.control()
+This_MOD.start()
 
 ---------------------------------------------------------------------------------------------------
