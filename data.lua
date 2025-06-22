@@ -32,7 +32,12 @@ local This_MOD = {}
 --- Ejecutar las acciones propias de este archivo
 function This_MOD.start()
     --- Darle formato a lo minado
-    This_MOD.format_results()
+    for _, values in pairs(data.raw) do
+        for _, element in pairs(values) do
+            This_MOD.format_results(element)
+            This_MOD.format_icons(element)
+        end
+    end
 
     --- Clasificar la información de data.raw
     This_MOD.filter_data()
@@ -43,24 +48,47 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Darle formato a lo minado
-function This_MOD.format_results()
-    for _, values in pairs(data.raw) do
-        for _, value in pairs(values) do
-            local minable = value.minable
-            if minable and minable.result then
-                --- Dar el formato deseado
-                minable.results = { {
-                    type = "item",
-                    name = minable.result,
-                    amount = minable.count or 1
-                } }
+function This_MOD.format_results(element)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-                --- Borrar
-                minable.result = nil
-                minable.count = nil
-            end
-        end
-    end
+    --- Validar
+    local minable = element.minable
+    if not minable then return end
+    if not minable.result then return end
+
+    --- Dar el formato deseado
+    minable.results = { {
+        type = "item",
+        name = minable.result,
+        amount = minable.count or 1
+    } }
+
+    --- Borrar
+    minable.result = nil
+    minable.count = nil
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Dale el formato a los icons
+function This_MOD.format_icons(element)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validar
+    if element.icons then return end
+    if not element.icon then return end
+
+    --- Dar el formato deseado
+    element.icons = { {
+        icon = element.icon,
+        icon_size = element.icon_size ~= 64 and element.icon_size or nil
+    } }
+
+    --- Borrar
+    element.icon_size = nil
+    element.icon = nil
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Clasificar la información de data.raw
