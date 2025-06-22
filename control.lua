@@ -8,75 +8,8 @@ require("Functions")
 require("util")
 
 ---------------------------------------------------------------------------------------------------
-
+---> Funciones globales
 ---------------------------------------------------------------------------------------------------
-
---- Contenedor de funciones y datos usados
---- unicamente en este archivo
-local This_MOD = {}
-
---- Ejecutar las acciones propias de este archivo
-function This_MOD.control()
-    --- Clasificar la información de data.raw
-    This_MOD.load_data()
-end
-
----------------------------------------------------------------------------------------------------
-
----------------------------------------------------------------------------------------------------
-
---- Clasificar la información de prototypes
-function This_MOD.load_data()
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Agregar el suelo a GPrefix.Tiles
-    local function addTitle(tile)
-        local results = tile.mineable_properties.products
-        if not results then return end
-
-        for _, result in pairs(results) do
-            GPrefix.Tiles[result.name] = GPrefix.Tiles[result.name] or {}
-            table.insert(GPrefix.Tiles[result.name], tile)
-        end
-    end
-
-    --- Agregar la receta a GPrefix.Recipes
-    local function addRecipe(recipe)
-        local results = recipe.products
-        if not results then return end
-
-        for _, result in pairs(results) do
-            GPrefix.Recipes[result.name] = GPrefix.Tiles[result.name] or {}
-            table.insert(GPrefix.Recipes[result.name], recipe)
-        end
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Renombrar las variables
-    GPrefix.Items = prototypes.item
-    GPrefix.Fluids = prototypes.fluid
-    GPrefix.Entities = prototypes.entity
-    GPrefix.Equipments = prototypes.equipment
-
-    --- Agrupar los suelos
-    GPrefix.Tiles = {}
-    for _, tile in pairs(prototypes.tile) do
-        addTitle(tile)
-    end
-
-    --- Agrupar las recetas
-    GPrefix.Recipes = {}
-    for _, recipe in pairs(prototypes.recipe) do
-        addRecipe(recipe)
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
 
 --- Crea un consolidado de variables para usar en tiempo de ejecuión
 --- @param event table
@@ -235,6 +168,76 @@ function GPrefix.create_data(event, that_mod)
     return Data
 end
 
+---------------------------------------------------------------------------------------------------
+---> Funciones internas
+---------------------------------------------------------------------------------------------------
+
+--- Contenedor de funciones y datos usados
+--- unicamente en este archivo
+local This_MOD = {}
+
+--- Ejecutar las acciones propias de este archivo
+function This_MOD.control()
+    --- Clasificar la información de data.raw
+    This_MOD.load_data()
+end
+
+---------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------
+
+--- Clasificar la información de prototypes
+function This_MOD.load_data()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Agregar el suelo a GPrefix.Tiles
+    local function addTitle(tile)
+        local results = tile.mineable_properties.products
+        if not results then return end
+
+        for _, result in pairs(results) do
+            GPrefix.Tiles[result.name] = GPrefix.Tiles[result.name] or {}
+            table.insert(GPrefix.Tiles[result.name], tile)
+        end
+    end
+
+    --- Agregar la receta a GPrefix.Recipes
+    local function addRecipe(recipe)
+        local results = recipe.products
+        if not results then return end
+
+        for _, result in pairs(results) do
+            GPrefix.Recipes[result.name] = GPrefix.Tiles[result.name] or {}
+            table.insert(GPrefix.Recipes[result.name], recipe)
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Renombrar las variables
+    GPrefix.Items = prototypes.item
+    GPrefix.Fluids = prototypes.fluid
+    GPrefix.Entities = prototypes.entity
+    GPrefix.Equipments = prototypes.equipment
+
+    --- Agrupar los suelos
+    GPrefix.Tiles = {}
+    for _, tile in pairs(prototypes.tile) do
+        addTitle(tile)
+    end
+
+    --- Agrupar las recetas
+    GPrefix.Recipes = {}
+    for _, recipe in pairs(prototypes.recipe) do
+        addRecipe(recipe)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
 ---------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------
