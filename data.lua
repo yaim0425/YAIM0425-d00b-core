@@ -392,10 +392,10 @@ function This_MOD.set_localised()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Protipos a corregir
-    local Array     = {}
-    Array.tile      = GPrefix.Tiles
-    Array.fluid     = GPrefix.Fluids
-    Array.entity    = GPrefix.Entities
+    local Array = {}
+    Array.tile = GPrefix.Tiles
+    Array.fluid = GPrefix.Fluids
+    Array.entity = GPrefix.Entities
     Array.equipment = GPrefix.Equipments
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
