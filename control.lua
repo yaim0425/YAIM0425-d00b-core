@@ -8,7 +8,7 @@ require("Functions")
 require("util")
 
 ---------------------------------------------------------------------------------------------------
----> Funciones globales
+---> Funciones globales <--
 ---------------------------------------------------------------------------------------------------
 
 --- Crea un consolidado de variables para usar en tiempo de ejecuión
@@ -169,7 +169,7 @@ function GPrefix.create_data(event, that_mod)
 end
 
 ---------------------------------------------------------------------------------------------------
----> Funciones internas
+---> Funciones internas <--
 ---------------------------------------------------------------------------------------------------
 
 --- Contenedor de funciones y datos usados
