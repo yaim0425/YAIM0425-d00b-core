@@ -2,8 +2,11 @@
 ---> Functions.lua <---
 ---------------------------------------------------------------------------------------------------
 
---- Validar se cargo este archivo
-if GPrefix.is_nil then return end
+---------------------------------------------------------------------------------------------------
+
+
+
+
 
 ---------------------------------------------------------------------------------------------------
 ---> Funciones basicas <---
@@ -16,6 +19,12 @@ function GPrefix.is_number(value) return type(value) == "number" end
 function GPrefix.is_boolean(value) return type(value) == "boolean" end
 function GPrefix.is_function(value) return type(value) == "function" end
 function GPrefix.is_userdata(value) return type(value) == "userdata" end
+
+---------------------------------------------------------------------------------------------------
+
+
+
+
 
 ---------------------------------------------------------------------------------------------------
 ---> Funciones avanzadas <---
