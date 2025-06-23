@@ -2,8 +2,6 @@
 ---> Functions.lua <---
 ---------------------------------------------------------------------------------------------------
 
----------------------------------------------------------------------------------------------------
-
 
 
 
@@ -210,7 +208,7 @@ function GPrefix.log(...)
         --- Detectar Impreso
         local Key = GPrefix.get_key(log_printed, value)
         if Key then
-            return "'This is: " .. Key .. "'"
+            return '"This is: ' .. Key .. '"'
         end
 
         --- Variables a usar
