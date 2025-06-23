@@ -511,16 +511,13 @@ function This_MOD.load_technology()
         --- Indexar la tecnología con a receta que desbloquea
         for _, effect in ipairs(data.effects or {}) do
             if effect.type == 'unlock-recipe' then
-                local recipe = effect.recipe
-                local current = Tech.Recipe[recipe]
-
-                if not current or level > current.level then
-                    Tech.Recipe[recipe] = {
-                        level = level,
-                        technology = data,
-                        effects = data.effects
-                    }
-                end
+                local space = Tech.Recipe[effect.recipe] or {}
+                Tech.recipe[effect.recipe] = space
+                table.insert(space, {
+                    level = level,
+                    technology = data,
+                    effects = data.effects
+                })
             end
         end
     end
