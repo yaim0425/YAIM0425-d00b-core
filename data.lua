@@ -39,17 +39,25 @@ function This_MOD.start()
         end
     end
 
-    --- Clasificar la información de data.raw
-    This_MOD.filter_data()
+    --- Crear espacios entre los elementos
+    This_MOD.change_orders()
 
     --- Establecer traducción en todos los elementos
     This_MOD.set_localised()
 
-    --- Crear espacios entre los elementos
-    This_MOD.change_orders()
+    --- Clasificar la información de data.raw
+    --- Crearción de:
+    --- GPrefix.Items
+    --- GPrefix.Tiles
+    --- GPrefix.Fluids
+    --- GPrefix.Recipes
+    --- GPrefix.Entities
+    --- GPrefix.Equipments
+    This_MOD.filter_data()
 
-    --- Darle el formato deseado a las opciones
-    --- de configuración de los mods
+    --- Clasificar la información de settings.startup
+    --- Crearción de:
+    --- GPrefix.Setting
     This_MOD.load_setting()
 end
 
@@ -308,6 +316,138 @@ function This_MOD.change_orders()
     end
 end
 
+--- Establecer traducción en todos los elementos
+function This_MOD.set_localised()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Protipos a corregir
+    local Array = {}
+    Array.tile = GPrefix.Tiles
+    Array.fluid = GPrefix.Fluids
+    Array.entity = GPrefix.Entities
+    Array.equipment = GPrefix.Equipments
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Establece el nombre de la receta
+    local function set_localised(name, recipe, field)
+        --- Valores a usar
+        local Field = "localised_" .. field
+        local fluid = GPrefix.Fluids[name]
+        local item = GPrefix.Items[name]
+
+        --- El resultado es un objeto
+        if item then
+            --- Nombre del objeto por defecto
+            recipe[Field] = item[Field]
+
+            --- Traducción para una entidad
+            if item.place_result then
+                local Entiy = GPrefix.Entities[item.place_result]
+                item[Field] = Entiy[Field]
+                recipe[Field] = Entiy[Field]
+            end
+
+            --- Traducción para un suelo
+            if item.place_as_tile then
+                local tile = data.raw.tile[item.place_as_tile.result]
+                item[Field] = tile[Field]
+                recipe[Field] = tile[Field]
+            end
+
+            --- Traducción para un equipamiento
+            if item.place_as_equipment_result then
+                local result = item.place_as_equipment_result
+                local equipment = GPrefix.Equipments[result]
+                if equipment then
+                    item[Field] = equipment[Field]
+                    recipe[Field] = equipment[Field]
+                end
+            end
+        end
+
+        --- El resultado es un liquido
+        if fluid then recipe[Field] = fluid[Field] end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Establecer la traducción
+    for type, subgroup in pairs(Array) do
+        if type ~= "tile" then subgroup = { subgroup } end
+        for _, elements in pairs(subgroup) do
+            for _, element in pairs(elements) do
+                if element.localised_name then
+                    if GPrefix.is_table(element.localised_name) and element.localised_name[1] ~= "" then
+                        element.localised_name = { "", element.localised_name }
+                    end
+                end
+                if not element.localised_name then
+                    element.localised_name = { "", { type .. "-name." .. element.name } }
+                end
+                if not element.localised_description then
+                    element.localised_description = { "", { type .. "-description." .. element.name } }
+                end
+            end
+        end
+    end
+
+    --- Establecer la traducción de los objetos
+    for _, item in pairs(GPrefix.Items) do
+        if item.localised_name then
+            if GPrefix.is_table(item.localised_name) and item.localised_name[1] ~= "" then
+                item.localised_name = { "", item.localised_name }
+            end
+        end
+        for _, field in pairs({ "name", "description" }) do
+            local Field = "localised_" .. field
+            if not item[Field] then
+                item[Field] = { "", { "item-" .. field .. "." .. item.name } }
+                set_localised(item.name, {}, field)
+            end
+        end
+    end
+
+    --- Establecer la traducción en la receta
+    for _, recipes in pairs(GPrefix.Recipes) do
+        if recipes.localised_name then
+            if GPrefix.is_table(recipes.localised_name) and recipes.localised_name[1] ~= "" then
+                recipes.localised_name = { "", recipes.localised_name }
+            end
+        end
+
+        for _, recipe in pairs(recipes) do
+            for _, field in pairs({ "name", "description" }) do
+                local Field = "localised_" .. field
+                --- Establece el nombre de la receta
+                if not recipe[Field] then
+                    --- Recetas con varios resultados
+                    if #recipe.results ~= 1 then
+                        if not recipe.main_product or recipe.main_product == "" then
+                            --- Traducción por defecto
+                            recipe[Field] = { "", { "recipe-" .. field .. "." .. recipe.name } }
+                        else
+                            --- Usar objeto o fluido de referencia
+                            set_localised(recipe.main_product, recipe, field)
+                        end
+                    end
+
+                    --- Receta con unico resultado
+                    if #recipe.results == 1 then
+                        local result = recipe.results[1]
+                        set_localised(result.name, recipe, field)
+                    end
+                end
+            end
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+---------------------------------------------------------------------------------------------------
+
+--- Clasificar la información de data.raw
 --- Crearción de:
 --- GPrefix.Items
 --- GPrefix.Tiles
@@ -601,135 +741,7 @@ function This_MOD.filter_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
---- Establecer traducción en todos los elementos
-function This_MOD.set_localised()
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Protipos a corregir
-    local Array = {}
-    Array.tile = GPrefix.Tiles
-    Array.fluid = GPrefix.Fluids
-    Array.entity = GPrefix.Entities
-    Array.equipment = GPrefix.Equipments
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Establece el nombre de la receta
-    local function set_localised(name, recipe, field)
-        --- Valores a usar
-        local Field = "localised_" .. field
-        local fluid = GPrefix.Fluids[name]
-        local item = GPrefix.Items[name]
-
-        --- El resultado es un objeto
-        if item then
-            --- Nombre del objeto por defecto
-            recipe[Field] = item[Field]
-
-            --- Traducción para una entidad
-            if item.place_result then
-                local Entiy = GPrefix.Entities[item.place_result]
-                item[Field] = Entiy[Field]
-                recipe[Field] = Entiy[Field]
-            end
-
-            --- Traducción para un suelo
-            if item.place_as_tile then
-                local tile = data.raw.tile[item.place_as_tile.result]
-                item[Field] = tile[Field]
-                recipe[Field] = tile[Field]
-            end
-
-            --- Traducción para un equipamiento
-            if item.place_as_equipment_result then
-                local result = item.place_as_equipment_result
-                local equipment = GPrefix.Equipments[result]
-                if equipment then
-                    item[Field] = equipment[Field]
-                    recipe[Field] = equipment[Field]
-                end
-            end
-        end
-
-        --- El resultado es un liquido
-        if fluid then recipe[Field] = fluid[Field] end
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Establecer la traducción
-    for type, subgroup in pairs(Array) do
-        if type ~= "tile" then subgroup = { subgroup } end
-        for _, elements in pairs(subgroup) do
-            for _, element in pairs(elements) do
-                if element.localised_name then
-                    if GPrefix.is_table(element.localised_name) and element.localised_name[1] ~= "" then
-                        element.localised_name = { "", element.localised_name }
-                    end
-                end
-                if not element.localised_name then
-                    element.localised_name = { "", { type .. "-name." .. element.name } }
-                end
-                if not element.localised_description then
-                    element.localised_description = { "", { type .. "-description." .. element.name } }
-                end
-            end
-        end
-    end
-
-    --- Establecer la traducción de los objetos
-    for _, item in pairs(GPrefix.Items) do
-        if item.localised_name then
-            if GPrefix.is_table(item.localised_name) and item.localised_name[1] ~= "" then
-                item.localised_name = { "", item.localised_name }
-            end
-        end
-        for _, field in pairs({ "name", "description" }) do
-            local Field = "localised_" .. field
-            if not item[Field] then
-                item[Field] = { "", { "item-" .. field .. "." .. item.name } }
-                set_localised(item.name, {}, field)
-            end
-        end
-    end
-
-    --- Establecer la traducción en la receta
-    for _, recipes in pairs(GPrefix.Recipes) do
-        if recipes.localised_name then
-            if GPrefix.is_table(recipes.localised_name) and recipes.localised_name[1] ~= "" then
-                recipes.localised_name = { "", recipes.localised_name }
-            end
-        end
-
-        for _, recipe in pairs(recipes) do
-            for _, field in pairs({ "name", "description" }) do
-                local Field = "localised_" .. field
-                --- Establece el nombre de la receta
-                if not recipe[Field] then
-                    --- Recetas con varios resultados
-                    if #recipe.results ~= 1 then
-                        if not recipe.main_product or recipe.main_product == "" then
-                            --- Traducción por defecto
-                            recipe[Field] = { "", { "recipe-" .. field .. "." .. recipe.name } }
-                        else
-                            --- Usar objeto o fluido de referencia
-                            set_localised(recipe.main_product, recipe, field)
-                        end
-                    end
-
-                    --- Receta con unico resultado
-                    if #recipe.results == 1 then
-                        local result = recipe.results[1]
-                        set_localised(result.name, recipe, field)
-                    end
-                end
-            end
-        end
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
+--- Clasificar la información de settings.startup
 --- Crearción de:
 --- GPrefix.Setting
 function This_MOD.load_setting()
