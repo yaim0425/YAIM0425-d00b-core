@@ -69,6 +69,53 @@ function GPrefix.split_energy(String)
     return tonumber(number) * (10 ^ Units[prefix]), unit
 end
 
+--- Acorta un número grande usando sufijos como K, M, G, etc.
+--- @param number number Número a abreviar
+--- @return any Cadena abreviada, por ejemplo: 300000 → "300K"
+function GPrefix.short_number(number)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Valdación básica
+    if not GPrefix.is_number(number) then return nil end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Inidesdes posibles
+    local Units = {
+        [0] = "",
+        [3] = "k",
+        [6] = "M",
+        [9] = "G",
+        [12] = "T",
+        [15] = "P",
+        [18] = "E",
+        [21] = "Z",
+        [24] = "Y",
+        [27] = "R",
+        [30] = "Q"
+    }
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Dar le el formato deseado al valor
+    local function format(text)
+        local A, B = string.match(text, "^(%-?%d+)%.(%d)")
+        if not (A and B) then return text end
+        if B == "0" then return A end
+        return A .. "." .. B
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Acortar el número
+    local Digits = math.floor(#tostring(number) / 3)
+    if #tostring(number) % 3 == 0 then Digits = Digits - 1 end
+    local Output = tostring(number * (10 ^ (-3 * Digits)))
+    return format(Output) .. Units[3 * Digits]
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 ---------------------------------------------------------------------------------------------------
 ---> Funciones internas <---
 ---------------------------------------------------------------------------------------------------
