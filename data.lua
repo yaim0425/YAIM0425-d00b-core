@@ -308,7 +308,13 @@ function This_MOD.change_orders()
     end
 end
 
---- Clasificar la información de data.raw
+--- Crearción de:
+--- GPrefix.Items
+--- GPrefix.Tiles
+--- GPrefix.Fluids
+--- GPrefix.Recipes
+--- GPrefix.Entities
+--- GPrefix.Equipments
 function This_MOD.filter_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Contenedores finales
@@ -724,8 +730,8 @@ function This_MOD.set_localised()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
---- Darle el formato deseado a las opciones de
---- configuración de los mods
+--- Crearción de:
+--- GPrefix.Setting
 function This_MOD.load_setting()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
