@@ -21,7 +21,7 @@ require("util")
 --- indicadores tipo k, M, G y unidades como J, W
 --- @param String string _Ejemplo:_ 0.3Mw
 --- @return any, any # _Ejemplo:_ 300000 W
-function GPrefix.split_energy(String)
+function GPrefix.number_unit(String)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Validar si la cadena es un numero valido
