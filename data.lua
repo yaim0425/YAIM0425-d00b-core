@@ -512,7 +512,7 @@ function This_MOD.load_technology()
         for _, effect in ipairs(data.effects or {}) do
             if effect.type == 'unlock-recipe' then
                 local space = Tech.Recipe[effect.recipe] or {}
-                Tech.recipe[effect.recipe] = space
+                Tech.Recipe[effect.recipe] = space
                 table.insert(space, {
                     level = level,
                     technology = data,
