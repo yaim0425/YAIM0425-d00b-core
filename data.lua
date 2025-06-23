@@ -17,9 +17,57 @@ require("util")
 ---> Funciones globales <---
 ---------------------------------------------------------------------------------------------------
 
+--- Separa el número de la cadena teninedo encuenta
+--- indicadores tipo k, M, G y unidades como J, W
+--- @param String string _Ejemplo:_ 0.3Mw
+--- @return any, any # _Ejemplo:_ 300000 W
+function GPrefix.split_energy(String)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+    --- Validar si la cadena es un numero valido
+    local function is_valid_number(str)
+        return string.match(str, "^[-]?%d*%.?%d+$") ~= nil or
+            string.match(str, "^[-]?%.%d+$") ~= nil
+    end
 
+    --- Separar la cadena en tres parte
+    local function split_string()
+        local Parts = {
+            "([-]?[%d%.]+)",   -- Valor numerico
+            "([kMGTPEZYRQ]?)", -- Unidades de valores posible
+            "([JW]?)"          -- Unidades de energia posible
+        }
+        local Pattern = "^" .. table.concat(Parts) .. "$"
+        return string.match(String, Pattern)
+    end
 
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Separar la cadena en tres parte
+    local number, prefix, unit = split_string()
+
+    --- Validar si la cadena es un numero valido
+    if not number then return nil, nil end
+    if not is_valid_number(number) then return nil, nil end
+
+    --- Inidesdes posibles
+    local Units = {
+        [""] = 0,
+        ["k"] = 3,
+        ["M"] = 6,
+        ["G"] = 9,
+        ["T"] = 12,
+        ["P"] = 15,
+        ["E"] = 18,
+        ["Z"] = 21,
+        ["Y"] = 24,
+        ["R"] = 27,
+        ["Q"] = 30
+    }
+
+    --- Devuelve el resultado
+    return tonumber(number) * (10 ^ Units[prefix]), unit
+end
 
 ---------------------------------------------------------------------------------------------------
 ---> Funciones internas <---
