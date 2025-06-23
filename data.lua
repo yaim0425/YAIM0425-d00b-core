@@ -252,8 +252,8 @@ function This_MOD.change_orders()
             if element.type == "item-subgroup" then break end
 
             --- Validación
-            if not element.subgroup then goto JumpElement end
-            if not element.order then goto JumpElement end
+            if not element.subgroup then goto jump_element end
+            if not element.order then goto jump_element end
 
             --- Agrupar
             Source[element.subgroup] = Source[element.subgroup] or {}
@@ -263,7 +263,7 @@ function This_MOD.change_orders()
             table.insert(Orders[element.subgroup], element.order)
 
             --- Receptor del salto
-            :: JumpElement ::
+            :: jump_element ::
         end
     end
 
