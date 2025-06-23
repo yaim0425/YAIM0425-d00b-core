@@ -766,6 +766,88 @@ function This_MOD.load_setting()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Clasificar la información de data.raw.technology
+--- Crearción de:
+--- GPrefix.Tech
+function This_MOD.load_technology()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Constenedores para el resultado
+    GPrefix.level = {}
+    GPrefix.recipe = {}
+
+    --- Renombrar
+    local tech = data.raw.technology
+
+    --- Variable a usar
+    local levels = {}
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Buscar el niverl de la tecnología indicada
+    local function get_level(name)
+        --- Tecnología clasificada
+        if levels[name] then
+            return levels[name]
+        end
+
+        --- Renombrar
+        local prereq = tech[name].prerequisites or {}
+
+        --- Tecnología si requisitos
+        if #prereq == 0 then
+            levels[name] = 1
+            return 1
+        end
+
+        --- Buscar el requisito más dejano
+        local max = 0
+        for _, pre in ipairs(prereq) do
+            local pre_level = get_level(pre)
+            if pre_level > max then max = pre_level end
+        end
+
+        --- Guardar y devolver el nivel
+        levels[name] = max + 1
+        return levels[name]
+    end
+
+    --- Clasificar todos tecnología
+    for name in pairs(tech) do
+        get_level(name)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Recorrer cada tecnología
+    for name, data in pairs(tech) do
+        --- Obtener el nivel de la tecnología
+        local level = levels[name]
+
+        --- Guardar la tecnología en su nivel
+        GPrefix.level[level] = GPrefix.level[level] or {}
+        GPrefix.level[level][name] = data
+
+        --- Indexar la tecnología con a receta que desbloquea
+        for _, effect in ipairs(data.effects or {}) do
+            if effect.type == 'unlock-recipe' then
+                local recipe = effect.recipe
+                local current = GPrefix.recipe[recipe]
+
+                if not current or level > current.level then
+                    GPrefix.recipe[recipe] = {
+                        level = level,
+                        technology = data,
+                        effects = data.effects
+                    }
+                end
+            end
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 ---------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------
