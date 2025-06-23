@@ -184,16 +184,34 @@ local This_MOD = {}
 
 --- Ejecutar las acciones propias de este archivo
 function This_MOD.start()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Clasificar la información de data.raw
-    This_MOD.load_data()
+    --- Crearción de:
+    --- GPrefix.Items
+    --- GPrefix.Tiles
+    --- GPrefix.Fluids
+    --- GPrefix.Recipes
+    --- GPrefix.Entities
+    --- GPrefix.Equipments
+    This_MOD.filter_data()
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 ---------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------
 
---- Clasificar la información de prototypes
-function This_MOD.load_data()
+--- Clasificar la información de data.raw
+--- Crearción de:
+--- GPrefix.Items
+--- GPrefix.Tiles
+--- GPrefix.Fluids
+--- GPrefix.Recipes
+--- GPrefix.Entities
+--- GPrefix.Equipments
+function This_MOD.filter_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Agregar el suelo a GPrefix.Tiles
