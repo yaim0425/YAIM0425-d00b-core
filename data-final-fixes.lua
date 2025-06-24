@@ -175,7 +175,7 @@ end
 --- @param new_name string # Nombre a asignar al duplicado
 --- @return any # Devuelve el duplicado
 --- o una tabla vacio si se poduce un error
-function GPrefix.DuplicateSubgroup(old_name, new_name)
+function GPrefix.duplicate_subgroup(old_name, new_name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Validación
