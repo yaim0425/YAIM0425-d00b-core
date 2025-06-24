@@ -116,6 +116,44 @@ function GPrefix.short_number(number)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Crear una copia del objeto dado
+--- @param item table
+--- @return any
+function GPrefix.duplicate_item(item)
+    --- Validar el valor de entrada
+    if not GPrefix.is_table(item) then
+        return nil
+    end
+
+    --- Propiedades a copiar
+    local Copy_this = {}
+    table.insert(Copy_this, "name")
+    table.insert(Copy_this, "icons")
+    table.insert(Copy_this, "order")
+    table.insert(Copy_this, "weight")
+    table.insert(Copy_this, "subgroup")
+    table.insert(Copy_this, "color_hint")
+    table.insert(Copy_this, "drop_sound")
+    table.insert(Copy_this, "pick_sound")
+    table.insert(Copy_this, "stack_size")
+    table.insert(Copy_this, "localised_name")
+    table.insert(Copy_this, "inventory_move_sound")
+    table.insert(Copy_this, "localised_description")
+    table.insert(Copy_this, "ingredient_to_weight_coefficient")
+
+    --- Contenedor del objeto
+    local Item = {}
+    Item.type = "item"
+
+    --- Copiar las propiedades
+    for _, copy_this in pairs(Copy_this) do
+        Item[copy_this] = util.copy(item[copy_this])
+    end
+
+    --- Devolver el nuevo objeto
+    return Item
+end
+
 ---------------------------------------------------------------------------------------------------
 ---> Funciones internas <---
 ---------------------------------------------------------------------------------------------------
