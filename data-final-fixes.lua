@@ -20,7 +20,7 @@ require("util")
 --- Separa el número de la cadena teninedo encuenta
 --- indicadores tipo k, M, G y unidades como J, W
 --- @param string string # __Ejemplo:__ 0.3Mw
---- @return any, any # 
+--- @return any, any #
 ---- __Ejemplo:__ 300000 W
 function GPrefix.number_unit(string)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -52,19 +52,18 @@ function GPrefix.number_unit(string)
     if not is_valid_number(number) then return nil, nil end
 
     --- Inidesdes posibles
-    local Units = {
-        [""] = 0,
-        ["k"] = 3,
-        ["M"] = 6,
-        ["G"] = 9,
-        ["T"] = 12,
-        ["P"] = 15,
-        ["E"] = 18,
-        ["Z"] = 21,
-        ["Y"] = 24,
-        ["R"] = 27,
-        ["Q"] = 30
-    }
+    local Units = {}
+    Units[""] = 0
+    Units["k"] = 3
+    Units["M"] = 6
+    Units["G"] = 9
+    Units["T"] = 12
+    Units["P"] = 15
+    Units["E"] = 18
+    Units["Z"] = 21
+    Units["Y"] = 24
+    Units["R"] = 27
+    Units["Q"] = 30
 
     --- Devuelve el resultado
     return tonumber(number) * (10 ^ Units[prefix]), unit
@@ -82,19 +81,18 @@ function GPrefix.short_number(number)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Inidesdes posibles
-    local Units = {
-        [0] = "",
-        [3] = "k",
-        [6] = "M",
-        [9] = "G",
-        [12] = "T",
-        [15] = "P",
-        [18] = "E",
-        [21] = "Z",
-        [24] = "Y",
-        [27] = "R",
-        [30] = "Q"
-    }
+    local Units = {}
+    Units[0] = ""
+    Units[3] = "k"
+    Units[6] = "M"
+    Units[9] = "G"
+    Units[12] = "T"
+    Units[15] = "P"
+    Units[18] = "E"
+    Units[21] = "Z"
+    Units[24] = "Y"
+    Units[27] = "R"
+    Units[30] = "Q"
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -643,10 +641,9 @@ function This_MOD.load_technology()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Contenedores para el resultado
-    GPrefix.Tech = {
-        Level = {},
-        Recipe = {}
-    }
+    GPrefix.Tech = {}
+    GPrefix.Tech.Level = {}
+    GPrefix.Tech.Recipe = {}
 
     --- Renombrar
     local tech = data.raw.technology
@@ -1050,7 +1047,7 @@ function This_MOD.set_localised()
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    ---> Traducción de los objetos y las recetas 
+    ---> Traducción de los objetos y las recetas
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Establecer la traducción de los objetos
