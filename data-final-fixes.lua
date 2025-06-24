@@ -731,6 +731,12 @@ function This_MOD.change_orders()
     local N = 0
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Grupos
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -768,6 +774,12 @@ function This_MOD.change_orders()
             end
         end
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Subgrupos
@@ -816,6 +828,12 @@ function This_MOD.change_orders()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Establecer subgrupos por defecto
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -852,6 +870,12 @@ function This_MOD.change_orders()
             end
         end
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Objetos, recetas y demás
@@ -906,6 +930,12 @@ function This_MOD.change_orders()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Agrupar las recetas
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -923,19 +953,14 @@ function This_MOD.change_orders()
             end
         end
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Establecer traducción en todos los elementos
 function This_MOD.set_localised()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Protipos a corregir
-    local Array = {}
-    Array.tile = GPrefix.Tiles
-    Array.fluid = GPrefix.Fluids
-    Array.entity = GPrefix.Entities
-    Array.equipment = GPrefix.Equipments
-
+    --- Funciones a usar
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Establece el nombre de la receta
@@ -981,6 +1006,23 @@ function This_MOD.set_localised()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    ---> Traducir estas secciones
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Protipos a corregir
+    local Array = {}
+    Array.tile = GPrefix.Tiles
+    Array.fluid = GPrefix.Fluids
+    Array.entity = GPrefix.Entities
+    Array.equipment = GPrefix.Equipments
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Establecer la traducción
     for type, subgroup in pairs(Array) do
         if type ~= "tile" then subgroup = { subgroup } end
@@ -1000,6 +1042,16 @@ function This_MOD.set_localised()
             end
         end
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    ---> Traducción de los objetos y las recetas 
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Establecer la traducción de los objetos
     for _, item in pairs(GPrefix.Items) do
