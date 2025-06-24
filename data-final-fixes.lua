@@ -123,9 +123,7 @@ function GPrefix.duplicate_item(item)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Validar el valor de entrada
-    if not GPrefix.is_table(item) then
-        return nil
-    end
+    if not GPrefix.is_table(item) then return nil end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -168,8 +166,7 @@ end
 function GPrefix.delete_prefix(str)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    local toDelete = GPrefix.name .. "%-"
-    return string.gsub(str, toDelete, "") or ""
+    return string.gsub(str, GPrefix.name .. "%-", "") or ""
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
