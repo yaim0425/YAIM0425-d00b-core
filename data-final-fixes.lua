@@ -162,6 +162,51 @@ function GPrefix.delete_prefix(str)
     return string.gsub(str, toDelete, "") or ""
 end
 
+--- Crea un subgroup despues del dado
+--- @param old_name string # Nombre del subgrupo a duplicar
+--- @param new_name string # Nombre a asignar al duplicado
+--- @return any # Devuelve el duplicado
+--- o una tabla vacio si se poduce un error
+function GPrefix.DuplicateSubgroup(old_name, new_name)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validación
+    if not GPrefix.is_string(old_name) then return nil end
+    if not GPrefix.is_string(new_name) then return nil end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Variable a usar
+    local Order = {}
+    local Subgroups = data.raw["item-subgroup"]
+    local Subgroup = util.copy(Subgroups[old_name])
+    if Subgroups[new_name] then return nil end
+    if not Subgroup then return nil end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Order de referencia
+    Order[1] = Subgroup.order
+    Order[2] = math.floor(tonumber(Order[1]) / 10) * 10
+    Order[3] = Order[2]
+
+    --- Buscar el siguiente order
+    while not Order[4] do
+        Order[2] = Order[2] + 1
+        if Order[2] - Order[3] > 9 then return nil end
+        Order[1] = GPrefix.pad_left(#Order[1], Order[2])
+        Order[4] = GPrefix.get_table(Subgroups, "order", Order[1])
+    end
+
+    --- Crear el subgroup
+    Subgroup.name = new_name
+    Subgroup.order = Order[1]
+    data:extend({ Subgroup })
+    return Subgroup
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 ---------------------------------------------------------------------------------------------------
 ---> Funciones internas <---
 ---------------------------------------------------------------------------------------------------
