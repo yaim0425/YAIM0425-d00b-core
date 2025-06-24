@@ -30,7 +30,7 @@ function GPrefix.is_userdata(value) return type(value) == "userdata" end
 
 --- Contar los elementos en la tabla
 ---- __ADVERTENCIA:__ El conteo NO es recursivo
---- @param array table
+--- @param array table # Tabla en la cual buscar
 --- @return any #
 ---- Conteo de los elementos de la tabla
 ---- o nil si se poduce un error o la tabla esta vacia
@@ -53,8 +53,8 @@ function GPrefix.get_length(array)
 end
 
 --- Devuelve el key que le corresponde al valor dado
---- @param array table
---- @param value any
+--- @param array table # Tabla en la cual buscar
+--- @param value any # Valor a buscar
 --- @return any #
 ---- __integer:__ Posición de la primera coincidencia con el valor
 ---- __nil:__ El valor dado no es valido
@@ -74,7 +74,7 @@ function GPrefix.get_key(array, value)
     return nil
 end
 
---- Cuenta la cantidad de números en el valor dado
+--- Cuenta la cantidad de caracteres en el valor dado
 --- @param value integer # __Ejemplo:__ _123_
 --- @return any # __Ejemplo:__ _3_
 function GPrefix.digit_count(value)

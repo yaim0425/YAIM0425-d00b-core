@@ -19,7 +19,7 @@ require("util")
 
 --- Separa el número de la cadena teninedo encuenta
 --- indicadores tipo k, M, G y unidades como J, W
---- @param string string _Ejemplo:_ 0.3Mw
+--- @param string string # _Ejemplo:_ 0.3Mw
 --- @return any, any # _Ejemplo:_ 300000 W
 function GPrefix.number_unit(string)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -70,8 +70,8 @@ function GPrefix.number_unit(string)
 end
 
 --- Acorta un número grande usando sufijos como K, M, G, etc.
---- @param number number Número a abreviar
---- @return any Cadena abreviada, por ejemplo: 300000 → "300K"
+--- @param number number # Número a abreviar
+--- @return any Cadena # abreviada, por ejemplo: 300000 → "300K"
 function GPrefix.short_number(number)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -117,13 +117,17 @@ function GPrefix.short_number(number)
 end
 
 --- Crear una copia del objeto dado
---- @param item table
---- @return any
+--- @param item table # Objeto a duplicar
+--- @return any # Copia del objeto
 function GPrefix.duplicate_item(item)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Validar el valor de entrada
     if not GPrefix.is_table(item) then
         return nil
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Propiedades a copiar
     local Copy_this = {}
@@ -145,6 +149,8 @@ function GPrefix.duplicate_item(item)
     local Item = {}
     Item.type = "item"
 
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Copiar las propiedades
     for _, copy_this in pairs(Copy_this) do
         Item[copy_this] = util.copy(item[copy_this])
@@ -152,14 +158,20 @@ function GPrefix.duplicate_item(item)
 
     --- Devolver el nuevo objeto
     return Item
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Elimina el indicador del nombre dado
---- @param str string
---- @return string
+--- @param str string # _Ejemplo:_ prefix-0000-0200-name
+--- @return string # _Ejemplo:_ 0000-0200-name
 function GPrefix.delete_prefix(str)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     local toDelete = GPrefix.name .. "%-"
     return string.gsub(str, toDelete, "") or ""
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Crea un subgroup despues del dado
