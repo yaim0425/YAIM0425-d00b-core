@@ -154,6 +154,14 @@ function GPrefix.duplicate_item(item)
     return Item
 end
 
+--- Elimina el indicador del nombre dado
+--- @param str string
+--- @return string
+function GPrefix.delete_prefix(str)
+    local toDelete = GPrefix.name .. "%-"
+    return string.gsub(str, toDelete, "") or ""
+end
+
 ---------------------------------------------------------------------------------------------------
 ---> Funciones internas <---
 ---------------------------------------------------------------------------------------------------
