@@ -19,8 +19,9 @@ require("util")
 
 --- Separa el número de la cadena teninedo encuenta
 --- indicadores tipo k, M, G y unidades como J, W
---- @param string string # _Ejemplo:_ 0.3Mw
---- @return any, any # _Ejemplo:_ 300000 W
+--- @param string string # __Ejemplo:__ 0.3Mw
+--- @return any, any # 
+---- __Ejemplo:__ 300000 W
 function GPrefix.number_unit(string)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -161,8 +162,8 @@ function GPrefix.duplicate_item(item)
 end
 
 --- Elimina el indicador del nombre dado
---- @param str string # _Ejemplo:_ prefix-0000-0200-name
---- @return string # _Ejemplo:_ 0000-0200-name
+--- @param str string # __Ejemplo:__ prefix-0000-0200-name
+--- @return string # __Ejemplo:__ 0000-0200-name
 function GPrefix.delete_prefix(str)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -320,13 +321,12 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Clasificar la información de data.raw
---- Crearción de:
---- GPrefix.Items
---- GPrefix.Tiles
---- GPrefix.Fluids
---- GPrefix.Recipes
---- GPrefix.Entities
---- GPrefix.Equipments
+---- GPrefix.Items
+---- GPrefix.Tiles
+---- GPrefix.Fluids
+---- GPrefix.Recipes
+---- GPrefix.Entities
+---- GPrefix.Equipments
 function This_MOD.filter_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Contenedores finales
@@ -614,8 +614,7 @@ function This_MOD.filter_data()
 end
 
 --- Clasificar la información de settings.startup
---- Crearción de:
---- GPrefix.Setting
+---- GPrefix.Setting
 function This_MOD.load_setting()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -639,8 +638,7 @@ function This_MOD.load_setting()
 end
 
 --- Clasificar la información de data.raw.technology
---- Crearción de:
---- GPrefix.Tech
+---- GPrefix.Tech
 function This_MOD.load_technology()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
