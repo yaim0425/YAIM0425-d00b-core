@@ -162,12 +162,12 @@ function GPrefix.duplicate_item(item)
 end
 
 --- Elimina el indicador del nombre dado
---- @param str string # __Ejemplo:__ prefix-0000-0200-name
+--- @param name string # __Ejemplo:__ prefix-0000-0200-name
 --- @return string # __Ejemplo:__ 0000-0200-name
-function GPrefix.delete_prefix(str)
+function GPrefix.delete_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    return string.gsub(str, GPrefix.name .. "%-", "") or ""
+    return string.gsub(name, GPrefix.name .. "%-", "") or ""
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
