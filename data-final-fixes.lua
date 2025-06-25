@@ -215,6 +215,86 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Tecnología que desbloquea la receta dada
+--- @param recipe table # receta a buscar
+--- @return any # Tecnología que desbloquea la receta dada
+function GPrefix.get_technology_unlock_recipe(recipe)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Variable a usar
+    local Techs
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Comparar ambos elementos
+    local function compare(old, new, expensive)
+        if
+            (not expensive and old.level > new.level)
+            or (expensive and old.level < new.level)
+        then
+            return new
+        elseif old.level == new.level then
+            local Old_unit = old.technology.unit
+            local New_unit = new.technology.unit
+            local Old_ingredients = Old_unit and #Old_unit.ingredients or 0
+            local New_ingredients = New_unit and #New_unit.ingredients or 0
+            if
+                (not expensive and Old_ingredients > New_ingredients)
+                or (expensive and Old_ingredients < New_ingredients)
+            then
+                return new
+            elseif Old_ingredients == New_ingredients then
+                local Old_count = Old_unit and Old_unit.count or 0
+                local New_count = New_unit and New_unit.count or 0
+                if
+                    (not expensive and Old_count > New_count)
+                    or (expensive and Old_count < New_count)
+                then
+                    return new
+                end
+            end
+        end
+        return old
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Buscar la receta dada
+    Techs = GPrefix.Tech.Recipe[recipe.name]
+    if Techs then
+        --- Solo una tecnología desbloquea la receta
+        if #Techs == 1 then return Techs[1].technology end
+
+        --- Buscar la tecnología más "barata"
+        local Tech = Techs[1]
+        for _, New in pairs(Techs) do
+            Tech = compare(Tech, New, false)
+        end
+        return Tech.technology
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Tecnologías que desbloquean los ingredientes
+    Techs = {}
+    for _, ingredient in pairs(recipe.ingredients or {}) do
+        for _, Recipe in pairs(GPrefix.Recipes[ingredient.name] or {}) do
+            for _, Tech in pairs(GPrefix.Tech.Recipe[Recipe.name] or {}) do
+                Techs[Tech.technology.name] = Tech
+            end
+        end
+    end
+
+    --- Buscar la tecnología más "cara"
+    local Tech = Techs[1]
+    for _, New in pairs(Techs) do
+        Tech = compare(Tech, New, true)
+    end
+    return Tech.technology
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 ---------------------------------------------------------------------------------------------------
 ---> Funciones internas <---
 ---------------------------------------------------------------------------------------------------
