@@ -10,7 +10,6 @@ Separa y convierte una cadena compuesta por un número con prefijos como `k`, `M
 
 ### 📥 Parámetros
 - `string` (string): Cadena con número, prefijo y unidad.  
-  _Ejemplo: `"0.3MW"`_
 
 ### 📤 Retorno
 - `number`: Valor convertido.  
@@ -127,11 +126,9 @@ Elimina el prefijo de un nombre, basado en el valor de `GPrefix.name`, seguido p
 
 ### 📥 Parámetros
 - `name` (string): Cadena con prefijo.  
-  _Ejemplo: `"prefix-0000-0200-name"`_
 
 ### 📤 Retorno
 - `string`: Nombre sin el prefijo definido en `GPrefix.name`.  
-  _Ejemplo: `"0000-0200-name"`_
 
 ### 🧪 Ejemplo
 ```lua
@@ -179,7 +176,6 @@ Obtiene la tecnología que desbloquea directamente una receta dada. Si no se enc
 
 ### 📥 Parámetros
 - `recipe` (table): Receta para la que se desea identificar la tecnología desbloqueadora.  
-  _Ejemplo: `{ name = "advanced-circuit", ingredients = { ... } }`
 
 ### 📤 Retorno
 - `table`: Tecnología (`technology`) asociada.  
