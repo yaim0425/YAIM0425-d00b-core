@@ -19,7 +19,6 @@ require("Constants")
 require("Functions")
 require("util")
 
-
 ---------------------------------------------------------------------------------------------------
 
 
@@ -186,7 +185,6 @@ function GPrefix.create_data(event, that_mod)
     --- Devolver el consolidado de los datos
     return Data
 end
-
 
 ---------------------------------------------------------------------------------------------------
 
