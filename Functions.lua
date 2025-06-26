@@ -11,11 +11,17 @@
 ---------------------------------------------------------------------------------------------------
 
 function GPrefix.is_nil(value) return type(value) == "nil" end
+
 function GPrefix.is_table(value) return type(value) == "table" end
+
 function GPrefix.is_string(value) return type(value) == "string" end
+
 function GPrefix.is_number(value) return type(value) == "number" end
+
 function GPrefix.is_boolean(value) return type(value) == "boolean" end
+
 function GPrefix.is_function(value) return type(value) == "function" end
+
 function GPrefix.is_userdata(value) return type(value) == "userdata" end
 
 ---------------------------------------------------------------------------------------------------
@@ -146,139 +152,74 @@ function GPrefix.get_tables(array, key, value)
     return #Result > 0 and Result or nil
 end
 
---- Escribe en factorio-current.log la informacion contenida
---- en la variable dada
-function GPrefix.log(...)
-    --- Variable contenedora
-    local Values = { ... }
+--- Muestra información detallada de las variables dadas
+--- @param ... any
+function GPrefix.var_dump(...)
+    local args = { ... }
+    if #args == 0 then return end
 
-    --- Validación básica
-    if GPrefix.get_length(Values) == 0 then return end
+    local Output = {}
 
-    --- Variable de salida
-    local Output = ""
-    local log_index = {}
-    local log_printed = {}
-
-    --- Devuelve la información dada en formato lua
-    --- evita los ciclos infinitos
+    --- Convierte una variable a string legible
     --- @param value any
-    --- @return string
-    local function to_string(value)
-        --- Variables a usar
-        local Types = {}
-        local varType = type(value)
+    --- @param indent string|nil
+    --- @param seen table<table, string>  -- Guarda referencias ya vistas y sus rutas
+    --- @param path string
+    local function to_string(value, indent, seen, path)
+        indent = indent or ""
+        seen = seen or {}
+        path = path or "<root>"
 
-        --- Variables atomica
-        Types = { "function", "thread" }
-        if GPrefix.get_key(Types, varType) then
-            return varType .. "( ) end"
-        end
+        local Type = type(value)
 
-        Types = { "userdata" }
-        if GPrefix.get_key(Types, varType) then
-            return varType
-        end
-
-        Types = { "string" }
-        if GPrefix.get_key(Types, varType) then
-            value = string.gsub(value, "'", '"')
+        if Type == "string" then
             if string.find(value, "\n") then
                 return "[[" .. value .. "]]"
+            else
+                return "'" .. string.gsub(value, "'", '"') .. "'"
             end
-            return "'" .. value .. "'"
-        end
-
-        Types = { "number" }
-        if GPrefix.get_key(Types, varType) then
-            return value
-        end
-
-        Types = { "boolean", "nil" }
-        if GPrefix.get_key(Types, varType) then
+        elseif Type == "number" or Type == "boolean" or Type == "nil" then
             return tostring(value)
+        elseif Type == "function" or Type == "thread" then
+            return Type .. "( ) end"
+        elseif Type == "userdata" then
+            return Type
+        elseif Type == "table" then
+            if seen[value] then
+                return '"<circular reference to ' .. seen[value] .. '>"'
+            end
+
+            seen[value] = path
+
+            local Items = {}
+            local Has_items = false
+            for k, v in pairs(value) do
+                Has_items = true
+                local Key_str = "[" .. to_string(k, nil, seen, path .. "." .. tostring(k)) .. "]"
+                local New_path = path .. "." .. tostring(k)
+                local Val_str = to_string(v, indent .. "  ", seen, New_path)
+                table.insert(Items, indent .. "  " .. Key_str .. " = " .. Val_str .. ",")
+            end
+
+            seen[value] = nil -- Permite reutilizar la tabla en otras ramas sin error
+
+            if not Has_items then
+                return "{ }"
+            end
+
+            return "{\n" .. table.concat(Items, "\n") .. "\n" .. indent .. "}"
         end
 
-        --- La variable es desconocida
-        Types = { "table" }
-        if not GPrefix.get_key(Types, varType) then
-            return "unknown"
-        end
-
-        --- Detectar Impreso
-        local Key = GPrefix.get_key(log_printed, value)
-        if Key then
-            return '"This is: ' .. Key .. '"'
-        end
-
-        --- Variables a usar
-        local Table = {}
-        local String = ""
-
-        --- Guardar la referencia de la tabla
-        log_printed[table.concat(log_index, ".")] = value
-
-        --- Recorrer los valores de la table
-        for key, element in pairs(value) do
-            --- Evitar las variables en uso
-            local Flag = false
-            Flag = Flag or element == log_index
-            Flag = Flag or element == log_printed
-            if Flag then goto JumpLog end
-
-            --- Guardar el indice de la variable
-            Key = "[ " .. to_string(key) .. " ]"
-            table.insert(log_index, Key)
-
-            --- Convertir la variable en cadena
-            String = to_string(element)
-            String = " = " .. string.gsub(String, "\n", "\n\t")
-            String = Key .. String
-
-            --- Guardar la variable convertida en cadena
-            table.insert(Table, String)
-
-            --- Eliminar el indice de la tabla
-            table.remove(log_index, #log_index)
-
-            --- Recepción del salto
-            :: JumpLog ::
-        end
-
-        --- La tabla esta vacia
-        if #Table == 0 then return "{ }" end
-
-        --- Valor de salida
-        String = table.concat(Table, "," .. "\n\t")
-        String = "{" .. "\n\t" .. String .. "\n" .. "}"
-        return String
+        return '"<unknown>"'
     end
 
-    --- Convertir las variables
-    for Index, Value in pairs(Values) do
-        --- Establecer el nombre de la variable
-        local String = nil
-        if GPrefix.is_table(Value) and Value.name then
-            String = Value.name
-        end
-        if not String then String = Index end
-
-        --- Variable para evitar la reimpresión
-        table.insert(log_index, String)
-
-        --- Convertir la variable en cadena
-        String = "[ " .. to_string(String) .. " ]"
-        String = String .. " = " .. to_string(Value)
-
-        --- Guardar la variable convertida en cadena
-        Output = Output .. "\n" .. String
-
-        --- Remover el indice
-        table.remove(log_index, #log_index)
+    for i, v in ipairs(args) do
+        local Name = (type(v) == "table" and type(v.name) == "string") and v.name or "" .. i
+        local Result = "[" .. Name .. "] = " .. to_string(v, "", {}, Name)
+        table.insert(Output, Result)
     end
 
-    --- Mostrar el resultado
-    log("\n>>>" .. Output .. "\n<<<")
+    log("\n>>>\n" .. table.concat(Output, "\n\n") .. "\n<<<")
 end
 
 ---------------------------------------------------------------------------------------------------

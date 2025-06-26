@@ -194,7 +194,7 @@ GPrefix.get_tables(attack_parameters, "type", "item")
 -- return nil
 ```
 
-## 🔹 `GPrefix.log(value1, ..., valueN)`
+## 🔹 `GPrefix.var_dump(value1, ..., valueN)`
 
 Imprime uno o más valores en el archivo `factorio-current.log` en un formato visualmente claro y estructurado, útil para depuración.
 
@@ -213,7 +213,7 @@ local recipe = {
   {type="item", name="iron-plate", amount=5}
 }
 
-GPrefix.log(recipe)
+GPrefix.var_dump(recipe)
 ```
 
 ### 🗂️ Resultado en `factorio-current.log`
