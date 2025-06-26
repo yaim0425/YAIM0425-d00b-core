@@ -413,6 +413,7 @@ function This_MOD.format_icons(element)
     --- Validar
     if element.icons then return end
     if not element.icon then return end
+    if not GPrefix.is_string(element.icon) then return end
 
     --- Dar el formato deseado
     element.icons = { {
