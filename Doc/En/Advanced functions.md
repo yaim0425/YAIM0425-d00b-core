@@ -242,3 +242,10 @@ GPrefix.var_dump(recipe)
 }
 <<<
 ```
+
+## 📘 Available Functions
+
+- [`Back to README`](../../README.md)
+- [`Advanced functions`](./Doc/En/Advanced%20functions.md)
+- [`Control`](./Doc/En/control.md)
+- [`Data Final Fixes`](./Doc/En/data-final-fixes.md)

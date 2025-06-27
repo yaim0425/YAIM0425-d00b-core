@@ -239,3 +239,10 @@ GPrefix.var_dump(recipe)
 }
 <<<
 ```
+
+## 📘 Funciones disponibles
+
+- [`Basic functions`](./Doc/Es/Basic%20functions.md)
+- [`Volver al README`](./README.md)
+- [`control`](./Doc/Es/control.md)
+- [`data-final-fixes`](./Doc/Es/data-final-fixes.md)

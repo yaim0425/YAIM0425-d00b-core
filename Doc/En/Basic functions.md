@@ -147,3 +147,10 @@ GPrefix.is_userdata(userdata)
 GPrefix.is_userdata("text")
 -- return false
 ```
+
+## 📘 Available Functions
+
+- [`Basic functions`](./Doc/En/Basic%20functions.md)
+- [`Advanced functions`](./Doc/En/Advanced%20functions.md)
+- [`Control`](./Doc/En/control.md)
+- [`Data Final Fixes`](./Doc/En/data-final-fixes.md)

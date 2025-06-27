@@ -198,3 +198,10 @@ local recipe = data.raw.recipe["advanced-circuit"]
 local tech = GPrefix.get_technology(recipe)
 -- tech.name == "advanced-electronics"
 ```
+
+## 📘 Funciones disponibles
+
+- [`Basic functions`](./Doc/Es/Basic%20functions.md)
+- [`Advanced functions`](./Doc/Es/Advanced%20functions.md)
+- [`control`](./Doc/Es/control.md)
+- [`Volver al README`](./README.md)

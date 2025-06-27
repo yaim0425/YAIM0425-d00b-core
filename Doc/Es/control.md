@@ -46,3 +46,10 @@ end
 -- Acceder al espacio guardable del MOD
 Data.gMOD.mi_variable = true
 ```
+
+## 📘 Funciones disponibles
+
+- [`Basic functions`](./Doc/Es/Basic%20functions.md)
+- [`Advanced functions`](./Doc/Es/Advanced%20functions.md)
+- [`Volver al README`](./README.md)
+- [`data-final-fixes`](./Doc/Es/data-final-fixes.md)

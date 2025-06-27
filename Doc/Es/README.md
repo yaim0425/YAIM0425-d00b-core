@@ -31,3 +31,11 @@ Cualquier intento de usarlo por sí solo no tendrá efecto visible.
 
 El código está estructurado para mantener claridad, cohesión y facilidad de integración.  
 Debe ser tratado como una **librería de solo lectura**, salvo por el autor.
+
+## 📘 Funciones disponibles
+
+- [`English`](../../README.md)
+- [`Basic functions`](./Doc/Es/Basic%20functions.md)
+- [`Advanced functions`](./Doc/Es/Advanced%20functions.md)
+- [`control`](./Doc/Es/control.md)
+- [`data-final-fixes`](./Doc/Es/data-final-fixes.md)
