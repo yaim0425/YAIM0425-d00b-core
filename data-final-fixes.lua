@@ -634,37 +634,32 @@ function this_mod.filter_data()
     for Key, Value in pairs(Values) do
         --- Cargar de forma directa
         for name, value in pairs(Value) do
-            --- Buscar el valor a evaluar
-            if GPrefix.is_string(value) then
-                goto jump_string
-            end
+            if not GPrefix.is_string(value) then
+                for _, element in pairs(data.raw) do
+                    --- Buscar la entidad
+                    element = element[name]
 
-            --- Buscar el elemento
-            for _, element in pairs(data.raw) do
-                element = element[name]
+                    --- El ciclo es solo para saltar
+                    --- elementos no deseados
+                    do
+                        --- Coasa evitar
+                        if not element then break end
+                        if GPrefix.get_key(ignore_types, element.type) then break end
+                        if Key == "Entities" then
+                            if not element.minable then break end
+                            if not element.minable.results then break end
+                        end
+                        if Key == "Equipments" then
+                            if not element.shape then break end
+                            if not element.sprite then break end
+                        end
 
-                --- Validación
-                if not element then goto jump_entity end
-                if GPrefix.get_key(ignore_types, element.type) then goto jump_entity end
-                if Key == "Entities" then
-                    if not element.minable then goto jump_entity end
-                    if not element.minable.results then goto jump_entity end
+                        --- Guardar entidad
+                        Value[name] = element
+                        break
+                    end
                 end
-                if Key == "Equipments" then
-                    if not element.shape then goto jump_entity end
-                    if not element.sprite then goto jump_entity end
-                end
-
-                --- Guardar entidad
-                Value[name] = element
-                if true then break end
-
-                --- Recepción del salto
-                :: jump_entity ::
             end
-
-            --- Recepción del salto
-            :: jump_string ::
         end
 
         --- Cargar las entidades de forma indirecta
@@ -855,15 +850,10 @@ function this_mod.change_orders()
 
     --- Agrupar los Grupos
     for _, element in pairs(data.raw["item-group"]) do
-        --- Validación
-        if not element.order then goto jump_group end
-
-        --- Agrupar
-        table.insert(Source, element)
-        table.insert(Orders, element.order)
-
-        --- Receptor del salto
-        ::jump_group::
+        if element.order then
+            table.insert(Source, element)
+            table.insert(Orders, element.order)
+        end
     end
 
     --- Cantidad de afectados
@@ -900,19 +890,18 @@ function this_mod.change_orders()
 
     --- Agrupar los subgrupos
     for _, element in pairs(data.raw["item-subgroup"]) do
-        --- Validación
-        if not element.group then goto jump_subgroup end
-        if not element.order then element.order = data.raw["item-group"][element.group].order end
+        if not element.group then
+            if not element.order then
+                element.order = data.raw["item-group"][element.group].order
+            end
 
-        --- Agrupar
-        Source[element.group] = Source[element.group] or {}
-        table.insert(Source[element.group], element)
+            --- Agrupar
+            Source[element.group] = Source[element.group] or {}
+            table.insert(Source[element.group], element)
 
-        Orders[element.group] = Orders[element.group] or {}
-        table.insert(Orders[element.group], element.order)
-
-        --- Receptor del salto
-        ::jump_subgroup::
+            Orders[element.group] = Orders[element.group] or {}
+            table.insert(Orders[element.group], element.order)
+        end
     end
 
     --- Cambiar el order de los subgrupos
@@ -1001,19 +990,21 @@ function this_mod.change_orders()
             if element.type == "item-group" then break end
             if element.type == "item-subgroup" then break end
 
-            --- Validación
-            if not element.subgroup then goto jump_element end
-            if not element.order then goto jump_element end
+            --- El ciclo es solo para saltar
+            --- elementos no deseados
+            do
+                --- Validación
+                if not element.subgroup then break end
+                if not element.order then break end
 
-            --- Agrupar
-            Source[element.subgroup] = Source[element.subgroup] or {}
-            table.insert(Source[element.subgroup], element)
+                --- Agrupar
+                Source[element.subgroup] = Source[element.subgroup] or {}
+                table.insert(Source[element.subgroup], element)
 
-            Orders[element.subgroup] = Orders[element.subgroup] or {}
-            table.insert(Orders[element.subgroup], element.order)
-
-            --- Receptor del salto
-            :: jump_element ::
+                Orders[element.subgroup] = Orders[element.subgroup] or {}
+                table.insert(Orders[element.subgroup], element.order)
+                break
+            end
         end
     end
 
