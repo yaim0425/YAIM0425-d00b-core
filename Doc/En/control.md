@@ -50,7 +50,7 @@ Data.gMOD.my_variable = true
 
 ## 📘 Available Functions
 
-- [`Basic functions`](./Doc/En/Basic%20functions.md)
-- [`Advanced functions`](./Doc/En/Advanced%20functions.md)
-- [`Control`](./Doc/En/control.md)
-- [`Data Final Fixes`](./Doc/En/data-final-fixes.md)
+- [`Basic functions`](./Basic%20functions.md)
+- [`Advanced functions`](./Advanced%20functions.md)
+- [`Back to README`](../../README.md)
+- [`Data Final Fixes`](./data-final-fixes.md)

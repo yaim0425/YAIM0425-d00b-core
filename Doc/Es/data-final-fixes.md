@@ -201,7 +201,7 @@ local tech = GPrefix.get_technology(recipe)
 
 ## 📘 Funciones disponibles
 
-- [`Basic functions`](./Doc/Es/Basic%20functions.md)
-- [`Advanced functions`](./Doc/Es/Advanced%20functions.md)
-- [`control`](./Doc/Es/control.md)
+- [`Basic functions`](./Basic%20functions.md)
+- [`Advanced functions`](./Advanced%20functions.md)
+- [`control`](./control.md)
 - [`Volver al README`](./README.md)
