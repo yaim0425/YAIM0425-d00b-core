@@ -230,7 +230,7 @@ end
 --- Tecnología que desbloquea la receta dada
 --- @param recipe table # receta a buscar
 --- @return any # Tecnología que desbloquea la receta dada
-function GPrefix.get_technology_unlock_recipe(recipe)
+function GPrefix.get_technology(recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Variable a usar
