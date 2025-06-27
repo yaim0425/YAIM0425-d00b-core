@@ -1,6 +1,5 @@
 ![](../../thumbnail.png)
 
-🌍 [![Bandera de Estados unidos](https://flagcdn.com/20x15/us.png)](../../README.md)
 
 # 📦 `zzzYAIM0425 0000 lib`
 
@@ -34,7 +33,7 @@ Cualquier intento de usarlo por sí solo no tendrá efecto visible.
 El código está estructurado para mantener claridad, cohesión y facilidad de integración.  
 Debe ser tratado como una **librería de solo lectura**, salvo por el autor.
 
-## 📘 Funciones disponibles
+## 📘 Funciones disponibles 🌍 [![Bandera de Estados unidos](https://flagcdn.com/20x15/us.png)](../../README.md)
 
 - [`Basic functions`](./Basic%20functions.md)
 - [`Advanced functions`](./Advanced%20functions.md)
