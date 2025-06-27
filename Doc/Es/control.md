@@ -51,5 +51,5 @@ Data.gMOD.mi_variable = true
 
 - [`Basic functions`](./Basic%20functions.md)
 - [`Advanced functions`](./Advanced%20functions.md)
-- [`Volver al README`](./README.md)
+- [`README`](./README.md)
 - [`data-final-fixes`](./data-final-fixes.md)

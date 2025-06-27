@@ -246,6 +246,6 @@ GPrefix.var_dump(recipe)
 ## 📘 Available Functions
 
 - [`Basic functions`](./Basic%20functions.md)
-- [`Back to README`](../../README.md)
+- [`README`](../../README.md)
 - [`Control`](./control.md)
 - [`Data Final Fixes`](./data-final-fixes.md)

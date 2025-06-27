@@ -150,7 +150,7 @@ GPrefix.is_userdata("text")
 
 ## 📘 Funciones disponibles
 
-- [`Volver al README`](./README.md)
+- [`README`](./README.md)
 - [`Advanced functions`](./Advanced%20functions.md)
 - [`control`](./control.md)
 - [`data-final-fixes`](./data-final-fixes.md)
