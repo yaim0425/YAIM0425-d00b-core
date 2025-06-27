@@ -1,6 +1,6 @@
-![](./thumbnail.png)
+![](../../thumbnail.png)
 
-[![Bandera de España](https://flagcdn.com/20x15/es.png)](../../README.md)
+[![Bandera de Estados unidos](https://flagcdn.com/20x15/us.png)](../../README.md)
 
 # 📦 `zzzYAIM0425 0000 lib`
 
