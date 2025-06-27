@@ -334,17 +334,17 @@ end
 
 --- Contenedor de funciones y datos usados
 --- unicamente en este archivo
-local This_MOD = {}
+local this_mod = {}
 
 --- Ejecutar las acciones propias de este archivo
-function This_MOD.start()
+function this_mod.start()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Darle formato a lo minado
     for _, values in pairs(data.raw) do
         for _, value in pairs(values) do
-            This_MOD.format_results(value)
-            This_MOD.format_icons(value)
+            this_mod.format_results(value)
+            this_mod.format_icons(value)
         end
     end
 
@@ -358,25 +358,25 @@ function This_MOD.start()
     --- GPrefix.Recipes
     --- GPrefix.Entities
     --- GPrefix.Equipments
-    This_MOD.filter_data()
+    this_mod.filter_data()
 
     --- Clasificar la información de settings.startup
     --- Crearción de:
     --- GPrefix.Setting
-    This_MOD.load_setting()
+    this_mod.load_setting()
 
     --- Clasificar la información de data.raw.technology
     --- Crearción de:
     --- GPrefix.Tech
-    This_MOD.load_technology()
+    this_mod.load_technology()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Crear espacios entre los elementos
-    This_MOD.change_orders()
+    this_mod.change_orders()
 
     --- Establecer traducción en todos los elementos
-    This_MOD.set_localised()
+    this_mod.set_localised()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -384,7 +384,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Darle formato a lo minado
-function This_MOD.format_results(element)
+function this_mod.format_results(element)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Validar
@@ -407,7 +407,7 @@ function This_MOD.format_results(element)
 end
 
 --- Dale el formato a los icons
-function This_MOD.format_icons(element)
+function this_mod.format_icons(element)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Validar
@@ -437,7 +437,7 @@ end
 ---- GPrefix.Recipes
 ---- GPrefix.Entities
 ---- GPrefix.Equipments
-function This_MOD.filter_data()
+function this_mod.filter_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Contenedores finales
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -725,7 +725,7 @@ end
 
 --- Clasificar la información de settings.startup
 ---- GPrefix.Setting
-function This_MOD.load_setting()
+function this_mod.load_setting()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Inicializar el contenedor
@@ -749,7 +749,7 @@ end
 
 --- Clasificar la información de data.raw.technology
 ---- GPrefix.Tech
-function This_MOD.load_technology()
+function this_mod.load_technology()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Contenedores para el resultado
@@ -830,7 +830,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Crear espacios entre los elementos
-function This_MOD.change_orders()
+function this_mod.change_orders()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Inicializar las vaiables
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1067,7 +1067,7 @@ function This_MOD.change_orders()
 end
 
 --- Establecer traducción en todos los elementos
-function This_MOD.set_localised()
+function this_mod.set_localised()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Funciones a usar
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1224,6 +1224,6 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Ejecutar las acciones propias de este archivo
-This_MOD.start()
+this_mod.start()
 
 ---------------------------------------------------------------------------------------------------
