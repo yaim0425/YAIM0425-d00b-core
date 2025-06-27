@@ -1,5 +1,7 @@
 ![](./thumbnail.png)
 
+[![Bandera de España](https://flagcdn.com/20x15/es.png)](../../README.md)
+
 # 📦 `zzzYAIM0425 0000 lib`
 
 Este repositorio contiene el MOD `zzzYAIM0425 0000 lib`, una **biblioteca base de utilidades** pensada para ser usada por otros MODs desarrollados por el usuario yaim0425.
@@ -34,7 +36,6 @@ Debe ser tratado como una **librería de solo lectura**, salvo por el autor.
 
 ## 📘 Funciones disponibles
 
-- [`English`](../../README.md)
 - [`Basic functions`](./Basic%20functions.md)
 - [`Advanced functions`](./Advanced%20functions.md)
 - [`control`](./control.md)
