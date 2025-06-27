@@ -1,6 +1,6 @@
 ![](../../thumbnail.png)
 
-[![Bandera de Estados unidos](https://flagcdn.com/20x15/us.png)](../../README.md)
+🌍 [![Bandera de Estados unidos](https://flagcdn.com/20x15/us.png)](../../README.md)
 
 # 📦 `zzzYAIM0425 0000 lib`
 

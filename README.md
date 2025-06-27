@@ -1,6 +1,6 @@
 ![](./thumbnail.png)
 
-[![Bandera de España](https://flagcdn.com/20x15/es.png)](./Doc/Es/README.md)
+🌍 [![Bandera de España](https://flagcdn.com/20x15/es.png)](./Doc/Es/README.md)
 
 # 📦 `zzzYAIM0425 0000 lib`
 
