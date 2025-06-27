@@ -85,7 +85,7 @@ GPrefix.get_key({"A", "B", "C"}, "D")
 -- return nil
 ```
 
-## 🔹 `GPrefix.pad_left(digits, value)`
+## 🔹 `GPrefix.pad_left_zeros(digits, value)`
 
 Pads a value on the left with zeros (`"0"`) until it reaches a specified total length.
 
@@ -100,13 +100,13 @@ Pads a value on the left with zeros (`"0"`) until it reaches a specified total l
 ### 🔍 Examples
 
 ```lua
-GPrefix.pad_left(3, "1")
+GPrefix.pad_left_zeros(3, "1")
 -- return "001"
 
-GPrefix.pad_left(2, "B")
+GPrefix.pad_left_zeros(2, "B")
 -- return "0B"
 
-GPrefix.pad_left("", "")
+GPrefix.pad_left_zeros("", "")
 -- return ""
 ```
 
