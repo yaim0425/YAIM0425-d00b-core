@@ -214,7 +214,7 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
     while not Order[4] do
         Order[2] = Order[2] + 1
         if Order[2] - Order[3] > 9 then return nil end
-        Order[1] = GPrefix.pad_left(#Order[1], Order[2])
+        Order[1] = GPrefix.pad_left_zeros(#Order[1], Order[2])
         Order[4] = GPrefix.get_table(Subgroups, "order", Order[1])
     end
 
@@ -877,7 +877,7 @@ function This_MOD.change_orders()
     for iKey, order in pairs(Orders) do
         for jKey, element in pairs(Source) do
             if element.order == order then
-                element.order = GPrefix.pad_left(N, iKey) .. "0"
+                element.order = GPrefix.pad_left_zeros(N, iKey) .. "0"
                 table.remove(Source, jKey)
                 break
             end
@@ -928,7 +928,7 @@ function This_MOD.change_orders()
         for iKey, order in pairs(orders) do
             for jKey, element in pairs(Source[subgroup]) do
                 if element.order == order then
-                    element.order = GPrefix.pad_left(N, iKey) .. "0"
+                    element.order = GPrefix.pad_left_zeros(N, iKey) .. "0"
                     table.remove(Source[subgroup], jKey)
                     break
                 end
@@ -1030,7 +1030,7 @@ function This_MOD.change_orders()
         for iKey, order in pairs(orders) do
             for jKey, element in pairs(Source[subgroup]) do
                 if element.order == order then
-                    element.order = GPrefix.pad_left(N, iKey) .. "0"
+                    element.order = GPrefix.pad_left_zeros(N, iKey) .. "0"
                     table.remove(Source[subgroup], jKey)
                     break
                 end
@@ -1056,7 +1056,7 @@ function This_MOD.change_orders()
             for _, recipe in pairs(recipes) do
                 if #recipe.results == 1 then
                     recipe.subgroup = item.subgroup
-                    recipe.order = GPrefix.pad_left(#item.order, order)
+                    recipe.order = GPrefix.pad_left_zeros(#item.order, order)
                     order = order + 1
                 end
             end

@@ -104,7 +104,7 @@ end
 --- @param digits integer # __Ejemplo:__ _5_
 --- @param value integer # __Ejemplo:__ _123_
 --- @return string # __Ejemplo:__ _00123_
-function GPrefix.pad_left(digits, value)
+function GPrefix.pad_left_zeros(digits, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     if not GPrefix.is_number(digits) then return "" end
