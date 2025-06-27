@@ -32,7 +32,7 @@ Attempting to use it standalone will have no visible effect.
 The code is organized to ensure clarity, cohesion, and easy integration.  
 It should be treated as a **read-only library**, except by the original author.
 
-## 📘 Available Functions 🌍 [![Bandera de España](https://flagcdn.com/20x15/es.png)](./Doc/Es/README.md)
+## 📘 Available Functions 🌎 [![Bandera de España](https://flagcdn.com/20x15/es.png)](./Doc/Es/README.md)
 
 - [`Basic functions`](./Doc/En/Basic%20functions.md)
 - [`Advanced functions`](./Doc/En/Advanced%20functions.md)
