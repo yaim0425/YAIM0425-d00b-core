@@ -164,7 +164,7 @@ local new = GPrefix.duplicate_subgroup("resources-raw", "resources-custom")
 -- }
 ```
 
-## 🔹 `GPrefix.get_technology_unlock_recipe(recipe)`
+## 🔹 `GPrefix.get_technology(recipe)`
 
 Returns the technology that directly unlocks a given recipe. If no such technology is found, it searches for the *most expensive* technology that allows crafting its ingredients.
 
@@ -193,6 +193,6 @@ Returns the technology that directly unlocks a given recipe. If no such technolo
 ### 🧪 Example
 ```lua
 local recipe = data.raw.recipe["advanced-circuit"]
-local tech = GPrefix.get_technology_unlock_recipe(recipe)
+local tech = GPrefix.get_technology(recipe)
 -- tech.name == "advanced-electronics"
 ```
