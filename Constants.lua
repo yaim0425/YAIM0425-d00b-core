@@ -3,11 +3,14 @@
 ---------------------------------------------------------------------------------------------------
 
 --- Contenedor global
-_G.GPrefix   = _G.GPrefix or {}
+_G.GPrefix = _G.GPrefix or {}
 
 ---------------------------------------------------------------------------------------------------
 
 --- Prefijo a usar en los MODs
 GPrefix.name = "zzzYAIM0425"
+
+--- Subgrupos existentes, se usa con frecuencia
+GPrefix.subgroups = data.raw["item-subgroup"]
 
 ---------------------------------------------------------------------------------------------------

@@ -889,7 +889,7 @@ function This_MOD.change_orders()
     Source = {}
 
     --- Agrupar los subgrupos
-    for _, element in pairs(data.raw["item-subgroup"]) do
+    for _, element in pairs(GPrefix.subgroups) do
         if not element.group then
             if not element.order then
                 element.order = data.raw["item-group"][element.group].order
