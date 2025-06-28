@@ -322,6 +322,31 @@ function GPrefix.get_technology(recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Obtiener información del nombre de la carpeta
+--- that_mod.id
+--- that_mod.name
+--- that_mod.prefix
+function GPrefix.split_name_folder(that_mod)
+    --- nivel 2 si llamas desde otra función
+    local info = debug.getinfo(2, "S")
+    local source = info.source
+
+    --- Elimina el prefijo @ si viene de un archivo
+    local path = source:sub(1, 1) == "@" and source:sub(2) or source
+
+    --- Objetener el nombre del directorio
+    local mod_name = path:match("__([^/]+)__")
+    if not mod_name then return end
+
+    --- Dividir el nombre por guiones
+    local name, id = mod_name:match("^([^-]+)%-(%d+)")
+
+    --- Información propia del mod
+    that_mod.id = id
+    that_mod.name = name
+    that_mod.prefix = name .. "-" .. id .. "-"
+end
+
 ---------------------------------------------------------------------------------------------------
 
 
