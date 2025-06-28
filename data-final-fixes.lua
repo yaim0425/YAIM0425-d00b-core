@@ -641,7 +641,7 @@ function This_MOD.filter_data()
 
                     --- El ciclo es solo para saltar
                     --- elementos no deseados
-                    do
+                    repeat
                         --- Coasa evitar
                         if not element then break end
                         if GPrefix.get_key(ignore_types, element.type) then break end
@@ -656,8 +656,7 @@ function This_MOD.filter_data()
 
                         --- Guardar entidad
                         Value[name] = element
-                        break
-                    end
+                    until true
                 end
             end
         end
@@ -763,6 +762,8 @@ function This_MOD.load_technology()
 
     --- Buscar el niverl de la tecnología indicada
     local function get_level(name)
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+
         --- Tecnología clasificada
         if levels[name] then
             return levels[name]
@@ -787,6 +788,8 @@ function This_MOD.load_technology()
         --- Guardar y devolver el nivel
         levels[name] = max + 1
         return levels[name]
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
 
     --- Clasificar todos tecnología
@@ -992,7 +995,7 @@ function This_MOD.change_orders()
 
             --- El ciclo es solo para saltar
             --- elementos no deseados
-            do
+            repeat
                 --- Validación
                 if not element.subgroup then break end
                 if not element.order then break end
@@ -1003,8 +1006,7 @@ function This_MOD.change_orders()
 
                 Orders[element.subgroup] = Orders[element.subgroup] or {}
                 table.insert(Orders[element.subgroup], element.order)
-                break
-            end
+            until true
         end
     end
 
