@@ -297,14 +297,14 @@ function GPrefix.var_dump(...)
 
     -- Recorrer los valores dados
     for i, v in ipairs(args) do
-        local Name = (type(v) == "table" and type(v.name) == "string") and v.name or "" .. i
+        local Name = (type(v) == "table" and type(v.name) == "string") and "'" .. v.name .. "'" or "" .. i
         local Result = "[" .. Name .. "] = " .. to_string(v, "", {}, Name)
         table.insert(Output, Result)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    log("\n>>>\n" .. table.concat(Output, "\n\n") .. "\n<<<")
+    log("\n>>>\n" .. table.concat(Output, "\n") .. "\n<<<")
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
