@@ -916,20 +916,15 @@ function This_MOD.change_orders()
     Orders = {}
     Source = {}
 
-    --- Agrupar los subgrupos
+    --- Agrupar los subgroups
     for _, element in pairs(GPrefix.subgroups) do
-        if not element.group then
-            if not element.order then
-                element.order = data.raw["item-group"][element.group].order
-            end
-
-            --- Agrupar
-            Source[element.group] = Source[element.group] or {}
-            table.insert(Source[element.group], element)
-
-            Orders[element.group] = Orders[element.group] or {}
-            table.insert(Orders[element.group], element.order)
-        end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        Source[element.group] = Source[element.group] or {}
+        table.insert(Source[element.group], element)
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        Orders[element.group] = Orders[element.group] or {}
+        table.insert(Orders[element.group], element.order or element.name)
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
 
     --- Cambiar el order de los subgrupos
