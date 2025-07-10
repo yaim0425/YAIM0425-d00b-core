@@ -11,6 +11,6 @@ _G.GPrefix = _G.GPrefix or {}
 GPrefix.name = "zzzYAIM0425"
 
 --- Subgrupos existentes, se usa con frecuencia
-GPrefix.subgroups = data.raw["item-subgroup"]
+if data then GPrefix.subgroups = data.raw["item-subgroup"] end
 
 ---------------------------------------------------------------------------------------------------
