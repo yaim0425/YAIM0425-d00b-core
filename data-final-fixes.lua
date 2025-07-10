@@ -15,8 +15,8 @@ if GPrefix and GPrefix.name then return end
 ---> Cargar las funciones y constantes <---
 ---------------------------------------------------------------------------------------------------
 
-require("mods.zzzYAIM0425-0000-lib.__CONSTANTS__")
-require("mods.zzzYAIM0425-0000-lib.__FUNCTIONS__")
+require("__CONSTANTS__")
+require("__FUNCTIONS__")
 require("util")
 
 ---------------------------------------------------------------------------------------------------
