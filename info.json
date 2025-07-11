@@ -1,0 +1,29 @@
+{
+  "name": "zzzYAIM0425-0000-lib",
+  "version": "0.0.1",
+  "title": "zzzYAIM0425 0000 lib",
+  "author": "yaim0425",
+  "factorio_version": "2.0",
+  "description": "Base utility library intended to be used by other MODs developed by the user yaim0425. [[I accept suggestions]]",
+  "homepage": "https://github.com/yaim0425/zzzYAIM0425-0000-lib",
+  "dependencies": [
+    "base",
+
+    "? Krastorio2",
+
+    "? pyalienlife",
+    "? pyalternativeenergy",
+    "? pycoalprocessing",
+    "? pyfusionenergy",
+    "? pyhightech",
+    "? pyindustry",
+    "? pypetroleumhandling",
+    "? pypostprocessing",
+    "? pyrawores",
+
+    "? aai-containers",
+    "? micro-machines",
+    "? factorioplus",
+    "? Yuoki"
+  ]
+}
