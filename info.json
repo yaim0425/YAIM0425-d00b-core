@@ -9,7 +9,11 @@
   "dependencies": [
     "base",
 
+    "? Yuoki",
     "? Krastorio2",
+    "? factorioplus",
+    "? aai-containers",
+    "? micro-machines",
 
     "? pyalienlife",
     "? pyalternativeenergy",
@@ -19,11 +23,6 @@
     "? pyindustry",
     "? pypetroleumhandling",
     "? pypostprocessing",
-    "? pyrawores",
-
-    "? aai-containers",
-    "? micro-machines",
-    "? factorioplus",
-    "? Yuoki"
+    "? pyrawores"
   ]
 }
