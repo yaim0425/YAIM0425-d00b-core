@@ -471,6 +471,15 @@ function GPrefix.extend(...)
     end
 end
 
+--- Agrega una receta nueva a una tecnología que ya tiene otra receta como referencia
+--- @param old_recipe_name string # Nombre de la receta de referencia
+--- @param new_recipe table # Receta a agregar
+function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
+    GPrefix.var_dump(GPrefix.Tech.Level)
+    GPrefix.var_dump(GPrefix.Tech.Recipe)
+    -- table.insert(effect, { type = "unlock-recipe", recipe = new_recipe.name })
+end
+
 ---------------------------------------------------------------------------------------------------
 
 
