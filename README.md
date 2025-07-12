@@ -1,6 +1,6 @@
 ![](./thumbnail.png)
 
-# 📦 `zzzYAIM0425 0000 lib`
+# 📦 `zzzYAIM0425 0000 lib` [![Bandera de España](https://flagcdn.com/20x15/es.png)](./Doc/Es/README.md)
 
 This repository contains the MOD `zzzYAIM0425 0000 lib`, a **base utility library** intended to be used by other MODs developed by the user yaim0425.
 
@@ -32,7 +32,7 @@ Attempting to use it standalone will have no visible effect.
 The code is organized to ensure clarity, cohesion, and easy integration.  
 It should be treated as a **read-only library**, except by the original author.
 
-## 📘 Available Functions 🌎 [![Bandera de España](https://flagcdn.com/20x15/es.png)](./Doc/Es/README.md)
+## 📘 Available Functions 🌎
 
 - [`Basic functions`](./Doc/En/Basic%20functions.md)
 - [`Advanced functions`](./Doc/En/Advanced%20functions.md)
