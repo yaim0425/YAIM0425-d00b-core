@@ -342,6 +342,17 @@ function GPrefix.split_name_folder(that_mod)
     that_mod.prefix = name .. "-" .. id .. "-"
 end
 
+--- 
+function GPrefix.extend(...)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Renombrar los parametros dados
+    local Args = { ... }
+    if GPrefix.get_length(Args) == 0 then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 ---------------------------------------------------------------------------------------------------
 
 
