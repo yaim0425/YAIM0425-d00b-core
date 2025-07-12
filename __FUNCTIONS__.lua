@@ -191,7 +191,7 @@ function GPrefix.var_dump(...)
 
     --- Renombrar los parametros dados
     local Args = { ... }
-    if GPrefix.get_length(Args) == 0 then return end
+    if #Args == 0 then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
