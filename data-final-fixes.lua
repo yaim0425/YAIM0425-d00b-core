@@ -363,6 +363,7 @@ function GPrefix.extend(...)
 
             GPrefix.Recipes[prototype.name] = GPrefix.Recipes[prototype.name] or {}
             table.insert(GPrefix.Recipes[prototype.name], prototype)
+            prototype.enabled = true
             return
         end
         --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -465,8 +466,8 @@ function GPrefix.extend(...)
 
     --- Guardar el nuevo prototipo
     for _, arg in pairs(Prototypes) do
-        data:extend(arg)
         extend(arg)
+        data:extend(arg)
     end
 end
 
