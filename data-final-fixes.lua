@@ -342,7 +342,8 @@ function GPrefix.split_name_folder(that_mod)
     that_mod.prefix = name .. "-" .. id .. "-"
 end
 
---- 
+--- Cargar los prototipos al juego
+--- @param ... any
 function GPrefix.extend(...)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -351,6 +352,84 @@ function GPrefix.extend(...)
     if GPrefix.get_length(Args) == 0 then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Guardar el nuevo prototipo
+    for _, arg in pairs(Args) do
+        --- Indicador
+        local Activated = false
+
+        --- Recipes
+        while not Activated do
+            if arg.type ~= "recipe" then break end
+
+            GPrefix.Recipes[arg.name] = GPrefix.Recipes[arg.name] or {}
+            table.insert(GPrefix.Recipes[arg.name], arg)
+            Activated = arg.type
+        end
+
+        --- Fluids
+        while not Activated do
+            if arg.type ~= "fluid" then break end
+
+            GPrefix.Fluids[arg.name] = arg
+            Activated = arg.type
+        end
+
+        --- Items
+        while not Activated do
+            if not arg.stack_size then break end
+
+            GPrefix.Items[arg.name] = arg
+            Activated = arg.type
+        end
+
+        --- Tiles
+        while not Activated do
+            if arg.type ~= "tile" then break end
+            if not arg.minable then break end
+            if not arg.minable.results then break end
+
+            for _, result in pairs(arg.minable.results) do
+                GPrefix.Tiles[result.name] = GPrefix.Tiles[result.name] or {}
+                table.insert(GPrefix.Tiles[result.name], arg)
+            end
+            Activated = arg.type
+        end
+
+        --- Equipments
+        while not Activated do
+            if not arg.shape then break end
+
+            GPrefix.Equipments[arg.name] = arg
+            Activated = arg.type
+        end
+
+        --- Entities
+        while not Activated do
+            if not arg.minable then break end
+            if not arg.minable.results then break end
+
+            for _, Result in pairs(arg.minable.results) do
+                GPrefix.Entities[Result.name] = arg
+            end
+            Activated = arg.type
+        end
+
+        --- Technologies
+        while not Activated do
+            if arg.type ~= "technology" then break end
+            GPrefix.var_dump(GPrefix.Tech.Level)
+            GPrefix.var_dump(GPrefix.Tech.Recipe)
+            -- local Technologies = GPrefix.Technologies
+            -- for _, effect in pairs(arg.effects or {}) do
+            --     if effect.type == "unlock-recipe" then
+            --         Technologies[effect.recipe] = Technologies[effect.recipe] or {}
+            --         table.insert(Technologies[effect.recipe], arg.effects)
+            --     end
+            -- end
+            Activated = arg.type
+        end
+    end
 end
 
 ---------------------------------------------------------------------------------------------------
