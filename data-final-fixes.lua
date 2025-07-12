@@ -193,19 +193,14 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
     --- Validación
     if not GPrefix.is_string(old_name) then return nil end
     if not GPrefix.is_string(new_name) then return nil end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Variable a usar
-    local Order = {}
-    local Subgroups = data.raw["item-subgroup"]
-    local Subgroup = util.copy(Subgroups[old_name])
-    if Subgroups[new_name] then return nil end
+    local Subgroup = util.copy(GPrefix.subgroups[old_name])
+    if GPrefix.subgroups[new_name] then return nil end
     if not Subgroup then return nil end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Order de referencia
+    local Order = {}
     Order[1] = Subgroup.order
     Order[2] = math.floor(tonumber(Order[1]) / 10) * 10
     Order[3] = Order[2]
@@ -215,7 +210,7 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
         Order[2] = Order[2] + 1
         if Order[2] - Order[3] > 9 then return nil end
         Order[1] = GPrefix.pad_left_zeros(#Order[1], Order[2])
-        Order[4] = GPrefix.get_table(Subgroups, "order", Order[1])
+        Order[4] = GPrefix.get_table(GPrefix.subgroups, "order", Order[1])
     end
 
     --- Crear el subgroup
