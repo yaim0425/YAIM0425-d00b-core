@@ -348,76 +348,105 @@ function GPrefix.extend(...)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Renombrar los parametros dados
-    local Args = { ... }
-    if GPrefix.get_length(Args) == 0 then return end
+    local Prototypes = { ... }
+    if #Prototypes == 0 then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Guardar el nuevo prototipo
-    for _, arg in pairs(Args) do
-        --- Indicador
-        local Activated = false
+    --- Clasificar y guardar el prototipo
+    local function extend(prototype)
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Recipes
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if prototype.type ~= "recipe" then break end
 
-        --- Recipes
-        while not Activated do
-            if arg.type ~= "recipe" then break end
-
-            GPrefix.Recipes[arg.name] = GPrefix.Recipes[arg.name] or {}
-            table.insert(GPrefix.Recipes[arg.name], arg)
-            Activated = arg.type
+            GPrefix.Recipes[prototype.name] = GPrefix.Recipes[prototype.name] or {}
+            table.insert(GPrefix.Recipes[prototype.name], prototype)
+            return
         end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        --- Fluids
-        while not Activated do
-            if arg.type ~= "fluid" then break end
 
-            GPrefix.Fluids[arg.name] = arg
-            Activated = arg.type
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Fluids
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if prototype.type ~= "fluid" then break end
+
+            GPrefix.Fluids[prototype.name] = prototype
+            return
         end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        --- Items
-        while not Activated do
-            if not arg.stack_size then break end
 
-            GPrefix.Items[arg.name] = arg
-            Activated = arg.type
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Items
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if not prototype.stack_size then break end
+
+            GPrefix.Items[prototype.name] = prototype
+            return
         end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        --- Tiles
-        while not Activated do
-            if arg.type ~= "tile" then break end
-            if not arg.minable then break end
-            if not arg.minable.results then break end
 
-            for _, result in pairs(arg.minable.results) do
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Tiles
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if prototype.type ~= "tile" then break end
+            if not prototype.minable then break end
+            if not prototype.minable.results then break end
+
+            for _, result in pairs(prototype.minable.results) do
                 GPrefix.Tiles[result.name] = GPrefix.Tiles[result.name] or {}
-                table.insert(GPrefix.Tiles[result.name], arg)
+                table.insert(GPrefix.Tiles[result.name], prototype)
             end
-            Activated = arg.type
+            return
         end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        --- Equipments
-        while not Activated do
-            if not arg.shape then break end
 
-            GPrefix.Equipments[arg.name] = arg
-            Activated = arg.type
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Equipments
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if not prototype.shape then break end
+
+            GPrefix.Equipments[prototype.name] = prototype
+            return
         end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        --- Entities
-        while not Activated do
-            if not arg.minable then break end
-            if not arg.minable.results then break end
 
-            for _, Result in pairs(arg.minable.results) do
-                GPrefix.Entities[Result.name] = arg
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Entities
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if not prototype.minable then break end
+            if not prototype.minable.results then break end
+
+            for _, Result in pairs(prototype.minable.results) do
+                GPrefix.Entities[Result.name] = prototype
             end
-            Activated = arg.type
+            return
         end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        --- Technologies
-        while not Activated do
-            if arg.type ~= "technology" then break end
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Technologies
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if prototype.type ~= "technology" then break end
             GPrefix.var_dump(GPrefix.Tech.Level)
             GPrefix.var_dump(GPrefix.Tech.Recipe)
             -- local Technologies = GPrefix.Technologies
@@ -427,8 +456,17 @@ function GPrefix.extend(...)
             --         table.insert(Technologies[effect.recipe], arg.effects)
             --     end
             -- end
-            Activated = arg.type
+            return
         end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Guardar el nuevo prototipo
+    for _, arg in pairs(Prototypes) do
+        data:extend(arg)
+        extend(arg)
     end
 end
 
