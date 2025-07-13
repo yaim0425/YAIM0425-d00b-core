@@ -679,8 +679,6 @@ function This_MOD.filter_data()
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Otras funciones
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -695,8 +693,6 @@ function This_MOD.filter_data()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -804,8 +800,6 @@ function This_MOD.filter_data()
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Cargar las Recetas, Suelos, Fluidos y Objetos
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -834,8 +828,6 @@ function This_MOD.filter_data()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -896,8 +888,6 @@ function This_MOD.filter_data()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -1071,8 +1061,6 @@ function This_MOD.change_orders()
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Grupos
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1108,8 +1096,6 @@ function This_MOD.change_orders()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -1157,8 +1143,6 @@ function This_MOD.change_orders()
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Establecer subgrupos por defecto
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1198,8 +1182,6 @@ function This_MOD.change_orders()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -1257,8 +1239,6 @@ function This_MOD.change_orders()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -1335,8 +1315,6 @@ function This_MOD.set_localised()
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Traducir estas secciones
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1371,8 +1349,6 @@ function This_MOD.set_localised()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
