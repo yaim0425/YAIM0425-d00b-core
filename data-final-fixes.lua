@@ -1423,7 +1423,7 @@ function This_MOD.set_localised()
         --- Separar la información
         local Name, Level = Full_name:match("(.+)-(%d+)")
         if not Name then Name = Full_name end
-        if not Level then Level = " " .. (Level or "") end
+        Level = " " .. (Level or "")
 
         --- Construir el apodo
         local localised_name = { "technology-name." .. Name }
