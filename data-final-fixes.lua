@@ -488,6 +488,11 @@ end
 function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+    --- Crea la receta de ser necesario
+    if data.raw.recipe[new_recipe.name] then
+        GPrefix.extend(new_recipe)
+    end
+
     --- Renombrar la variable
     local Recipe = GPrefix.Tech.Recipe
 
