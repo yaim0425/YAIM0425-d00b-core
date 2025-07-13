@@ -457,15 +457,33 @@ function GPrefix.extend(...)
         --- --- --- --- --- --- --- --- --- --- --- --- ---
         while true do
             if prototype.type ~= "technology" then break end
-            GPrefix.var_dump(GPrefix.tech.level)
-            GPrefix.var_dump(GPrefix.tech.recipe)
-            -- local Technologies = GPrefix.Technologies
-            -- for _, effect in pairs(arg.effects or {}) do
-            --     if effect.type == "unlock-recipe" then
-            --         Technologies[effect.recipe] = Technologies[effect.recipe] or {}
-            --         table.insert(Technologies[effect.recipe], arg.effects)
-            --     end
-            -- end
+
+            --- Nivel de la nueva tecnologia
+            local Level = 0
+            for _, name in pairs(prototype.prerequisites) do
+                if Level < GPrefix.tech.raw[name].level then
+                    Level = GPrefix.tech.raw[name].level
+                end
+            end
+            Level = Level + 1
+
+            --- Valores a guardar
+            local data = {
+                level = Level,
+                technology = prototype,
+                effects = prototype.effects
+            }
+
+            --- Indexar la nueva tecnologia
+            GPrefix.tech.raw[prototype.name] = data
+            GPrefix.tech.level[Level] = GPrefix.tech.level[Level] or {}
+            GPrefix.tech.level[Level][prototype.name] = data
+            for _, effect in pairs(prototype.effects or {}) do
+                if effect.type == "unlock-recipe" then
+                    GPrefix.tech.recipe[effect.recipe] = GPrefix.tech.recipe[effect.recipe] or {}
+                    GPrefix.tech.recipe[effect.recipe][prototype.name] = data
+                end
+            end
             return
         end
         --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -504,7 +522,6 @@ function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
     for _, tech in pairs(Recipe[old_recipe_name] or {}) do
         --- Evitar duplicados
         if not Space[tech.technology.name] then
-
             --- Guardar la info
             Space[tech.technology.name] = tech
 
