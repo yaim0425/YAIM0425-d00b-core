@@ -20,7 +20,7 @@ Builds and returns a table with key data from the received event, centralizing u
 - `Force`: Exists if `Force_player` and `Force_entity` are the same, or if only `Player` or only `Entity` exists. The presence of this variable removes `Force_player` and `Force_entity`.
 
 **The following are values stored with the game save:**
-- `gPrefix`: Contains all saved data for all mods under `yaim0425`, indexed by `that_mod.index`.
+- `gPrefix`: Contains all saved data for all mods under `yaim0425`, indexed by `that_mod.id`.
 - `gMOD`: Container for all saved data specific to the current mod. Includes `gForces` and `gPlayers`.
 - `gForces`: Container for each force used by the mod, indexed by `Force.index`.
 - `gForce`: Data for the current force, if it exists.

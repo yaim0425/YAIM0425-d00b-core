@@ -19,7 +19,7 @@ Construye y retorna una tabla con los datos clave del evento recibido, centraliz
 - `Force`: Existe si `Force_player` y `Force_entity` son iguales, si solo existe `Player` o si solo existe  `Entity`. La existencia de esta variable eliminará `Force_player` y `Force_entity`
 
 **Los siguientes son espacios/datos que se guardan con la partida.**
-- `gPrefix`: Contiene todos los datos guardados de todos los mods de `yaim0425`, los espacios están indexados por `that_mod.index`
+- `gPrefix`: Contiene todos los datos guardados de todos los mods de `yaim0425`, los espacios están indexados por `that_mod.id`
 - `gMOD`: Contenedor de todos los datos guardados del mod en ejecución. Contiene `gForces` y `gPlayers`
 - `gForces`: Contenedor de cada force que ha usada el mod, los espacios están indexados por `Force.index`
 - `gForce`: Espacio para el force actual, si existe
