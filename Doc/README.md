@@ -2,7 +2,7 @@
 
 # 📦 `zzzYAIM0425 0000 lib` [![Bandera de Estados Unidos](https://flagcdn.com/20x15/us.png)](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/README.md)
 
-`zzzYAIM0425 0000 lib` es una **biblioteca base de utilidades** pensada para ser usada por otros MODs desarrollados por el usuario [`zzzYAIM0425`](https://github.com/yaim0425).
+`zzzYAIM0425-0000-lib` es una **biblioteca base de utilidades** pensada para ser usada por otros MODs desarrollados por el usuario [`zzzYAIM0425`](https://github.com/yaim0425).
 
 > ⚠️ Este MOD no funciona de forma independiente. Su único propósito es proporcionar funciones, constantes y estructuras compartidas.
 

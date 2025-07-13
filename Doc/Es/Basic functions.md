@@ -150,7 +150,7 @@ GPrefix.is_userdata("text")
 
 ## 📘 Funciones disponibles
 
-- [`README`](./README.md)
-- [`Advanced functions`](./Advanced%20functions.md)
-- [`control`](./control.md)
-- [`data-final-fixes`](./data-final-fixes.md)
+- [`README`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/README.md)
+- [`Funciones avanzadas`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/Es/Advanced%20functions.md)  
+- [`control`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/Es/control.md)  
+- [`data-final-fixes`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/Es/data-final-fixes.md)

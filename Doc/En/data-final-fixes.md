@@ -199,7 +199,7 @@ local tech = GPrefix.get_technology(recipe)
 
 ## 📘 Available Functions
 
-- [`Basic functions`](./Basic%20functions.md)
-- [`Advanced functions`](./Advanced%20functions.md)
-- [`Control`](./control.md)
-- [`README`](../../README.md)
+- [`Basic functions`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/Basic%20functions.md)  
+- [`Advanced functions`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/Advanced%20functions.md)  
+- [`control`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/control.md)  
+- [`README`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/README.md)

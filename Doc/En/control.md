@@ -50,7 +50,7 @@ Data.gMOD.my_variable = true
 
 ## 📘 Available Functions
 
-- [`Basic functions`](./Basic%20functions.md)
-- [`Advanced functions`](./Advanced%20functions.md)
-- [`README`](../../README.md)
-- [`Data Final Fixes`](./data-final-fixes.md)
+- [`Basic functions`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/Basic%20functions.md)  
+- [`Advanced functions`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/Advanced%20functions.md)  
+- [`README`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/README.md)
+- [`data-final-fixes`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/data-final-fixes.md)

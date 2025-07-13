@@ -299,7 +299,7 @@ GPrefix.extend({
 
 ## 📘 Available Functions
 
-- [`Basic functions`](./Basic%20functions.md)
-- [`README`](../../README.md)
-- [`Control`](./control.md)
-- [`Data Final Fixes`](./data-final-fixes.md)
+- [`Basic functions`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/Basic%20functions.md)  
+- [`README`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/README.md)
+- [`control`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/control.md)  
+- [`data-final-fixes`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/data-final-fixes.md)

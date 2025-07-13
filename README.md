@@ -1,8 +1,8 @@
 ![](https://github.com/yaim0425/zzzYAIM0425-0000-lib/raw/main/thumbnail.png)
 
-# 📦 `zzzYAIM0425 0000 lib` [![US Flag](https://flagcdn.com/20x15/es.png)](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/Es/README.md)
+# 📦 `zzzYAIM0425 0000 lib` [![US Flag](https://flagcdn.com/20x15/es.png)](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/README.md)
 
-`zzzYAIM0425 0000 lib` is a **base utility library** designed to be used by other MODs developed by the [`zzzYAIM0425`](https://github.com/yaim0425) user.
+`zzzYAIM0425-0000-lib` is a **base utility library** designed to be used by other MODs developed by the [`zzzYAIM0425`](https://github.com/yaim0425) user.
 
 > ⚠️ This MOD does not work on its own. Its only purpose is to provide shared functions, constants, and structures.
 
