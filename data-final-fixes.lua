@@ -488,9 +488,35 @@ end
 function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    GPrefix.var_dump(GPrefix.Tech.Level)
-    GPrefix.var_dump(GPrefix.Tech.Recipe)
-    -- table.insert(effect, { type = "unlock-recipe", recipe = new_recipe.name })
+    --- Renombrar la variable
+    local Recipe = GPrefix.Tech.Recipe
+
+    --- Espacio para guardar la info
+    local Space = Recipe[new_recipe.name] or {}
+    Recipe[new_recipe.name] = Space
+
+    --- Transferir a info al espacio
+    for _, tech in pairs(Recipe[old_recipe_name] or {}) do
+        --- Evitar duplicados
+        if not Space[tech.technology.name] then
+
+            --- Guardar la info
+            Space[tech.technology.name] = {
+                level = tech.level,
+                technology = tech.technology,
+                effects = tech.effects
+            }
+
+            --- Agregar la nueva receta
+            table.insert(tech.effects, {
+                type = "unlock-recipe",
+                recipe = new_recipe.name
+            })
+
+            --- Desactivar la receta
+            new_recipe.enabled = false
+        end
+    end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -986,11 +1012,11 @@ function This_MOD.load_technology()
             if effect.type == 'unlock-recipe' then
                 local space = Tech.Recipe[effect.recipe] or {}
                 Tech.Recipe[effect.recipe] = space
-                table.insert(space, {
+                space[data.name] = {
                     level = level,
                     technology = data,
                     effects = data.effects
-                })
+                }
             end
         end
     end
