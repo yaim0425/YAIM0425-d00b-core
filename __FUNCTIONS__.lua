@@ -160,8 +160,6 @@ function GPrefix.get_tables(array, key, value)
 
     --- Hacer la busqueda
     local function get_table(e)
-        --- --- --- --- --- --- --- --- --- --- --- --- ---
-
         for _, element in pairs(e) do
             if GPrefix.is_table(element) then
                 if element[key] == value then
@@ -171,8 +169,6 @@ function GPrefix.get_tables(array, key, value)
                 end
             end
         end
-
-        --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -190,8 +186,8 @@ function GPrefix.var_dump(...)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Renombrar los parametros dados
-    local args = { ... }
-    if #args == 0 then return end
+    local Args = { ... }
+    if #Args == 0 then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -296,7 +292,7 @@ function GPrefix.var_dump(...)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     -- Recorrer los valores dados
-    for i, v in ipairs(args) do
+    for i, v in ipairs(Args) do
         local Name = (type(v) == "table" and type(v.name) == "string") and "'" .. v.name .. "'" or "" .. i
         local Result = "[" .. Name .. "] = " .. to_string(v, "", {}, Name)
         table.insert(Output, Result)

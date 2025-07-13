@@ -193,29 +193,31 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
     --- Validación
     if not GPrefix.is_string(old_name) then return nil end
     if not GPrefix.is_string(new_name) then return nil end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Variable a usar
-    local Order = {}
-    local Subgroups = data.raw["item-subgroup"]
-    local Subgroup = util.copy(Subgroups[old_name])
-    if Subgroups[new_name] then return nil end
+    local Subgroup = util.copy(GPrefix.subgroups[old_name])
+    if GPrefix.subgroups[new_name] then return nil end
     if not Subgroup then return nil end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Order de referencia
+    local Order = {}
     Order[1] = Subgroup.order
     Order[2] = math.floor(tonumber(Order[1]) / 10) * 10
     Order[3] = Order[2]
 
     --- Buscar el siguiente order
-    while not Order[4] do
+    while true do
         Order[2] = Order[2] + 1
         if Order[2] - Order[3] > 9 then return nil end
         Order[1] = GPrefix.pad_left_zeros(#Order[1], Order[2])
-        Order[4] = GPrefix.get_table(Subgroups, "order", Order[1])
+
+        for _, subgroup in pairs(GPrefix.subgroups) do
+            if subgroup.group == Subgroup.group then
+                Order[4] = subgroup.order == Order[1]
+                if Order[4] then break end
+            end
+        end
+        if not Order[4] then break end
     end
 
     --- Crear el subgroup
@@ -274,8 +276,6 @@ function GPrefix.get_technology(recipe)
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Buscar la receta dada
@@ -295,8 +295,6 @@ function GPrefix.get_technology(recipe)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -327,6 +325,8 @@ end
 --- that_mod.name
 --- that_mod.prefix
 function GPrefix.split_name_folder(that_mod)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- nivel 2 si llamas desde otra función
     local info = debug.getinfo(2, "S")
     local source = info.source
@@ -338,13 +338,187 @@ function GPrefix.split_name_folder(that_mod)
     local mod_name = path:match("__([^/]+)__")
     if not mod_name then return end
 
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Dividir el nombre por guiones
-    local name, id = mod_name:match("^([^-]+)%-(%d+)")
+    local id, name = mod_name:match(GPrefix.name .. "%-(%d+)%-(.+)")
 
     --- Información propia del mod
     that_mod.id = id
     that_mod.name = name
-    that_mod.prefix = name .. "-" .. id .. "-"
+    that_mod.prefix = GPrefix.name .. "-" .. id .. "-"
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Cargar los prototipos al juego
+--- @param ... any
+function GPrefix.extend(...)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Renombrar los parametros dados
+    local Prototypes = { ... }
+    if #Prototypes == 0 then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Clasificar y guardar el prototipo
+    local function extend(prototype)
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Recipes
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if prototype.type ~= "recipe" then break end
+
+            GPrefix.Recipes[prototype.name] = GPrefix.Recipes[prototype.name] or {}
+            table.insert(GPrefix.Recipes[prototype.name], prototype)
+            prototype.enabled = true
+            return
+        end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Fluids
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if prototype.type ~= "fluid" then break end
+
+            GPrefix.Fluids[prototype.name] = prototype
+            return
+        end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Items
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if not prototype.stack_size then break end
+
+            GPrefix.Items[prototype.name] = prototype
+            return
+        end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Tiles
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if prototype.type ~= "tile" then break end
+            if not prototype.minable then break end
+            if not prototype.minable.results then break end
+
+            for _, result in pairs(prototype.minable.results) do
+                GPrefix.Tiles[result.name] = GPrefix.Tiles[result.name] or {}
+                table.insert(GPrefix.Tiles[result.name], prototype)
+            end
+            return
+        end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Equipments
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if not prototype.shape then break end
+
+            GPrefix.Equipments[prototype.name] = prototype
+            return
+        end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Entities
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if not prototype.minable then break end
+            if not prototype.minable.results then break end
+
+            for _, Result in pairs(prototype.minable.results) do
+                GPrefix.Entities[Result.name] = prototype
+            end
+            return
+        end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---> Technologies
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if prototype.type ~= "technology" then break end
+            GPrefix.var_dump(GPrefix.Tech.Level)
+            GPrefix.var_dump(GPrefix.Tech.Recipe)
+            -- local Technologies = GPrefix.Technologies
+            -- for _, effect in pairs(arg.effects or {}) do
+            --     if effect.type == "unlock-recipe" then
+            --         Technologies[effect.recipe] = Technologies[effect.recipe] or {}
+            --         table.insert(Technologies[effect.recipe], arg.effects)
+            --     end
+            -- end
+            return
+        end
+        --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Guardar el nuevo prototipo
+    for _, arg in pairs(Prototypes) do
+        extend(arg)
+        data:extend({ arg })
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Agrega una receta nueva a una tecnología que ya tiene otra receta como referencia
+--- @param old_recipe_name string # Nombre de la receta de referencia
+--- @param new_recipe table # Receta a agregar
+function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Renombrar la variable
+    local Recipe = GPrefix.Tech.Recipe
+
+    --- Espacio para guardar la info
+    local Space = Recipe[new_recipe.name] or {}
+    Recipe[new_recipe.name] = Space
+
+    --- Transferir a info al espacio
+    for _, tech in pairs(Recipe[old_recipe_name] or {}) do
+        --- Evitar duplicados
+        if not Space[tech.technology.name] then
+
+            --- Guardar la info
+            Space[tech.technology.name] = {
+                level = tech.level,
+                technology = tech.technology,
+                effects = tech.effects
+            }
+
+            --- Agregar la nueva receta
+            table.insert(tech.effects, {
+                type = "unlock-recipe",
+                recipe = new_recipe.name
+            })
+
+            --- Desactivar la receta
+            new_recipe.enabled = false
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -759,7 +933,7 @@ function This_MOD.load_setting()
         --- Validar los datos obtenidos
         if id and name then
             GPrefix.Setting[id] = GPrefix.Setting[id] or {}
-            GPrefix.Setting[id][name] = value
+            GPrefix.Setting[id][name] = value.value
         end
     end
 
@@ -838,11 +1012,11 @@ function This_MOD.load_technology()
             if effect.type == 'unlock-recipe' then
                 local space = Tech.Recipe[effect.recipe] or {}
                 Tech.Recipe[effect.recipe] = space
-                table.insert(space, {
+                space[data.name] = {
                     level = level,
                     technology = data,
                     effects = data.effects
-                })
+                }
             end
         end
     end

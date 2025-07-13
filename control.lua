@@ -105,8 +105,8 @@ function GPrefix.create_data(event, that_mod)
     Data.gPrefix = storage[GPrefix.name]
 
     --- Espacio guardable para este MOD
-    Data.gPrefix[that_mod.name] = Data.gPrefix[that_mod.name] or {}
-    Data.gMOD = Data.gPrefix[that_mod.name]
+    Data.gPrefix[that_mod.id] = Data.gPrefix[that_mod.id] or {}
+    Data.gMOD = Data.gPrefix[that_mod.id]
 
     --- Crear el espacio guardable para los forces
     Data.gMOD.Forces = Data.gMOD.Forces or {}
@@ -176,14 +176,10 @@ function GPrefix.create_data(event, that_mod)
     Data.gPlayers[ID_Player] = Data.gPlayers[ID_Player] or {}
     Data.gPlayer = Data.gPlayers[ID_Player]
 
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
     --- Devolver el consolidado de los datos
     return Data
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 ---------------------------------------------------------------------------------------------------
