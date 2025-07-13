@@ -900,7 +900,7 @@ function This_MOD.load_setting()
         --- Validar los datos obtenidos
         if id and name then
             GPrefix.Setting[id] = GPrefix.Setting[id] or {}
-            GPrefix.Setting[id][name] = value
+            GPrefix.Setting[id][name] = value.value
         end
     end
 
