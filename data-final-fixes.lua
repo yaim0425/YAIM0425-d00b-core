@@ -315,8 +315,12 @@ function GPrefix.get_technology(recipe)
         end
     end
 
+    --- Los ingredientes no requieren tecnologias
+    if GPrefix.get_length(Techs) == 0 then return end
+
     --- Buscar la tecnología más "cara"
-    local Tech = Techs[1]
+    local key = next(Techs)
+    local Tech = Techs[key]
     for _, New in pairs(Techs) do
         Tech = compare(Tech, New, true)
     end
@@ -1425,6 +1429,23 @@ function This_MOD.set_localised()
             end
         end
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --->
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    -- --- Actualizar el apodo del nombre
+    -- local localised_name  = { "technology-name." .. oldName }
+    -- if oldTech.localised_name then
+    --     newTech.localised_name = { "", oldTech.localised_name }
+    -- else
+    --     newTech.localised_name = { "", localised_name, level }
+    -- end
+    -- newTech.localised_description = { "", { "technology-description." .. oldName } }
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
