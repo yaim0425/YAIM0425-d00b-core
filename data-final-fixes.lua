@@ -1420,7 +1420,7 @@ function This_MOD.set_localised()
         local Tech = tech.technology
         local Full_name = Tech.name
 
-        --- Reparar la información
+        --- Separar la información
         local Name, Level = Full_name:match("(.+)-(%d+)")
         if not Name then Name = Full_name end
         if not Level then Level = " " .. (Level or "") end
