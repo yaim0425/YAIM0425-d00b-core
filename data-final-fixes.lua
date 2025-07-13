@@ -1411,17 +1411,31 @@ function This_MOD.set_localised()
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --->
+    ---> Traducción de las tecnologias
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    -- --- Actualizar el apodo del nombre
-    -- local localised_name  = { "technology-name." .. oldName }
-    -- if oldTech.localised_name then
-    --     newTech.localised_name = { "", oldTech.localised_name }
-    -- else
-    --     newTech.localised_name = { "", localised_name, level }
-    -- end
-    -- newTech.localised_description = { "", { "technology-description." .. oldName } }
+    --- Actualizar el apodo del nombre
+    for _, tech in pairs(GPrefix.tech.raw) do
+        --- Renombrar
+        local Tech = tech.technology
+        local Full_name = Tech.name
+
+        --- Reparar la información
+        local Name, Level = Full_name:match("(.+)-(%d+)")
+        if not Name then Name = Full_name end
+        if not Level then Level = " " .. (Level or "") end
+
+        --- Construir el apodo
+        local localised_name = { "technology-name." .. Name }
+        if Tech.localised_name then
+            if Tech.localised_name[1] ~= "" then
+                Tech.localised_name = { "", Tech.localised_name }
+            end
+        else
+            Tech.localised_name = { "", localised_name, Level }
+        end
+        Tech.localised_description = { "", { "technology-description." .. Name } }
+    end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
