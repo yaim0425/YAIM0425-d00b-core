@@ -269,8 +269,6 @@ function GPrefix.get_technology(recipe)
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Buscar la receta dada
@@ -290,8 +288,6 @@ function GPrefix.get_technology(recipe)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -322,6 +318,8 @@ end
 --- that_mod.name
 --- that_mod.prefix
 function GPrefix.split_name_folder(that_mod)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- nivel 2 si llamas desde otra función
     local info = debug.getinfo(2, "S")
     local source = info.source
@@ -333,6 +331,8 @@ function GPrefix.split_name_folder(that_mod)
     local mod_name = path:match("__([^/]+)__")
     if not mod_name then return end
 
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Dividir el nombre por guiones
     local name, id = mod_name:match("^([^-]+)%-(%d+)")
 
@@ -340,6 +340,8 @@ function GPrefix.split_name_folder(that_mod)
     that_mod.id = id
     that_mod.name = name
     that_mod.prefix = name .. "-" .. id .. "-"
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Cargar los prototipos al juego
@@ -469,15 +471,21 @@ function GPrefix.extend(...)
         extend(arg)
         data:extend(arg)
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Agrega una receta nueva a una tecnología que ya tiene otra receta como referencia
 --- @param old_recipe_name string # Nombre de la receta de referencia
 --- @param new_recipe table # Receta a agregar
 function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     GPrefix.var_dump(GPrefix.Tech.Level)
     GPrefix.var_dump(GPrefix.Tech.Recipe)
     -- table.insert(effect, { type = "unlock-recipe", recipe = new_recipe.name })
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 ---------------------------------------------------------------------------------------------------
