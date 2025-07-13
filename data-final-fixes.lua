@@ -469,7 +469,7 @@ function GPrefix.extend(...)
     --- Guardar el nuevo prototipo
     for _, arg in pairs(Prototypes) do
         extend(arg)
-        data:extend(arg)
+        data:extend({ arg })
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
