@@ -279,7 +279,7 @@ function GPrefix.get_technology(recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Buscar la receta dada
-    Techs = GPrefix.Tech.Recipe[recipe.name]
+    Techs = GPrefix.tech.recipe[recipe.name]
 
     --- Tecnología más "barata" que desbloquea la receta dada
     if Techs then
@@ -304,7 +304,7 @@ function GPrefix.get_technology(recipe)
     Techs = {}
     for _, ingredient in pairs(recipe.ingredients or {}) do
         for _, Recipe in pairs(GPrefix.Recipes[ingredient.name] or {}) do
-            for _, Tech in pairs(GPrefix.Tech.Recipe[Recipe.name] or {}) do
+            for _, Tech in pairs(GPrefix.tech.recipe[Recipe.name] or {}) do
                 Techs[Tech.technology.name] = Tech
             end
         end
@@ -457,8 +457,8 @@ function GPrefix.extend(...)
         --- --- --- --- --- --- --- --- --- --- --- --- ---
         while true do
             if prototype.type ~= "technology" then break end
-            GPrefix.var_dump(GPrefix.Tech.Level)
-            GPrefix.var_dump(GPrefix.Tech.Recipe)
+            GPrefix.var_dump(GPrefix.tech.level)
+            GPrefix.var_dump(GPrefix.tech.recipe)
             -- local Technologies = GPrefix.Technologies
             -- for _, effect in pairs(arg.effects or {}) do
             --     if effect.type == "unlock-recipe" then
@@ -494,7 +494,7 @@ function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
     end
 
     --- Renombrar la variable
-    local Recipe = GPrefix.Tech.Recipe
+    local Recipe = GPrefix.tech.recipe
 
     --- Espacio para guardar la info
     local Space = Recipe[new_recipe.name] or {}
@@ -506,11 +506,7 @@ function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
         if not Space[tech.technology.name] then
 
             --- Guardar la info
-            Space[tech.technology.name] = {
-                level = tech.level,
-                technology = tech.technology,
-                effects = tech.effects
-            }
+            Space[tech.technology.name] = tech
 
             --- Agregar la nueva receta
             table.insert(tech.effects, {
@@ -951,13 +947,14 @@ function This_MOD.load_technology()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Contenedores para el resultado
-    GPrefix.Tech = {}
-    GPrefix.Tech.Level = {}
-    GPrefix.Tech.Recipe = {}
+    GPrefix.tech = {}
+    GPrefix.tech.raw = {}
+    GPrefix.tech.level = {}
+    GPrefix.tech.recipe = {}
 
     --- Renombrar
     local tech = data.raw.technology
-    local Tech = GPrefix.Tech
+    local Tech = GPrefix.tech
 
     --- Variable a usar
     local levels = {}
@@ -1008,20 +1005,23 @@ function This_MOD.load_technology()
         --- Obtener el nivel de la tecnología
         local level = levels[name]
 
-        --- Guardar la tecnología en su nivel
-        Tech.Level[level] = Tech.Level[level] or {}
-        Tech.Level[level][name] = data
+        --- Indexar la tecnología por su nombre
+        Tech.raw[data.name] = {
+            level = level,
+            technology = data,
+            effects = data.effects
+        }
+
+        --- Indexar la tecnología por su nivel
+        Tech.level[level] = Tech.level[level] or {}
+        Tech.level[level][name] = Tech.raw[data.name]
 
         --- Indexar la tecnología con a receta que desbloquea
         for _, effect in ipairs(data.effects or {}) do
             if effect.type == 'unlock-recipe' then
-                local space = Tech.Recipe[effect.recipe] or {}
-                Tech.Recipe[effect.recipe] = space
-                space[data.name] = {
-                    level = level,
-                    technology = data,
-                    effects = data.effects
-                }
+                local space = Tech.recipe[effect.recipe] or {}
+                Tech.recipe[effect.recipe] = space
+                space[data.name] = Tech.raw[data.name]
             end
         end
     end
