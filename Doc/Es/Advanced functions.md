@@ -240,31 +240,6 @@ GPrefix.var_dump(recipe)
 <<<
 ```
 
-## 🔹 `GPrefix.extend(...)`
-
-Carga los **prototipos** al juego utilizando la función interna `data:extend`.
-
-### 📌 Parámetros
-- `...`: Uno o más elementos (tablas) que contienen definiciones de prototipos (recetas, ítems, entidades, etc.).
-
-### 📦 Retorna
-- No retorna nada directamente.
-- Todos los prototipos proporcionados son registrados en el juego.
-
-### 🔍 Ejemplos
-
-```lua
-GPrefix.extend({
-  {
-    type = "item",
-    name = "custom-iron-plate",
-    icon = "__base__/graphics/icons/iron-plate.png",
-    icon_size = 64,
-    stack_size = 100
-  }
-})
-```
-
 ## 🔹 `GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)`
 
 Agrega una **nueva receta** a una tecnología que ya contiene otra receta como referencia.
@@ -292,6 +267,31 @@ local new_recipe = {
 }
 
 GPrefix.add_recipe_to_tech_with_recipe("advanced-circuit", new_recipe)
+```
+
+## 🔹 `GPrefix.extend(...)`
+
+Carga los **prototipos** al juego utilizando la función interna `data:extend`.
+
+### 📌 Parámetros
+- `...`: Uno o más elementos (tablas) que contienen definiciones de prototipos (recetas, ítems, entidades, etc.).
+
+### 📦 Retorna
+- No retorna nada directamente.
+- Todos los prototipos proporcionados son registrados en el juego.
+
+### 🔍 Ejemplos
+
+```lua
+GPrefix.extend({
+  {
+    type = "item",
+    name = "custom-iron-plate",
+    icon = "__base__/graphics/icons/iron-plate.png",
+    icon_size = 64,
+    stack_size = 100
+  }
+})
 ```
 
 ## 📘 Funciones disponibles

@@ -1,40 +1,38 @@
-![](./thumbnail.png)
+![](https://github.com/yaim0425/zzzYAIM0425-0000-lib/raw/main/thumbnail.png)
 
-# 📦 `zzzYAIM0425 0000 lib` [![Bandera de España](https://flagcdn.com/20x15/es.png)](./Doc/Es/README.md)
+# 📦 `zzzYAIM0425 0000 lib` [![US Flag](https://flagcdn.com/20x15/es.png)](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/Es/README.md)
 
-This repository contains the MOD `zzzYAIM0425 0000 lib`, a **base utility library** intended to be used by other MODs developed by the user yaim0425.
+`zzzYAIM0425 0000 lib` is a **base utility library** designed to be used by other MODs developed by the [`zzzYAIM0425`](https://github.com/yaim0425) user.
 
-> ⚠️ This MOD does not work on its own. Its sole purpose is to provide shared functions, constants, and structures.
+> ⚠️ This MOD does not work on its own. Its only purpose is to provide shared functions, constants, and structures.
+
+This MOD **must be included** as a dependency in other MODs; on its own, it will have no visible effect.  
+All its contents are available to anyone who needs them, and I’m open to changes, corrections, and suggestions.
 
 ## 🧩 Contents
 
 - Common reusable functions  
 - Global constants  
 - Shared types and structures  
-- Helper utilities for other MODs  
+- Auxiliary tools for other MODs  
 
 ## 🧭 Purpose
 
-To standardize and centralize common elements needed by other MODs created by yaim0425, making it easier to:
+To standardize and centralize common elements required by other MODs in the [`zzzYAIM0425`](https://github.com/yaim0425) series, enabling:
 
-- Maintain code  
-- Reuse logic  
-- Avoid duplication  
-- Scale the system  
-
-## 📌 Usage
-
-This MOD **must** be included as a required dependency in other MODs.  
-Attempting to use it standalone will have no visible effect.
+- Easier code maintenance  
+- Logic reuse  
+- Reduced duplication  
+- Better system scalability  
 
 ## 🗂️ Structure
 
-The code is organized to ensure clarity, cohesion, and easy integration.  
-It should be treated as a **read-only library**, except by the original author.
+The code is structured to ensure clarity, cohesion, and ease of integration.  
+It should be treated as a **read-only library**, except by the author.
 
 ## 📘 Available Functions 🌎
 
-- [`Basic functions`](./Doc/En/Basic%20functions.md)
-- [`Advanced functions`](./Doc/En/Advanced%20functions.md)
-- [`Control`](./Doc/En/control.md)
-- [`Data Final Fixes`](./Doc/En/data-final-fixes.md)
+- [`Basic functions`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/Basic%20functions.md)  
+- [`Advanced functions`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/Advanced%20functions.md)  
+- [`control`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/control.md)  
+- [`data-final-fixes`](https://github.com/yaim0425/zzzYAIM0425-0000-lib/blob/main/Doc/En/data-final-fixes.md)
