@@ -160,8 +160,6 @@ function GPrefix.get_tables(array, key, value)
 
     --- Hacer la busqueda
     local function get_table(e)
-        --- --- --- --- --- --- --- --- --- --- --- --- ---
-
         for _, element in pairs(e) do
             if GPrefix.is_table(element) then
                 if element[key] == value then
@@ -171,8 +169,6 @@ function GPrefix.get_tables(array, key, value)
                 end
             end
         end
-
-        --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
