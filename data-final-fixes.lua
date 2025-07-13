@@ -283,11 +283,16 @@ function GPrefix.get_technology(recipe)
 
     --- Tecnología más "barata" que desbloquea la receta dada
     if Techs then
+        --- Indicador de la primera tecnología
+        local key = next(Techs)
+
         --- Solo una tecnología desbloquea la receta
-        if #Techs == 1 then return Techs[1].technology end
+        if GPrefix.get_length(Techs) == 1 then
+            return Techs[key].technology
+        end
 
         --- Buscar la tecnología más "barata"
-        local Tech = Techs[1]
+        local Tech = Techs[key]
         for _, New in pairs(Techs) do
             Tech = compare(Tech, New, false)
         end
