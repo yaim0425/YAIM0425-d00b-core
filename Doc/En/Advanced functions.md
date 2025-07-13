@@ -272,8 +272,6 @@ GPrefix.extend({
 
 Adds a **new recipe** to a technology that already includes another reference recipe.
 
-> This function must be called **after** `GPrefix.extend`.
-
 ### 📌 Parameters
 - `old_recipe_name`: A **string** representing the name of the reference recipe already present in the target technology.
 - `new_recipe`: A **table** containing the definition of the new recipe to add.
@@ -296,7 +294,6 @@ local new_recipe = {
   result = "advanced-circuit-custom"
 }
 
-GPrefix.extend({ new_recipe })
 GPrefix.add_recipe_to_tech_with_recipe("advanced-circuit", new_recipe)
 ```
 
