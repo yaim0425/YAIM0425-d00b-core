@@ -206,11 +206,18 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
     Order[3] = Order[2]
 
     --- Buscar el siguiente order
-    while not Order[4] do
+    while true do
         Order[2] = Order[2] + 1
         if Order[2] - Order[3] > 9 then return nil end
         Order[1] = GPrefix.pad_left_zeros(#Order[1], Order[2])
-        Order[4] = GPrefix.get_table(GPrefix.subgroups, "order", Order[1])
+
+        for _, subgroup in pairs(GPrefix.subgroups) do
+            if subgroup.group == Subgroup.group then
+                Order[4] = subgroup.order == Order[1]
+                if Order[4] then break end
+            end
+        end
+        if not Order[4] then break end
     end
 
     --- Crear el subgroup
