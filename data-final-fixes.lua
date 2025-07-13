@@ -316,7 +316,7 @@ function GPrefix.get_technology(recipe)
     end
 
     --- Los ingredientes no requieren tecnologias
-    if GPrefix.get_length(Techs) == 0 then return end
+    if not GPrefix.get_length(Techs) then return end
 
     --- Buscar la tecnología más "cara"
     local key = next(Techs)
