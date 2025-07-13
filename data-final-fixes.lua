@@ -279,15 +279,20 @@ function GPrefix.get_technology(recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Buscar la receta dada
-    Techs = GPrefix.Tech.Recipe[recipe.name]
+    Techs = GPrefix.tech.recipe[recipe.name]
 
     --- Tecnología más "barata" que desbloquea la receta dada
     if Techs then
+        --- Indicador de la primera tecnología
+        local key = next(Techs)
+
         --- Solo una tecnología desbloquea la receta
-        if #Techs == 1 then return Techs[1].technology end
+        if GPrefix.get_length(Techs) == 1 then
+            return Techs[key].technology
+        end
 
         --- Buscar la tecnología más "barata"
-        local Tech = Techs[1]
+        local Tech = Techs[key]
         for _, New in pairs(Techs) do
             Tech = compare(Tech, New, false)
         end
@@ -304,14 +309,18 @@ function GPrefix.get_technology(recipe)
     Techs = {}
     for _, ingredient in pairs(recipe.ingredients or {}) do
         for _, Recipe in pairs(GPrefix.Recipes[ingredient.name] or {}) do
-            for _, Tech in pairs(GPrefix.Tech.Recipe[Recipe.name] or {}) do
+            for _, Tech in pairs(GPrefix.tech.recipe[Recipe.name] or {}) do
                 Techs[Tech.technology.name] = Tech
             end
         end
     end
 
+    --- Los ingredientes no requieren tecnologias
+    if not GPrefix.get_length(Techs) then return end
+
     --- Buscar la tecnología más "cara"
-    local Tech = Techs[1]
+    local key = next(Techs)
+    local Tech = Techs[key]
     for _, New in pairs(Techs) do
         Tech = compare(Tech, New, true)
     end
@@ -457,15 +466,33 @@ function GPrefix.extend(...)
         --- --- --- --- --- --- --- --- --- --- --- --- ---
         while true do
             if prototype.type ~= "technology" then break end
-            GPrefix.var_dump(GPrefix.Tech.Level)
-            GPrefix.var_dump(GPrefix.Tech.Recipe)
-            -- local Technologies = GPrefix.Technologies
-            -- for _, effect in pairs(arg.effects or {}) do
-            --     if effect.type == "unlock-recipe" then
-            --         Technologies[effect.recipe] = Technologies[effect.recipe] or {}
-            --         table.insert(Technologies[effect.recipe], arg.effects)
-            --     end
-            -- end
+
+            --- Nivel de la nueva tecnologia
+            local Level = 0
+            for _, name in pairs(prototype.prerequisites) do
+                if Level < GPrefix.tech.raw[name].level then
+                    Level = GPrefix.tech.raw[name].level
+                end
+            end
+            Level = Level + 1
+
+            --- Valores a guardar
+            local data = {
+                level = Level,
+                technology = prototype,
+                effects = prototype.effects
+            }
+
+            --- Indexar la nueva tecnologia
+            GPrefix.tech.raw[prototype.name] = data
+            GPrefix.tech.level[Level] = GPrefix.tech.level[Level] or {}
+            GPrefix.tech.level[Level][prototype.name] = data
+            for _, effect in pairs(prototype.effects or {}) do
+                if effect.type == "unlock-recipe" then
+                    GPrefix.tech.recipe[effect.recipe] = GPrefix.tech.recipe[effect.recipe] or {}
+                    GPrefix.tech.recipe[effect.recipe][prototype.name] = data
+                end
+            end
             return
         end
         --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -488,8 +515,13 @@ end
 function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+    --- Crea la receta de ser necesario
+    if not data.raw.recipe[new_recipe.name] then
+        GPrefix.extend(new_recipe)
+    end
+
     --- Renombrar la variable
-    local Recipe = GPrefix.Tech.Recipe
+    local Recipe = GPrefix.tech.recipe
 
     --- Espacio para guardar la info
     local Space = Recipe[new_recipe.name] or {}
@@ -499,13 +531,8 @@ function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
     for _, tech in pairs(Recipe[old_recipe_name] or {}) do
         --- Evitar duplicados
         if not Space[tech.technology.name] then
-
             --- Guardar la info
-            Space[tech.technology.name] = {
-                level = tech.level,
-                technology = tech.technology,
-                effects = tech.effects
-            }
+            Space[tech.technology.name] = tech
 
             --- Agregar la nueva receta
             table.insert(tech.effects, {
@@ -652,8 +679,6 @@ function This_MOD.filter_data()
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Otras funciones
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -668,8 +693,6 @@ function This_MOD.filter_data()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -777,8 +800,6 @@ function This_MOD.filter_data()
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Cargar las Recetas, Suelos, Fluidos y Objetos
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -807,8 +828,6 @@ function This_MOD.filter_data()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -869,8 +888,6 @@ function This_MOD.filter_data()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -946,13 +963,14 @@ function This_MOD.load_technology()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Contenedores para el resultado
-    GPrefix.Tech = {}
-    GPrefix.Tech.Level = {}
-    GPrefix.Tech.Recipe = {}
+    GPrefix.tech = {}
+    GPrefix.tech.raw = {}
+    GPrefix.tech.level = {}
+    GPrefix.tech.recipe = {}
 
     --- Renombrar
     local tech = data.raw.technology
-    local Tech = GPrefix.Tech
+    local Tech = GPrefix.tech
 
     --- Variable a usar
     local levels = {}
@@ -1003,20 +1021,23 @@ function This_MOD.load_technology()
         --- Obtener el nivel de la tecnología
         local level = levels[name]
 
-        --- Guardar la tecnología en su nivel
-        Tech.Level[level] = Tech.Level[level] or {}
-        Tech.Level[level][name] = data
+        --- Indexar la tecnología por su nombre
+        Tech.raw[data.name] = {
+            level = level,
+            technology = data,
+            effects = data.effects
+        }
+
+        --- Indexar la tecnología por su nivel
+        Tech.level[level] = Tech.level[level] or {}
+        Tech.level[level][name] = Tech.raw[data.name]
 
         --- Indexar la tecnología con a receta que desbloquea
         for _, effect in ipairs(data.effects or {}) do
             if effect.type == 'unlock-recipe' then
-                local space = Tech.Recipe[effect.recipe] or {}
-                Tech.Recipe[effect.recipe] = space
-                space[data.name] = {
-                    level = level,
-                    technology = data,
-                    effects = data.effects
-                }
+                local space = Tech.recipe[effect.recipe] or {}
+                Tech.recipe[effect.recipe] = space
+                space[data.name] = Tech.raw[data.name]
             end
         end
     end
@@ -1037,8 +1058,6 @@ function This_MOD.change_orders()
     local N = 0
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -1077,8 +1096,6 @@ function This_MOD.change_orders()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -1126,8 +1143,6 @@ function This_MOD.change_orders()
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Establecer subgrupos por defecto
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1167,8 +1182,6 @@ function This_MOD.change_orders()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -1226,8 +1239,6 @@ function This_MOD.change_orders()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -1304,8 +1315,6 @@ function This_MOD.set_localised()
 
 
 
-
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Traducir estas secciones
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1340,8 +1349,6 @@ function This_MOD.set_localised()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -1397,6 +1404,37 @@ function This_MOD.set_localised()
                 end
             end
         end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    ---> Traducción de las tecnologias
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Actualizar el apodo del nombre
+    for _, tech in pairs(GPrefix.tech.raw) do
+        --- Renombrar
+        local Tech = tech.technology
+        local Full_name = Tech.name
+
+        --- Separar la información
+        local Name, Level = Full_name:match("(.+)-(%d+)")
+        if Level then Level = " " .. (Level or "") end
+        if not Name then Name = Full_name end
+
+        --- Construir el apodo
+        local localised_name = { "technology-name." .. Name }
+        if Tech.localised_name then
+            if Tech.localised_name[1] ~= "" then
+                Tech.localised_name = { "", Tech.localised_name }
+            end
+        else
+            Tech.localised_name = { "", localised_name, Level }
+        end
+        Tech.localised_description = { "", { "technology-description." .. Name } }
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
