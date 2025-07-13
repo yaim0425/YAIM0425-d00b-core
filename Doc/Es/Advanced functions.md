@@ -240,6 +240,63 @@ GPrefix.var_dump(recipe)
 <<<
 ```
 
+## 🔹 `GPrefix.extend(...)`
+
+Carga los **prototipos** al juego utilizando la función interna `data:extend`.
+
+### 📌 Parámetros
+- `...`: Uno o más elementos (tablas) que contienen definiciones de prototipos (recetas, ítems, entidades, etc.).
+
+### 📦 Retorna
+- No retorna nada directamente.
+- Todos los prototipos proporcionados son registrados en el juego.
+
+### 🔍 Ejemplos
+
+```lua
+GPrefix.extend({
+  {
+    type = "item",
+    name = "custom-iron-plate",
+    icon = "__base__/graphics/icons/iron-plate.png",
+    icon_size = 64,
+    stack_size = 100
+  }
+})
+```
+
+## 🔹 `GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)`
+
+Agrega una **nueva receta** a una tecnología que ya contiene otra receta como referencia.
+
+> Esta función debe ser llamada **después** de `GPrefix.extend`.
+
+### 📌 Parámetros
+- `old_recipe_name`: Nombre (**string**) de la receta que ya está presente en la tecnología objetivo.
+- `new_recipe`: Tabla (**table**) con los datos de la nueva receta a agregar.
+
+### 📦 Retorna
+- No retorna nada.
+- Si no se encuentra la tecnología que contiene `old_recipe_name`, no se realiza ningún cambio.
+
+### 🔍 Ejemplos
+
+```lua
+local new_recipe = {
+  type = "recipe",
+  name = "advanced-circuit-custom",
+  enabled = false,
+  ingredients = {
+    {"copper-cable", 4},
+    {"electronic-circuit", 2},
+  },
+  result = "advanced-circuit-custom"
+}
+
+GPrefix.extend({ new_recipe })
+GPrefix.add_recipe_to_tech_with_recipe("advanced-circuit", new_recipe)
+```
+
 ## 📘 Funciones disponibles
 
 - [`Basic functions`](./Basic%20functions.md)

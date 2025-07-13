@@ -243,6 +243,63 @@ GPrefix.var_dump(recipe)
 <<<
 ```
 
+## 🔹 `GPrefix.extend(...)`
+
+Loads **prototypes** into the game using the internal `data:extend` function.
+
+### 📌 Parameters
+- `...`: One or more elements (tables) containing prototype definitions (recipes, items, entities, etc.).
+
+### 📦 Returns
+- Returns nothing.
+- All provided prototypes are registered in the game.
+
+### 🔍 Examples
+
+```lua
+GPrefix.extend({
+  {
+    type = "item",
+    name = "custom-iron-plate",
+    icon = "__base__/graphics/icons/iron-plate.png",
+    icon_size = 64,
+    stack_size = 100
+  }
+})
+```
+
+## 🔹 `GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)`
+
+Adds a **new recipe** to a technology that already includes another reference recipe.
+
+> This function must be called **after** `GPrefix.extend`.
+
+### 📌 Parameters
+- `old_recipe_name`: A **string** representing the name of the reference recipe already present in the target technology.
+- `new_recipe`: A **table** containing the definition of the new recipe to add.
+
+### 📦 Returns
+- Returns nothing.
+- If no technology contains `old_recipe_name`, no change is made.
+
+### 🔍 Examples
+
+```lua
+local new_recipe = {
+  type = "recipe",
+  name = "advanced-circuit-custom",
+  enabled = false,
+  ingredients = {
+    {"copper-cable", 4},
+    {"electronic-circuit", 2},
+  },
+  result = "advanced-circuit-custom"
+}
+
+GPrefix.extend({ new_recipe })
+GPrefix.add_recipe_to_tech_with_recipe("advanced-circuit", new_recipe)
+```
+
 ## 📘 Available Functions
 
 - [`Basic functions`](./Basic%20functions.md)
