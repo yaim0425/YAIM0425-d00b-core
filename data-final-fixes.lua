@@ -173,11 +173,13 @@ end
 
 --- Elimina el indicador del nombre dado
 --- @param name string # __Ejemplo:__ prefix-0000-0200-name
---- @return string # __Ejemplo:__ 0000-0200-name
+--- @return string # __Ejemplo:__ #
+---- __name,__ si se cumple el patron
+---- o el nombre dado si no es así
 function GPrefix.delete_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    return string.gsub(name, GPrefix.name .. "%-", "") or ""
+    return name:gsub(GPrefix.name .. "%-", "") or name
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -350,12 +352,85 @@ function GPrefix.split_name_folder(that_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Dividir el nombre por guiones
-    local id, name = mod_name:match(GPrefix.name .. "%-(%d+)%-(.+)")
+    local id, name = mod_name:match(GPrefix.name_pattern .. "(.+)")
 
     --- Información propia del mod
     that_mod.id = id
     that_mod.name = name
     that_mod.prefix = GPrefix.name .. "-" .. id .. "-"
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Agrega una receta nueva a una tecnología que ya tiene otra receta como referencia
+--- @param old_recipe_name string # Nombre de la receta de referencia
+--- @param new_recipe table # Receta a agregar
+function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Crea la receta de ser necesario
+    if not data.raw.recipe[new_recipe.name] then
+        GPrefix.extend(new_recipe)
+    end
+
+    --- Renombrar la variable
+    local Recipe = GPrefix.tech.recipe
+
+    --- Espacio para guardar la info
+    local Space = Recipe[new_recipe.name] or {}
+    Recipe[new_recipe.name] = Space
+
+    --- Transferir a info al espacio
+    for _, tech in pairs(Recipe[old_recipe_name] or {}) do
+        --- Evitar duplicados
+        if not Space[tech.technology.name] then
+            --- Guardar la info
+            Space[tech.technology.name] = tech
+
+            --- Agregar la nueva receta
+            table.insert(tech.effects, {
+                type = "unlock-recipe",
+                recipe = new_recipe.name
+            })
+
+            --- Desactivar la receta
+            new_recipe.enabled = false
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Agrega una receta nueva a una tecnología
+--- @param tech_name string # Nombre de la tecnologia
+--- @param new_recipe table # Receta a agregar
+function GPrefix.add_recipe_to_tech(tech_name, new_recipe)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Crea la receta de ser necesario
+    if not data.raw.recipe[new_recipe.name] then
+        GPrefix.extend(new_recipe)
+    end
+
+    --- Renombrar la variable
+    local Recipe = GPrefix.tech.recipe
+    local Tech = GPrefix.tech.raw[tech_name]
+
+    --- Validar
+    if not Tech then return end
+
+    --- Guardar la información
+    Recipe[new_recipe.name] = Recipe[new_recipe.name] or {}
+    table.insert(Recipe[new_recipe.name], Tech)
+
+    --- Agregar la nueva receta
+    table.insert(Tech.effects, {
+        type = "unlock-recipe",
+        recipe = new_recipe.name
+    })
+
+    --- Desactivar la receta
+    new_recipe.enabled = false
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -505,79 +580,6 @@ function GPrefix.extend(...)
         extend(arg)
         data:extend({ arg })
     end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
---- Agrega una receta nueva a una tecnología que ya tiene otra receta como referencia
---- @param old_recipe_name string # Nombre de la receta de referencia
---- @param new_recipe table # Receta a agregar
-function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Crea la receta de ser necesario
-    if not data.raw.recipe[new_recipe.name] then
-        GPrefix.extend(new_recipe)
-    end
-
-    --- Renombrar la variable
-    local Recipe = GPrefix.tech.recipe
-
-    --- Espacio para guardar la info
-    local Space = Recipe[new_recipe.name] or {}
-    Recipe[new_recipe.name] = Space
-
-    --- Transferir a info al espacio
-    for _, tech in pairs(Recipe[old_recipe_name] or {}) do
-        --- Evitar duplicados
-        if not Space[tech.technology.name] then
-            --- Guardar la info
-            Space[tech.technology.name] = tech
-
-            --- Agregar la nueva receta
-            table.insert(tech.effects, {
-                type = "unlock-recipe",
-                recipe = new_recipe.name
-            })
-
-            --- Desactivar la receta
-            new_recipe.enabled = false
-        end
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
---- Agrega una receta nueva a una tecnología
---- @param tech_name string # Nombre de la tecnologia
---- @param new_recipe table # Receta a agregar
-function GPrefix.add_recipe_to_tech(tech_name, new_recipe)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Crea la receta de ser necesario
-    if not data.raw.recipe[new_recipe.name] then
-        GPrefix.extend(new_recipe)
-    end
-
-    --- Renombrar la variable
-    local Recipe = GPrefix.tech.recipe
-    local Tech = GPrefix.tech.raw[tech_name]
-
-    --- Validar
-    if not Tech then return end
-
-    --- Guardar la información
-    Recipe[new_recipe.name] = Recipe[new_recipe.name] or {}
-    table.insert(Recipe[new_recipe.name], Tech)
-
-    --- Agregar la nueva receta
-    table.insert(Tech.effects, {
-        type = "unlock-recipe",
-        recipe = new_recipe.name
-    })
-
-    --- Desactivar la receta
-    new_recipe.enabled = false
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
