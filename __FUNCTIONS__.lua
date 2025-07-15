@@ -45,7 +45,7 @@ function GPrefix.get_length(array)
 
     --- Valdación
     if not GPrefix.is_table(array) then
-        return nil
+        return
     end
 
     --- Variable de salida
@@ -57,7 +57,7 @@ function GPrefix.get_length(array)
     end
 
     --- Devolver el resultado
-    return Output > 0 and Output or nil
+    return Output > 0 and Output
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -72,8 +72,8 @@ function GPrefix.get_key(array, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Valdación
-    if not GPrefix.is_table(array) then return nil end
-    if GPrefix.is_nil(value) then return nil end
+    if not GPrefix.is_table(array) then return end
+    if GPrefix.is_nil(value) then return end
 
     --- Buscar el valor
     for Key, Value in pairs(array) do
@@ -81,9 +81,6 @@ function GPrefix.get_key(array, value)
             return Key
         end
     end
-
-    --- No se encontrado
-    return nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -94,7 +91,7 @@ end
 function GPrefix.digit_count(value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    if not GPrefix.is_number(value) then return nil end
+    if not GPrefix.is_number(value) then return end
     return string.len(tostring(value))
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -125,8 +122,8 @@ function GPrefix.get_table(array, key, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Valdación
-    if not GPrefix.is_table(array) then return nil end
-    if GPrefix.is_nil(key) then return nil end
+    if not GPrefix.is_table(array) then return end
+    if GPrefix.is_nil(key) then return end
 
     --- Buscar el valor
     for _, element in pairs(array) do
@@ -136,9 +133,6 @@ function GPrefix.get_table(array, key, value)
             end
         end
     end
-
-    --- No se encontrado
-    return nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -175,7 +169,7 @@ function GPrefix.get_tables(array, key, value)
 
     --- Validar la respuesta
     get_table(array)
-    return #Result > 0 and Result or nil
+    return #Result > 0 and Result
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
