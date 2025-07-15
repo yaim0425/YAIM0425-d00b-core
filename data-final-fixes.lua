@@ -548,6 +548,40 @@ function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Agrega una receta nueva a una tecnología
+--- @param tech_name string # Nombre de la tecnologia
+--- @param new_recipe table # Receta a agregar
+function GPrefix.add_recipe_to_tech(tech_name, new_recipe)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Crea la receta de ser necesario
+    if not data.raw.recipe[new_recipe.name] then
+        GPrefix.extend(new_recipe)
+    end
+
+    --- Renombrar la variable
+    local Recipe = GPrefix.tech.recipe
+    local Tech = GPrefix.tech.raw[tech_name]
+
+    --- Validar
+    if not Tech then return end
+
+    --- Guardar la información
+    Recipe[new_recipe.name] = Recipe[new_recipe.name] or {}
+    table.insert(Recipe[new_recipe.name], Tech)
+
+    --- Agregar la nueva receta
+    table.insert(Tech.effects, {
+        type = "unlock-recipe",
+        recipe = new_recipe.name
+    })
+
+    --- Desactivar la receta
+    new_recipe.enabled = false
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 ---------------------------------------------------------------------------------------------------
 
 
