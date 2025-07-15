@@ -350,7 +350,7 @@ function GPrefix.split_name_folder(that_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Dividir el nombre por guiones
-    local id, name = mod_name:match(GPrefix.name_pattern)
+    local id, name = mod_name:match(GPrefix.name_pattern .. "(.+)")
 
     --- Información propia del mod
     that_mod.id = id

@@ -14,6 +14,6 @@ GPrefix.name = "zzzYAIM0425"
 if data then GPrefix.subgroups = data.raw["item-subgroup"] end
 
 --- Patrón de identificación
-GPrefix.name_pattern = GPrefix.name .. "%-(%d+)%-(.+)"
+GPrefix.name_pattern = GPrefix.name .. "%-(%d+)%-"
 
 ---------------------------------------------------------------------------------------------------
