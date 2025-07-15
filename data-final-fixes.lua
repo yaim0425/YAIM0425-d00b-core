@@ -173,11 +173,11 @@ end
 
 --- Elimina el indicador del nombre dado
 --- @param name string # __Ejemplo:__ prefix-0000-0200-name
---- @return string # __Ejemplo:__ 0000-0200-name
+--- @return string # __Ejemplo:__ name
 function GPrefix.delete_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    return string.gsub(name, GPrefix.name .. "%-", "") or ""
+    return string.gsub(name, GPrefix.name .. "%-(%d+)%-", "") or ""
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
