@@ -177,7 +177,7 @@ end
 function GPrefix.delete_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    return string.gsub(name, GPrefix.name .. "%-(%d+)%-", "") or ""
+    return string.gsub(name, GPrefix.name_pattern, "") or ""
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
