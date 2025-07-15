@@ -179,7 +179,7 @@ end
 function GPrefix.delete_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    return name:gsub(GPrefix.name_pattern, "") or name
+    return name:gsub(GPrefix.name .. "%-", "") or name
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
