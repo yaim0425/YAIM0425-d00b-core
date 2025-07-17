@@ -217,12 +217,12 @@ end
 
 --- Clasificar la información de data.raw
 --- Crearción de:
---- GPrefix.Items
---- GPrefix.Tiles
---- GPrefix.Fluids
---- GPrefix.Recipes
---- GPrefix.Entities
---- GPrefix.Equipments
+--- GPrefix.items
+--- GPrefix.tiles
+--- GPrefix.fluids
+--- GPrefix.recipes
+--- GPrefix.entities
+--- GPrefix.equipments
 function This_MOD.filter_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -232,19 +232,19 @@ function This_MOD.filter_data()
         if not results then return end
 
         for _, result in pairs(results) do
-            GPrefix.Tiles[result.name] = GPrefix.Tiles[result.name] or {}
-            table.insert(GPrefix.Tiles[result.name], tile)
+            GPrefix.tiles[result.name] = GPrefix.tiles[result.name] or {}
+            table.insert(GPrefix.tiles[result.name], tile)
         end
     end
 
-    --- Agregar la receta a GPrefix.Recipes
+    --- Agregar la receta a GPrefix.recipes
     local function addRecipe(recipe)
         local results = recipe.products
         if not results then return end
 
         for _, result in pairs(results) do
-            GPrefix.Recipes[result.name] = GPrefix.Tiles[result.name] or {}
-            table.insert(GPrefix.Recipes[result.name], recipe)
+            GPrefix.recipes[result.name] = GPrefix.tiles[result.name] or {}
+            table.insert(GPrefix.recipes[result.name], recipe)
         end
     end
 
@@ -255,19 +255,19 @@ function This_MOD.filter_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Renombrar las variables
-    GPrefix.Items = prototypes.item
-    GPrefix.Fluids = prototypes.fluid
-    GPrefix.Entities = prototypes.entity
-    GPrefix.Equipments = prototypes.equipment
+    GPrefix.items = prototypes.item
+    GPrefix.fluids = prototypes.fluid
+    GPrefix.entities = prototypes.entity
+    GPrefix.equipments = prototypes.equipment
 
     --- Agrupar los suelos
-    GPrefix.Tiles = {}
+    GPrefix.tiles = {}
     for _, tile in pairs(prototypes.tile) do
         addTitle(tile)
     end
 
     --- Agrupar las recetas
-    GPrefix.Recipes = {}
+    GPrefix.recipes = {}
     for _, recipe in pairs(prototypes.recipe) do
         addRecipe(recipe)
     end

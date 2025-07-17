@@ -310,7 +310,7 @@ function GPrefix.get_technology(recipe)
     --- Tecnologías que desbloquean los ingredientes
     Techs = {}
     for _, ingredient in pairs(recipe.ingredients or {}) do
-        for _, Recipe in pairs(GPrefix.Recipes[ingredient.name] or {}) do
+        for _, Recipe in pairs(GPrefix.recipes[ingredient.name] or {}) do
             for _, Tech in pairs(GPrefix.tech.recipe[Recipe.name] or {}) do
                 Techs[Tech.technology.name] = Tech
             end
@@ -435,6 +435,29 @@ function GPrefix.add_recipe_to_tech(tech_name, new_recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Obtiene el objeto que crea la entidad dada
+--- @param entity table
+--- @return any
+function GPrefix.get_item_create_entity(entity)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validación
+    if not entity.minable then return end
+    if not entity.minable.results then return end
+
+    --- Buscar el objeto
+    for _, result in pairs(entity.minable.results) do
+        if result.type == "item" then
+            local Item = GPrefix.items[result.name]
+            if Item.place_result == entity.name then
+                return Item
+            end
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 --- Cargar los prototipos al juego
 --- @param ... any
 function GPrefix.extend(...)
@@ -454,8 +477,8 @@ function GPrefix.extend(...)
         while true do
             if prototype.type ~= "recipe" then break end
 
-            GPrefix.Recipes[prototype.name] = GPrefix.Recipes[prototype.name] or {}
-            table.insert(GPrefix.Recipes[prototype.name], prototype)
+            GPrefix.recipes[prototype.name] = GPrefix.recipes[prototype.name] or {}
+            table.insert(GPrefix.recipes[prototype.name], prototype)
             prototype.enabled = true
             return
         end
@@ -469,7 +492,7 @@ function GPrefix.extend(...)
         while true do
             if prototype.type ~= "fluid" then break end
 
-            GPrefix.Fluids[prototype.name] = prototype
+            GPrefix.fluids[prototype.name] = prototype
             return
         end
         --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -482,7 +505,7 @@ function GPrefix.extend(...)
         while true do
             if not prototype.stack_size then break end
 
-            GPrefix.Items[prototype.name] = prototype
+            GPrefix.items[prototype.name] = prototype
             return
         end
         --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -498,8 +521,8 @@ function GPrefix.extend(...)
             if not prototype.minable.results then break end
 
             for _, result in pairs(prototype.minable.results) do
-                GPrefix.Tiles[result.name] = GPrefix.Tiles[result.name] or {}
-                table.insert(GPrefix.Tiles[result.name], prototype)
+                GPrefix.tiles[result.name] = GPrefix.tiles[result.name] or {}
+                table.insert(GPrefix.tiles[result.name], prototype)
             end
             return
         end
@@ -513,7 +536,7 @@ function GPrefix.extend(...)
         while true do
             if not prototype.shape then break end
 
-            GPrefix.Equipments[prototype.name] = prototype
+            GPrefix.equipments[prototype.name] = prototype
             return
         end
         --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -528,7 +551,7 @@ function GPrefix.extend(...)
             if not prototype.minable.results then break end
 
             for _, Result in pairs(prototype.minable.results) do
-                GPrefix.Entities[Result.name] = prototype
+                GPrefix.entities[Result.name] = prototype
             end
             return
         end
@@ -614,12 +637,12 @@ function This_MOD.start()
 
     --- Clasificar la información de data.raw
     --- Crearción de:
-    --- GPrefix.Items
-    --- GPrefix.Tiles
-    --- GPrefix.Fluids
-    --- GPrefix.Recipes
-    --- GPrefix.Entities
-    --- GPrefix.Equipments
+    --- GPrefix.items
+    --- GPrefix.tiles
+    --- GPrefix.fluids
+    --- GPrefix.recipes
+    --- GPrefix.entities
+    --- GPrefix.equipments
     This_MOD.filter_data()
 
     --- Clasificar la información de settings.startup
@@ -693,23 +716,23 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Clasificar la información de data.raw
----- GPrefix.Items
----- GPrefix.Tiles
----- GPrefix.Fluids
----- GPrefix.Recipes
----- GPrefix.Entities
----- GPrefix.Equipments
+---- GPrefix.items
+---- GPrefix.tiles
+---- GPrefix.fluids
+---- GPrefix.recipes
+---- GPrefix.entities
+---- GPrefix.equipments
 function This_MOD.filter_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Contenedores finales
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    GPrefix.Items = {}
-    GPrefix.Tiles = {}
-    GPrefix.Fluids = {}
-    GPrefix.Recipes = {}
-    GPrefix.Entities = {}
-    GPrefix.Equipments = {}
+    GPrefix.items = {}
+    GPrefix.tiles = {}
+    GPrefix.fluids = {}
+    GPrefix.recipes = {}
+    GPrefix.entities = {}
+    GPrefix.equipments = {}
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -736,7 +759,7 @@ function This_MOD.filter_data()
     ---> Agrega las Recetas, Suelos y Objetos
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Agregar la receta a GPrefix.Recipes
+    --- Agregar la receta a GPrefix.recipes
     local function add_recipe(recipe)
         --- Receta oculta
         if is_hidde(recipe) then return end
@@ -747,26 +770,26 @@ function This_MOD.filter_data()
         --- Recorrer los resultados
         for _, result in pairs(recipe.results or {}) do
             --- Espacio a usar
-            local Recipes = GPrefix.Recipes[result.name] or {}
-            GPrefix.Recipes[result.name] = Recipes
+            local Recipes = GPrefix.recipes[result.name] or {}
+            GPrefix.recipes[result.name] = Recipes
 
             --- Agregar la receta si no se encuentra
             local Found = GPrefix.get_table(Recipes, "name", recipe.name)
             if not Found then table.insert(Recipes, recipe) end
 
             --- Guardar referencia del resultado
-            if result.type == "item" then GPrefix.Items[result.name] = true end
-            if result.type == "fluid" then GPrefix.Fluids[result.name] = true end
+            if result.type == "item" then GPrefix.items[result.name] = true end
+            if result.type == "fluid" then GPrefix.fluids[result.name] = true end
         end
 
         --- Guardar referencia de los ingredientes
         for _, ingredient in pairs(recipe.ingredients or {}) do
-            if ingredient.type == "item" then GPrefix.Items[ingredient.name] = true end
-            if ingredient.type == "fluid" then GPrefix.Fluids[ingredient.name] = true end
+            if ingredient.type == "item" then GPrefix.items[ingredient.name] = true end
+            if ingredient.type == "fluid" then GPrefix.fluids[ingredient.name] = true end
         end
     end
 
-    --- Agregar el suelo a GPrefix.Tiles
+    --- Agregar el suelo a GPrefix.tiles
     local function add_tile(tile)
         --- El suelo no se puede quitar
         if not tile.minable then return end
@@ -775,13 +798,13 @@ function This_MOD.filter_data()
         --- Verificar cada resultado
         for _, result in pairs(tile.minable.results) do
             --- El suelo no tiene receta
-            if not GPrefix.Items[result.name] then
-                GPrefix.Items[result.name] = true
+            if not GPrefix.items[result.name] then
+                GPrefix.items[result.name] = true
             end
 
             --- Espacio a usar
-            local Titles = GPrefix.Tiles[result.name] or {}
-            GPrefix.Tiles[result.name] = Titles
+            local Titles = GPrefix.tiles[result.name] or {}
+            GPrefix.tiles[result.name] = Titles
 
             --- Agregar el suelo si no se encuentra
             local Found = GPrefix.get_table(Titles, "name", tile.name)
@@ -789,7 +812,7 @@ function This_MOD.filter_data()
         end
     end
 
-    --- Agregar el item a GPrefix.Items
+    --- Agregar el item a GPrefix.items
     local function add_item(item)
         --- Objeto no apilable
         if not item.stack_size then return end
@@ -801,19 +824,19 @@ function This_MOD.filter_data()
         if item.parameter then return end
 
         --- Guardar objeto
-        GPrefix.Items[item.name] = item
+        GPrefix.items[item.name] = item
 
         --- Guardar suelo de no estarlo
-        if item.place_as_tile and not GPrefix.Tiles[item.name] then
+        if item.place_as_tile and not GPrefix.tiles[item.name] then
             local tile = data.raw.tile[item.place_as_tile.result]
-            GPrefix.Tiles[item.name] = GPrefix.Tiles[item.name] or {}
-            table.insert(GPrefix.Tiles[item.name], tile)
+            GPrefix.tiles[item.name] = GPrefix.tiles[item.name] or {}
+            table.insert(GPrefix.tiles[item.name], tile)
         end
 
         --- Valores a evaluar
         local Values = {}
-        Values.Entities = "place_result"
-        Values.Equipments = "place_as_equipment_result"
+        Values.entities = "place_result"
+        Values.equipments = "place_as_equipment_result"
 
         --- Validar las propiedades
         for index, property in pairs(Values) do
@@ -846,9 +869,9 @@ function This_MOD.filter_data()
     end
 
     --- Cargar los fluidos
-    for name, _ in pairs(GPrefix.Fluids) do
+    for name, _ in pairs(GPrefix.fluids) do
         local Fluid = data.raw.fluid[name]
-        if Fluid then GPrefix.Fluids[name] = Fluid end
+        if Fluid then GPrefix.fluids[name] = Fluid end
     end
 
     --- Cargar los suelos
@@ -879,8 +902,8 @@ function This_MOD.filter_data()
 
     --- Elementos a cargar
     local Values = {}
-    Values["Entities"] = GPrefix.Entities
-    Values["Equipments"] = GPrefix.Equipments
+    Values["entities"] = GPrefix.entities
+    Values["equipments"] = GPrefix.equipments
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -937,11 +960,11 @@ function This_MOD.filter_data()
     local Array = {}
 
     --- Valores a evaluar
-    Array.Item = GPrefix.Items
-    Array.Tile = GPrefix.Tiles
-    Array.Fluid = GPrefix.Fluids
-    Array.Entity = GPrefix.Entities
-    Array.Equipment = GPrefix.Equipments
+    Array.Item = GPrefix.items
+    Array.Tile = GPrefix.tiles
+    Array.Fluid = GPrefix.fluids
+    Array.Entity = GPrefix.entities
+    Array.Equipment = GPrefix.equipments
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -980,8 +1003,7 @@ function This_MOD.load_setting()
     --- Recorrer las opciones de configuración
     for key, value in pairs(settings.startup) do
         --- Separar los datos esperados
-        local prefix = GPrefix.name .. "%-"
-        local id, name = key:match(prefix .. "(%d+)%-(.+)")
+        local id, name = key:match(GPrefix.name_pattern .. "(.+)")
 
         --- Validar los datos obtenidos
         if id and name then
@@ -1197,13 +1219,13 @@ function This_MOD.change_orders()
     --- Inicializar las vaiables
     Orders = {}
     Source = {}
-    Source.Items = GPrefix.Items
-    Source.Fluids = GPrefix.Fluids
-    Source.Recipes = GPrefix.Recipes
+    Source.items = GPrefix.items
+    Source.fluids = GPrefix.fluids
+    Source.recipes = GPrefix.recipes
 
     --- Objetos, recetas y fluidos
     for Key, Values in pairs(Source) do
-        if Key ~= "Recipes" then Values = { Values } end
+        if Key ~= "recipes" then Values = { Values } end
         for _, values in ipairs(Values) do
             for _, value in pairs(values) do
                 if not value.subgroup then
@@ -1282,8 +1304,8 @@ function This_MOD.change_orders()
     ---> Agrupar las recetas
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    for name, recipes in pairs(GPrefix.Recipes) do
-        local item = GPrefix.Items[name]
+    for name, recipes in pairs(GPrefix.recipes) do
+        local item = GPrefix.items[name]
         if item then
             item.order = item.order or "0"
             local order = tonumber(item.order) or 0
@@ -1310,8 +1332,8 @@ function This_MOD.set_localised()
     local function set_localised(name, recipe, field)
         --- Valores a usar
         local Field = "localised_" .. field
-        local fluid = GPrefix.Fluids[name]
-        local item = GPrefix.Items[name]
+        local fluid = GPrefix.fluids[name]
+        local item = GPrefix.items[name]
 
         --- El resultado es un objeto
         if item then
@@ -1320,7 +1342,7 @@ function This_MOD.set_localised()
 
             --- Traducción para una entidad
             if item.place_result then
-                local Entiy = GPrefix.Entities[item.place_result]
+                local Entiy = GPrefix.entities[item.place_result]
                 item[Field] = Entiy[Field]
                 recipe[Field] = Entiy[Field]
             end
@@ -1335,7 +1357,7 @@ function This_MOD.set_localised()
             --- Traducción para un equipamiento
             if item.place_as_equipment_result then
                 local result = item.place_as_equipment_result
-                local equipment = GPrefix.Equipments[result]
+                local equipment = GPrefix.equipments[result]
                 if equipment then
                     item[Field] = equipment[Field]
                     recipe[Field] = equipment[Field]
@@ -1357,10 +1379,10 @@ function This_MOD.set_localised()
 
     --- Protipos a corregir
     local Array = {}
-    Array.tile = GPrefix.Tiles
-    Array.fluid = GPrefix.Fluids
-    Array.entity = GPrefix.Entities
-    Array.equipment = GPrefix.Equipments
+    Array.tile = GPrefix.tiles
+    Array.fluid = GPrefix.fluids
+    Array.entity = GPrefix.entities
+    Array.equipment = GPrefix.equipments
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -1393,7 +1415,7 @@ function This_MOD.set_localised()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Establecer la traducción de los objetos
-    for _, item in pairs(GPrefix.Items) do
+    for _, item in pairs(GPrefix.items) do
         if item.localised_name then
             if GPrefix.is_table(item.localised_name) and item.localised_name[1] ~= "" then
                 item.localised_name = { "", item.localised_name }
@@ -1409,7 +1431,7 @@ function This_MOD.set_localised()
     end
 
     --- Establecer la traducción en la receta
-    for _, recipes in pairs(GPrefix.Recipes) do
+    for _, recipes in pairs(GPrefix.recipes) do
         if recipes.localised_name then
             if GPrefix.is_table(recipes.localised_name) and recipes.localised_name[1] ~= "" then
                 recipes.localised_name = { "", recipes.localised_name }
