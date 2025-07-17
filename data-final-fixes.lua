@@ -1202,7 +1202,7 @@ function This_MOD.change_orders()
 
     --- Objetos, recetas y fluidos
     for Key, Values in pairs(Source) do
-        if Key ~= "Recipes" then Values = { Values } end
+        if Key ~= "recipes" then Values = { Values } end
         for _, values in ipairs(Values) do
             for _, value in pairs(values) do
                 if not value.subgroup then
