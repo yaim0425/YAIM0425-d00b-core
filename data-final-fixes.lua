@@ -614,12 +614,12 @@ function This_MOD.start()
 
     --- Clasificar la información de data.raw
     --- Crearción de:
-    --- GPrefix.Items
-    --- GPrefix.Tiles
-    --- GPrefix.Fluids
-    --- GPrefix.Recipes
-    --- GPrefix.Entities
-    --- GPrefix.Equipments
+    --- GPrefix.items
+    --- GPrefix.tiles
+    --- GPrefix.fluids
+    --- GPrefix.recipes
+    --- GPrefix.entities
+    --- GPrefix.equipments
     This_MOD.filter_data()
 
     --- Clasificar la información de settings.startup
