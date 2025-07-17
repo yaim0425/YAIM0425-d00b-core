@@ -435,6 +435,29 @@ function GPrefix.add_recipe_to_tech(tech_name, new_recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Obtiene el objeto que crea la entidad dada
+--- @param entity table
+--- @return any
+function GPrefix.get_item_create_entity(entity)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validación
+    if not entity.minable then return end
+    if not entity.minable.results then return end
+
+    --- Buscar el objeto
+    for _, result in pairs(entity.minable.results) do
+        if result.type == "item" then
+            local Item = GPrefix.items[result.name]
+            if Item.place_result == entity.name then
+                return Item
+            end
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 --- Cargar los prototipos al juego
 --- @param ... any
 function GPrefix.extend(...)
