@@ -812,8 +812,8 @@ function This_MOD.filter_data()
 
         --- Valores a evaluar
         local Values = {}
-        Values.Entities = "place_result"
-        Values.Equipments = "place_as_equipment_result"
+        Values.entities = "place_result"
+        Values.equipments = "place_as_equipment_result"
 
         --- Validar las propiedades
         for index, property in pairs(Values) do
