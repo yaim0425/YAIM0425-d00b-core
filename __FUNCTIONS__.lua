@@ -185,11 +185,6 @@ function GPrefix.var_dump(...)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Contendor del texto de salida
-    local Output = {}
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
     --- Convierte una variable a string legible
     --- @param value any
     --- @param indent string|nil
@@ -217,7 +212,14 @@ function GPrefix.var_dump(...)
 
         if Type == "string" then
             if string.find(value, "\n") then
-                return "[[" .. value .. "]]"
+                value = value:match("^%s*(.-)%s*$")
+                value = value:gsub("\t", "")
+                value = value:gsub("  ", " ")
+                value = "[[\n\t" .. value .. "\n]]"
+                for i = 1, GPrefix.get_length(seen), 1 do
+                    value = value:gsub("\n", "\n\t")
+                end
+                return value
             else
                 return "'" .. string.gsub(value, "'", '"') .. "'"
             end
@@ -265,7 +267,8 @@ function GPrefix.var_dump(...)
             local Key_str = "[" .. to_string(k, nil, seen, path .. "." .. tostring(k)) .. "]"
             local New_path = path .. "." .. tostring(k)
             local Val_str = to_string(v, indent .. "  ", seen, New_path)
-            table.insert(Items, indent .. "  " .. Key_str .. " = " .. Val_str .. ",")
+            Val_str = "\n" .. indent .. "  " .. Key_str .. " = " .. Val_str
+            table.insert(Items, Val_str)
         end
 
         --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -278,10 +281,15 @@ function GPrefix.var_dump(...)
             return "{ }"
         end
 
-        return "{\n" .. table.concat(Items, "\n") .. "\n" .. indent .. "}"
+        return "{" .. table.concat(Items, ",") .. "\n" .. indent .. "}"
 
         --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Contendor del texto de salida
+    local Output = {}
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
