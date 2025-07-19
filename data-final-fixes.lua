@@ -998,7 +998,7 @@ function This_MOD.load_setting()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Inicializar el contenedor
-    GPrefix.Setting = {}
+    GPrefix.setting = {}
 
     --- Recorrer las opciones de configuración
     for key, value in pairs(settings.startup) do
@@ -1007,8 +1007,8 @@ function This_MOD.load_setting()
 
         --- Validar los datos obtenidos
         if id and name then
-            GPrefix.Setting[id] = GPrefix.Setting[id] or {}
-            GPrefix.Setting[id][name] = value.value
+            GPrefix.setting[id] = GPrefix.setting[id] or {}
+            GPrefix.setting[id][name] = value.value
         end
     end
 
