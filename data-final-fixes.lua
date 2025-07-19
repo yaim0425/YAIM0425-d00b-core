@@ -922,11 +922,11 @@ function This_MOD.filter_data()
                         --- Coasa evitar
                         if not element then break end
                         if GPrefix.get_key(ignore_types, element.type) then break end
-                        if Key == "Entities" then
+                        if Key == "entities" then
                             if not element.minable then break end
                             if not element.minable.results then break end
                         end
-                        if Key == "Equipments" then
+                        if Key == "equipments" then
                             if not element.shape then break end
                             if not element.sprite then break end
                         end
