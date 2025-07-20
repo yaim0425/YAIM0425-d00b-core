@@ -575,20 +575,20 @@ function GPrefix.extend(...)
             Level = Level + 1
 
             --- Valores a guardar
-            local data = {
+            local value = {
                 level = Level,
                 technology = prototype,
                 effects = prototype.effects
             }
 
             --- Indexar la nueva tecnologia
-            GPrefix.tech.raw[prototype.name] = data
+            GPrefix.tech.raw[prototype.name] = value
             GPrefix.tech.level[Level] = GPrefix.tech.level[Level] or {}
-            GPrefix.tech.level[Level][prototype.name] = data
+            GPrefix.tech.level[Level][prototype.name] = value
             for _, effect in pairs(prototype.effects or {}) do
                 if effect.type == "unlock-recipe" then
                     GPrefix.tech.recipe[effect.recipe] = GPrefix.tech.recipe[effect.recipe] or {}
-                    GPrefix.tech.recipe[effect.recipe][prototype.name] = data
+                    GPrefix.tech.recipe[effect.recipe][prototype.name] = value
                     local Recipe = data.raw.recipe[effect.recipe]
                     if Recipe then Recipe.enable = false end
                 end
