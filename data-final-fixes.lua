@@ -589,6 +589,8 @@ function GPrefix.extend(...)
                 if effect.type == "unlock-recipe" then
                     GPrefix.tech.recipe[effect.recipe] = GPrefix.tech.recipe[effect.recipe] or {}
                     GPrefix.tech.recipe[effect.recipe][prototype.name] = data
+                    local Recipe = data.raw.recipe[effect.recipe]
+                    if Recipe then Recipe.enable = false end
                 end
             end
             return
