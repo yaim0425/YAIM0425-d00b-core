@@ -174,6 +174,37 @@ function GPrefix.get_tables(array, key, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Obtiener información del nombre de la carpeta
+--- that_mod.id
+--- that_mod.name
+--- that_mod.prefix
+function GPrefix.split_name_folder(that_mod)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- nivel 2 si llamas desde otra función
+    local info = debug.getinfo(2, "S")
+    local source = info.source
+
+    --- Elimina el prefijo @ si viene de un archivo
+    local path = source:sub(1, 1) == "@" and source:sub(2) or source
+
+    --- Objetener el nombre del directorio
+    local mod_name = path:match("__([^/]+)__")
+    if not mod_name then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Dividir el nombre por guiones
+    local id, name = mod_name:match(GPrefix.name_pattern .. "(.+)")
+
+    --- Información propia del mod
+    that_mod.id = id
+    that_mod.name = name
+    that_mod.prefix = GPrefix.name .. "-" .. id .. "-"
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 --- Muestra información detallada de las variables dadas
 --- @param ... any
 function GPrefix.var_dump(...)
