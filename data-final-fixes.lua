@@ -1483,14 +1483,18 @@ function This_MOD.set_localised()
         if Level then Level = " " .. (Level or "") end
         if not Name then Name = Full_name end
 
+        --- Corrección para las tecnologías infinitas
+        if Tech.unit and Tech.unit.count_formula then
+            Level = nil
+        end
+
         --- Construir el apodo
-        local localised_name = { "technology-name." .. Name }
         if Tech.localised_name then
             if Tech.localised_name[1] ~= "" then
                 Tech.localised_name = { "", Tech.localised_name }
             end
         else
-            Tech.localised_name = { "", localised_name, Level }
+            Tech.localised_name = { "", { "technology-name." .. Name }, Level }
         end
         Tech.localised_description = { "", { "technology-description." .. Name } }
     end
