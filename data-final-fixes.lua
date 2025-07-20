@@ -171,19 +171,6 @@ function GPrefix.duplicate_item(item)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
---- Elimina el indicador del nombre dado
---- @param name string # __Ejemplo:__ prefix-0000-0200-name
---- @return string # __Ejemplo:__ #
----- __name,__ si se cumple el patron
----- o el nombre dado si no es así
-function GPrefix.delete_prefix(name)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    return name:gsub(GPrefix.name .. "%-", "") or name
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
 --- Crea un subgroup despues del dado
 --- @param old_name string # Nombre del subgrupo a duplicar
 --- @param new_name string # Nombre a asignar al duplicado
