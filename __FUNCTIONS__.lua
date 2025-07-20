@@ -218,6 +218,58 @@ function GPrefix.delete_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Separa el número de la cadena teninedo encuenta
+--- indicadores tipo k, M, G y unidades como J, W
+--- @param string string # __Ejemplo:__ 0.3Mw
+--- @return any, any #
+---- __Ejemplo:__ 300000 W
+function GPrefix.number_unit(string)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validar si la cadena es un numero valido
+    local function is_valid_number(str)
+        return string.match(str, "^[-]?%d*%.?%d+$") ~= nil or
+            string.match(str, "^[-]?%.%d+$") ~= nil
+    end
+
+    --- Separar la cadena en tres parte
+    local function split_string()
+        local Parts = {
+            "([-]?[%d%.]+)",   -- Valor numerico
+            "([kMGTPEZYRQ]?)", -- Unidades de valores posible
+            "([JW]?)"          -- Unidades de energia posible
+        }
+        local Pattern = "^" .. table.concat(Parts) .. "$"
+        return string.match(string, Pattern)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Separar la cadena en tres parte
+    local number, prefix, unit = split_string()
+
+    --- Validar si la cadena es un numero valido
+    if not number then return nil, nil end
+    if not is_valid_number(number) then return nil, nil end
+
+    --- Inidesdes posibles
+    local Units = {}
+    Units[""] = 0
+    Units["k"] = 3
+    Units["M"] = 6
+    Units["G"] = 9
+    Units["T"] = 12
+    Units["P"] = 15
+    Units["E"] = 18
+    Units["Z"] = 21
+    Units["Y"] = 24
+    Units["R"] = 27
+    Units["Q"] = 30
+
+    --- Devuelve el resultado
+    return tonumber(number) * (10 ^ Units[prefix]), unit
+end
+
 --- Muestra información detallada de las variables dadas
 --- @param ... any
 function GPrefix.var_dump(...)
