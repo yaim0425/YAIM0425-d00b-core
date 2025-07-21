@@ -195,12 +195,59 @@ function GPrefix.split_name_folder(that_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Dividir el nombre por guiones
-    local id, name = mod_name:match(GPrefix.name_pattern .. "(.+)")
+    local id, name = GPrefix.get_id_and_name(mod_name)
 
     --- Información propia del mod
     that_mod.id = id
     that_mod.name = name
     that_mod.prefix = GPrefix.name .. "-" .. id .. "-"
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Separa de la cadena dada el id y el nombre
+--- @param full_name string
+--- @return any # id del MOD
+--- @return any # Nombre
+function GPrefix.get_id_and_name(full_name)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    -- Verificar si comienza con el prefijo esperado
+    if not full_name:match("^" .. GPrefix.name .. "%-") then
+        return nil, nil
+    end
+
+    --- Remover el prefijo obligatorio
+    local Body = full_name:gsub("^" .. GPrefix.name .. "%-", "")
+
+    --- Separar por guiones
+    local Parts = {}
+    for segment in string.gmatch(Body, "[^%-]+") do
+        table.insert(Parts, segment)
+    end
+
+    --- Separar IDs (los que son numéricos) del nombre (el resto)
+    local IDs = {}
+    local i = 1
+    while i <= #Parts and Parts[i]:match("^%d%d%d%d$") do
+        table.insert(IDs, Parts[i])
+        i = i + 1
+    end
+
+    --- No hay IDs
+    if #IDs == 0 then
+        return nil, nil
+    end
+
+    --- Resto del nombre (lo que queda luego de los IDs)
+    local Rest = table.concat(Parts, "-", i)
+
+    --- Si hay solo un ID, devolverlo como string
+    if #IDs == 1 then
+        return IDs[1], Rest
+    else
+        return IDs, Rest
+    end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end

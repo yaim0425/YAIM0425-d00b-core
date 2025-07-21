@@ -863,7 +863,7 @@ function This_MOD.load_setting()
     --- Recorrer las opciones de configuración
     for key, value in pairs(settings.startup) do
         --- Separar los datos esperados
-        local id, name = key:match(GPrefix.name_pattern .. "(.+)")
+        local id, name = GPrefix.get_id_and_name(key)
 
         --- Validar los datos obtenidos
         if id and name then
