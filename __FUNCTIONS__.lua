@@ -218,6 +218,17 @@ function GPrefix.delete_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Verifica si un ID específico está contenido exactamente en una cadena
+--- @param name string
+--- @param id string
+function GPrefix.has_id(name, id)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    return string.find(name, "%-" .. id .. "%-") ~= nil
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 --- Separa el número de la cadena teninedo encuenta
 --- indicadores tipo k, M, G y unidades como J, W
 --- @param string string # __Ejemplo:__ 0.3Mw
