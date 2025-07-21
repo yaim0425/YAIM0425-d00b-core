@@ -182,25 +182,25 @@ function GPrefix.split_name_folder(that_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- nivel 2 si llamas desde otra función
-    local info = debug.getinfo(2, "S")
-    local source = info.source
+    local Info = debug.getinfo(2, "S")
+    local Source = Info.source
 
     --- Elimina el prefijo @ si viene de un archivo
-    local path = source:sub(1, 1) == "@" and source:sub(2) or source
+    local Path = Source:sub(1, 1) == "@" and Source:sub(2) or Source
 
     --- Objetener el nombre del directorio
-    local mod_name = path:match("__([^/]+)__")
-    if not mod_name then return end
+    local Mod_name = Path:match("__([^/]+)__")
+    if not Mod_name then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Dividir el nombre por guiones
-    local id, name = GPrefix.get_id_and_name(mod_name)
+    local Id, Name = GPrefix.get_id_and_name(Mod_name)
 
     --- Información propia del mod
-    that_mod.id = id
-    that_mod.name = name
-    that_mod.prefix = GPrefix.name .. "-" .. id .. "-"
+    that_mod.id = Id
+    that_mod.name = Name
+    that_mod.prefix = GPrefix.name .. "-" .. Id .. "-"
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -304,11 +304,11 @@ function GPrefix.number_unit(string)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Separar la cadena en tres parte
-    local number, prefix, unit = split_string()
+    local Number, Prefix, Unit = split_string()
 
     --- Validar si la cadena es un numero valido
-    if not number then return nil, nil end
-    if not is_valid_number(number) then return nil, nil end
+    if not Number then return nil, nil end
+    if not is_valid_number(Number) then return nil, nil end
 
     --- Inidesdes posibles
     local Units = {}
@@ -325,7 +325,7 @@ function GPrefix.number_unit(string)
     Units["Q"] = 30
 
     --- Devuelve el resultado
-    return tonumber(number) * (10 ^ Units[prefix]), unit
+    return tonumber(Number) * (10 ^ Units[Prefix]), Unit
 end
 
 --- Acorta un número grande usando sufijos como K, M, G, etc.
