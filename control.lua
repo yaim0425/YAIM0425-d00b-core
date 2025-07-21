@@ -143,6 +143,22 @@ function GPrefix.create_data(event, that_mod)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+    --- Espacio NO guardable para los jugadores
+    that_mod.Players = that_mod.Players or {}
+    Data.GPlayers = that_mod.Players
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Espacio guardable para los jugadores
+    Data.gMOD.Players = Data.gMOD.Players or {}
+    Data.gPlayers = Data.gMOD.Players
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- No se tiene un jugador
     if not Data.Player then return Data end
 
@@ -155,10 +171,6 @@ function GPrefix.create_data(event, that_mod)
     --- Identificador del jugador
     local ID_Player = Data.Player.index
 
-    --- Espacio NO guardable para los jugadores
-    that_mod.Players = that_mod.Players or {}
-    Data.GPlayers = that_mod.Players
-
     --- Espacio NO guardable del jugador
     Data.GPlayers[ID_Player] = Data.GPlayers[ID_Player] or {}
     Data.GPlayer = Data.GPlayers[ID_Player]
@@ -168,10 +180,6 @@ function GPrefix.create_data(event, that_mod)
     Data.GUI = Data.GPlayer.GUI
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Espacio guardable para los jugadores
-    Data.gMOD.Players = Data.gMOD.Players or {}
-    Data.gPlayers = Data.gMOD.Players
 
     --- Espacio guardable del jugador
     Data.gPlayers[ID_Player] = Data.gPlayers[ID_Player] or {}
