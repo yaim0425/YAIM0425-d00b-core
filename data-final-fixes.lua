@@ -29,104 +29,6 @@ require("util")
 ---> Funciones globales <---
 ---------------------------------------------------------------------------------------------------
 
---- Separa el número de la cadena teninedo encuenta
---- indicadores tipo k, M, G y unidades como J, W
---- @param string string # __Ejemplo:__ 0.3Mw
---- @return any, any #
----- __Ejemplo:__ 300000 W
-function GPrefix.number_unit(string)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Validar si la cadena es un numero valido
-    local function is_valid_number(str)
-        return string.match(str, "^[-]?%d*%.?%d+$") ~= nil or
-            string.match(str, "^[-]?%.%d+$") ~= nil
-    end
-
-    --- Separar la cadena en tres parte
-    local function split_string()
-        local Parts = {
-            "([-]?[%d%.]+)",   -- Valor numerico
-            "([kMGTPEZYRQ]?)", -- Unidades de valores posible
-            "([JW]?)"          -- Unidades de energia posible
-        }
-        local Pattern = "^" .. table.concat(Parts) .. "$"
-        return string.match(string, Pattern)
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Separar la cadena en tres parte
-    local number, prefix, unit = split_string()
-
-    --- Validar si la cadena es un numero valido
-    if not number then return nil, nil end
-    if not is_valid_number(number) then return nil, nil end
-
-    --- Inidesdes posibles
-    local Units = {}
-    Units[""] = 0
-    Units["k"] = 3
-    Units["M"] = 6
-    Units["G"] = 9
-    Units["T"] = 12
-    Units["P"] = 15
-    Units["E"] = 18
-    Units["Z"] = 21
-    Units["Y"] = 24
-    Units["R"] = 27
-    Units["Q"] = 30
-
-    --- Devuelve el resultado
-    return tonumber(number) * (10 ^ Units[prefix]), unit
-end
-
---- Acorta un número grande usando sufijos como K, M, G, etc.
---- @param number number # Número a abreviar
---- @return any Cadena # abreviada, por ejemplo: 300000 → "300K"
-function GPrefix.short_number(number)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Valdación básica
-    if not GPrefix.is_number(number) then return nil end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Inidesdes posibles
-    local Units = {}
-    Units[0] = ""
-    Units[3] = "k"
-    Units[6] = "M"
-    Units[9] = "G"
-    Units[12] = "T"
-    Units[15] = "P"
-    Units[18] = "E"
-    Units[21] = "Z"
-    Units[24] = "Y"
-    Units[27] = "R"
-    Units[30] = "Q"
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Dar le el formato deseado al valor
-    local function format(text)
-        local A, B = string.match(text, "^(%-?%d+)%.(%d)")
-        if not (A and B) then return text end
-        if B == "0" then return A end
-        return A .. "." .. B
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Acortar el número
-    local Digits = math.floor(#tostring(number) / 3)
-    if #tostring(number) % 3 == 0 then Digits = Digits - 1 end
-    local Output = tostring(number * (10 ^ (-3 * Digits)))
-    return format(Output) .. Units[3 * Digits]
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
 --- Crear una copia del objeto dado
 --- @param item table # Objeto a duplicar
 --- @return any # Copia del objeto
@@ -167,19 +69,6 @@ function GPrefix.duplicate_item(item)
 
     --- Devolver el nuevo objeto
     return Item
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
---- Elimina el indicador del nombre dado
---- @param name string # __Ejemplo:__ prefix-0000-0200-name
---- @return string # __Ejemplo:__ #
----- __name,__ si se cumple el patron
----- o el nombre dado si no es así
-function GPrefix.delete_prefix(name)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    return name:gsub(GPrefix.name .. "%-", "") or name
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -327,37 +216,6 @@ function GPrefix.get_technology(recipe)
         Tech = compare(Tech, New, true)
     end
     return Tech.technology
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
---- Obtiener información del nombre de la carpeta
---- that_mod.id
---- that_mod.name
---- that_mod.prefix
-function GPrefix.split_name_folder(that_mod)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- nivel 2 si llamas desde otra función
-    local info = debug.getinfo(2, "S")
-    local source = info.source
-
-    --- Elimina el prefijo @ si viene de un archivo
-    local path = source:sub(1, 1) == "@" and source:sub(2) or source
-
-    --- Objetener el nombre del directorio
-    local mod_name = path:match("__([^/]+)__")
-    if not mod_name then return end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Dividir el nombre por guiones
-    local id, name = mod_name:match(GPrefix.name_pattern .. "(.+)")
-
-    --- Información propia del mod
-    that_mod.id = id
-    that_mod.name = name
-    that_mod.prefix = GPrefix.name .. "-" .. id .. "-"
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -575,20 +433,20 @@ function GPrefix.extend(...)
             Level = Level + 1
 
             --- Valores a guardar
-            local data = {
+            local value = {
                 level = Level,
                 technology = prototype,
                 effects = prototype.effects
             }
 
             --- Indexar la nueva tecnologia
-            GPrefix.tech.raw[prototype.name] = data
+            GPrefix.tech.raw[prototype.name] = value
             GPrefix.tech.level[Level] = GPrefix.tech.level[Level] or {}
-            GPrefix.tech.level[Level][prototype.name] = data
+            GPrefix.tech.level[Level][prototype.name] = value
             for _, effect in pairs(prototype.effects or {}) do
                 if effect.type == "unlock-recipe" then
                     GPrefix.tech.recipe[effect.recipe] = GPrefix.tech.recipe[effect.recipe] or {}
-                    GPrefix.tech.recipe[effect.recipe][prototype.name] = data
+                    GPrefix.tech.recipe[effect.recipe][prototype.name] = value
                     local Recipe = data.raw.recipe[effect.recipe]
                     if Recipe then Recipe.enable = false end
                 end
@@ -1005,7 +863,7 @@ function This_MOD.load_setting()
     --- Recorrer las opciones de configuración
     for key, value in pairs(settings.startup) do
         --- Separar los datos esperados
-        local id, name = key:match(GPrefix.name_pattern .. "(.+)")
+        local id, name = GPrefix.get_id_and_name(key)
 
         --- Validar los datos obtenidos
         if id and name then

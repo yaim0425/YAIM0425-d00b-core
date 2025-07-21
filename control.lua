@@ -66,18 +66,18 @@ function GPrefix.create_data(event, that_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Buscar y crear los forces
-    for Key, Entity in pairs({ player = Data.Player, entity = Data.Entity }) do
+    for Key, Value in pairs({ player = Data.Player, entity = Data.Entity }) do
         --- Agregar prefijo
         Key = "Force_" .. Key
 
         --- Cargar el force de forma directa
-        if not GPrefix.is_string(Entity.force) then
-            Data[Key] = Entity.force
+        if not GPrefix.is_string(Value.force) then
+            Data[Key] = Value.force
         end
 
         --- Cargar el force usando el nombre o id
-        if GPrefix.is_string(Entity.force) then
-            Data[Key] = game.forces[Entity.force]
+        if GPrefix.is_string(Value.force) then
+            Data[Key] = game.forces[Value.force]
         end
     end
 
@@ -86,10 +86,10 @@ function GPrefix.create_data(event, that_mod)
         Data.Force = Data.Force_entity
         Data.Force_entity = nil
         Data.Force_player = nil
-    elseif Data.Force_player == nil and Data.Force_entity ~= nil then
+    elseif not Data.Force_player and Data.Force_entity then
         Data.Force = Data.Force_entity
         Data.Force_entity = nil
-    elseif Data.Force_player ~= nil and Data.Force_entity == nil then
+    elseif Data.Force_player and not Data.Force_entity then
         Data.Force = Data.Force_player
         Data.Force_player = nil
     end
@@ -125,7 +125,7 @@ function GPrefix.create_data(event, that_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Crear el espacio para un forces
-    for _, force in pairs({ Data.Force_player, Data.Force_entity }) do
+    for _, force in pairs({ Data.Force_player, Data.Force_entity, Data.Force }) do
         --- Espacio guardable
         Data.gForce = Data.gForces
         Data.gForce[force.index] = Data.gForce[force.index] or {}
@@ -136,6 +136,22 @@ function GPrefix.create_data(event, that_mod)
         Data.GForce[force.index] = Data.GForce[force.index] or {}
         Data.GForce = Data.GForce[force.index]
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Espacio NO guardable para los jugadores
+    that_mod.Players = that_mod.Players or {}
+    Data.GPlayers = that_mod.Players
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Espacio guardable para los jugadores
+    Data.gMOD.Players = Data.gMOD.Players or {}
+    Data.gPlayers = Data.gMOD.Players
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -155,9 +171,6 @@ function GPrefix.create_data(event, that_mod)
     --- Identificador del jugador
     local ID_Player = Data.Player.index
 
-    --- Espacio NO guardable para los jugadores
-    Data.GPlayers = Data.GPlayers or {}
-
     --- Espacio NO guardable del jugador
     Data.GPlayers[ID_Player] = Data.GPlayers[ID_Player] or {}
     Data.GPlayer = Data.GPlayers[ID_Player]
@@ -167,10 +180,6 @@ function GPrefix.create_data(event, that_mod)
     Data.GUI = Data.GPlayer.GUI
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Espacio guardable para los jugadores
-    Data.gMOD.Players = Data.gMOD.Players or {}
-    Data.gPlayers = Data.gMOD.Players
 
     --- Espacio guardable del jugador
     Data.gPlayers[ID_Player] = Data.gPlayers[ID_Player] or {}

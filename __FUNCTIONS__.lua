@@ -174,6 +174,206 @@ function GPrefix.get_tables(array, key, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Obtiener información del nombre de la carpeta
+--- that_mod.id
+--- that_mod.name
+--- that_mod.prefix
+function GPrefix.split_name_folder(that_mod)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- nivel 2 si llamas desde otra función
+    local Info = debug.getinfo(2, "S")
+    local Source = Info.source
+
+    --- Elimina el prefijo @ si viene de un archivo
+    local Path = Source:sub(1, 1) == "@" and Source:sub(2) or Source
+
+    --- Objetener el nombre del directorio
+    local Mod_name = Path:match("__([^/]+)__")
+    if not Mod_name then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Dividir el nombre por guiones
+    local Id, Name = GPrefix.get_id_and_name(Mod_name)
+
+    --- Información propia del mod
+    that_mod.id = Id
+    that_mod.name = Name
+    that_mod.prefix = GPrefix.name .. "-" .. Id .. "-"
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Separa de la cadena dada el id y el nombre
+--- @param full_name string
+--- @return any # id del MOD
+--- @return any # Nombre
+function GPrefix.get_id_and_name(full_name)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    -- Verificar si comienza con el prefijo esperado
+    if not full_name:match("^" .. GPrefix.name .. "%-") then
+        return nil, nil
+    end
+
+    --- Remover el prefijo obligatorio
+    local Body = full_name:gsub("^" .. GPrefix.name .. "%-", "")
+
+    --- Separar por guiones
+    local Parts = {}
+    for segment in string.gmatch(Body, "[^%-]+") do
+        table.insert(Parts, segment)
+    end
+
+    --- Separar IDs (los que son numéricos) del nombre (el resto)
+    local IDs = {}
+    local i = 1
+    while i <= #Parts and Parts[i]:match("^%d%d%d%d$") do
+        table.insert(IDs, Parts[i])
+        i = i + 1
+    end
+
+    --- No hay IDs
+    if #IDs == 0 then
+        return nil, nil
+    end
+
+    --- Resto del nombre (lo que queda luego de los IDs)
+    local Rest = table.concat(Parts, "-", i)
+
+    --- Si hay solo un ID, devolverlo como string
+    if #IDs == 1 then
+        return IDs[1], Rest
+    else
+        return IDs, Rest
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Elimina el indicador del nombre dado
+--- @param name string # __Ejemplo:__ prefix-0000-0200-name
+--- @return string # __Ejemplo:__ #
+---- __name,__ si se cumple el patron
+---- o el nombre dado si no es así
+function GPrefix.delete_prefix(name)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    return name:gsub(GPrefix.name .. "%-", "") or name
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Verifica si un ID específico está contenido exactamente en una cadena
+--- @param name string
+--- @param id string
+function GPrefix.has_id(name, id)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    return string.find(name, "%-" .. id .. "%-") ~= nil
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Separa el número de la cadena teninedo encuenta
+--- indicadores tipo k, M, G y unidades como J, W
+--- @param string string # __Ejemplo:__ 0.3Mw
+--- @return any, any #
+---- __Ejemplo:__ 300000 W
+function GPrefix.number_unit(string)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validar si la cadena es un numero valido
+    local function is_valid_number(str)
+        return string.match(str, "^[-]?%d*%.?%d+$") ~= nil or
+            string.match(str, "^[-]?%.%d+$") ~= nil
+    end
+
+    --- Separar la cadena en tres parte
+    local function split_string()
+        local Parts = {
+            "([-]?[%d%.]+)",   -- Valor numerico
+            "([kMGTPEZYRQ]?)", -- Unidades de valores posible
+            "([JW]?)"          -- Unidades de energia posible
+        }
+        local Pattern = "^" .. table.concat(Parts) .. "$"
+        return string.match(string, Pattern)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Separar la cadena en tres parte
+    local Number, Prefix, Unit = split_string()
+
+    --- Validar si la cadena es un numero valido
+    if not Number then return nil, nil end
+    if not is_valid_number(Number) then return nil, nil end
+
+    --- Inidesdes posibles
+    local Units = {}
+    Units[""] = 0
+    Units["k"] = 3
+    Units["M"] = 6
+    Units["G"] = 9
+    Units["T"] = 12
+    Units["P"] = 15
+    Units["E"] = 18
+    Units["Z"] = 21
+    Units["Y"] = 24
+    Units["R"] = 27
+    Units["Q"] = 30
+
+    --- Devuelve el resultado
+    return tonumber(Number) * (10 ^ Units[Prefix]), Unit
+end
+
+--- Acorta un número grande usando sufijos como K, M, G, etc.
+--- @param number number # Número a abreviar
+--- @return any Cadena # abreviada, por ejemplo: 300000 → "300K"
+function GPrefix.short_number(number)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Valdación básica
+    if not GPrefix.is_number(number) then return nil end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Inidesdes posibles
+    local Units = {}
+    Units[0] = ""
+    Units[3] = "k"
+    Units[6] = "M"
+    Units[9] = "G"
+    Units[12] = "T"
+    Units[15] = "P"
+    Units[18] = "E"
+    Units[21] = "Z"
+    Units[24] = "Y"
+    Units[27] = "R"
+    Units[30] = "Q"
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Dar le el formato deseado al valor
+    local function format(text)
+        local A, B = string.match(text, "^(%-?%d+)%.(%d)")
+        if not (A and B) then return text end
+        if B == "0" then return A end
+        return A .. "." .. B
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Acortar el número
+    local Digits = math.floor(#tostring(number) / 3)
+    if #tostring(number) % 3 == 0 then Digits = Digits - 1 end
+    local Output = tostring(number * (10 ^ (-3 * Digits)))
+    return format(Output) .. Units[3 * Digits]
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 --- Muestra información detallada de las variables dadas
 --- @param ... any
 function GPrefix.var_dump(...)
