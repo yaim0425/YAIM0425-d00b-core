@@ -57,7 +57,7 @@ function GPrefix.get_length(array)
     end
 
     --- Devolver el resultado
-    return Output > 0 and Output
+    return Output > 0 and Output or nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -169,7 +169,7 @@ function GPrefix.get_tables(array, key, value)
 
     --- Validar la respuesta
     get_table(array)
-    return #Result > 0 and Result
+    return #Result > 0 and Result or nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end

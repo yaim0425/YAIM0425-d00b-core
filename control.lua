@@ -65,6 +65,21 @@ function GPrefix.create_data(event, that_mod)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+    --- El force está en el evento dado
+    Data.Force = event.force or nil
+
+    --- El force está en el jugador
+    if Data.Player and not GPrefix.is_string(Data.Player.force) then
+        Data.Force = Data.Player.force
+    end
+
+    --- El force se debe buscar busca
+    if Data.Player and GPrefix.is_string(Data.Player.force) then
+        Data.Force = game.forces[Data.Player.force]
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Buscar y crear los forces
     for Key, Value in pairs({ player = Data.Player, entity = Data.Entity }) do
         --- Agregar prefijo
@@ -82,7 +97,7 @@ function GPrefix.create_data(event, that_mod)
     end
 
     --- Reducir los forces a uno de ser posible
-    if Data.Force_player == Data.Force_entity then
+    if Data.Force_player and Data.Force_player == Data.Force_entity then
         Data.Force = Data.Force_entity
         Data.Force_entity = nil
         Data.Force_player = nil
