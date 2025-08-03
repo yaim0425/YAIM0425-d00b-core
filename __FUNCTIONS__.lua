@@ -114,7 +114,7 @@ end
 --- Devuelve el elemento cuyo key y value se igual al dado
 --- @param array table # Tabla en la cual buscar
 --- @param key string # propiedad a buscar
---- @param value string # Valor a buscar
+--- @param value any # Valor a buscar
 --- @return any #
 ---- Array de la primera coincidencia con los valores dados
 ---- o nil si se poduce un error o no lo encuentra
