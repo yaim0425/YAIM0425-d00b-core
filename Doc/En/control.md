@@ -2,50 +2,61 @@
 
 ## 🔹 `GPrefix.create_data(event, that_mod)`
 
-Builds and returns a table with key data from the received event, centralizing useful information about entities, players, forces, and storage spaces (persistent and non-persistent). It is designed to facilitate interoperability between multiple MODs.
+Builds a consolidated data object from an event. This structure simplifies access to entities, players, forces, and both persistent and runtime-only storage.
 
 ### 📌 Parameters
-- `event`: Event table provided by Factorio.
-- `that_mod`: Reference to the calling mod, used to isolate its data space.
+- `event`: `table` — The event received from `script.on_event`
+- `that_mod`: `table` — Info from the current mod (e.g., `id`, `Forces`, `Players`, etc.)
 
-### 📦 Returns `Data`
+### 🔁 Returns
+- `table` — A `Data` object that centralizes all relevant runtime info for the event.
 
-**Basic values:**
-- `Event`: Direct reference to the event.
-- `Entity`: The affected or created entity, if any.
-- `Player`: The player, if any.
+---
 
-- `Force_player`: The force the `Player` belongs to.
-- `Force_entity`: The force the `Entity` belongs to.
-- `Force`: Exists if `Force_player` and `Force_entity` are the same, or if only `Player` or only `Entity` exists. The presence of this variable removes `Force_player` and `Force_entity`.
+### 🧱 Contents of the `Data` object
 
-**The following are values stored with the game save:**
-- `gPrefix`: Contains all saved data for all mods under `yaim0425`, indexed by `that_mod.id`.
-- `gMOD`: Container for all saved data specific to the current mod. Includes `gForces` and `gPlayers`.
-- `gForces`: Container for each force used by the mod, indexed by `Force.index`.
-- `gForce`: Data for the current force, if it exists.
-- `gPlayers`: Container for each player that has used the mod, indexed by `Player.index`.
-- `gPlayer`: Saved data for the current player.
+#### 🔸 Core event data
+- `Data.Event`: Copy of the original event.
+- `Data.Entity`: Affected entity (`event.entity` or `event.created_entity`).
+- `Data.Player`: Player associated with the event (`game.get_player(event.player_index)`).
+- `Data.Force`: Main force involved (from player or entity).
 
-**The following are values *not* stored with the game save:**
-- `GForces`: Container for each force used by the mod, indexed by `Force.index`.
-- `GForce`: Data for the current force, if it exists.
-- `GPlayers`: Container for each player that has used the mod, indexed by `Player.index`.
-- `GPlayer`: Non-persistent data for the current player. Contains `GUI`.
-- `GUI`: Non-persistent space for player-specific graphical interfaces.
+#### 🔸 Additional forces
+- `Data.Force_player`: Player’s force.
+- `Data.Force_entity`: Entity’s force.
 
-### 🔍 Usage Example
+If both match, `Data.Force` is consolidated.
+
+---
+
+### 💾 Storage objects (persistent and temporary)
+
+#### 🔸 Persistent storage
+- `Data.gPrefix`: Global mod-wide table.
+- `Data.gMOD`: Mod-specific storage (`gPrefix[that_mod.id]`).
+- `Data.gForces`: Table of forces (by index).
+- `Data.gForce`: Current force's persistent space.
+- `Data.gPlayers`: Table of players (by index).
+- `Data.gPlayer`: Current player's persistent space.
+
+#### 🔸 Runtime-only storage
+- `Data.GForces`: Runtime force data (`that_mod.Forces`).
+- `Data.GForce`: Current force’s runtime space.
+- `Data.GPlayers`: Runtime player data (`that_mod.Players`).
+- `Data.GPlayer`: Current player's runtime space.
+- `Data.GUI`: Runtime GUI space for the player.
+
+---
+
+### 🔍 Example
 
 ```lua
-local Data = GPrefix.create_data(event, my_mod)
-
--- Access the player
-if Data.Player then
-    game.print("Player: " .. Data.Player.name)
-end
-
--- Access the mod's persistent space
-Data.gMOD.my_variable = true
+script.on_event(defines.events.on_built_entity, function(event)
+  local Data = GPrefix.create_data(event, This_MOD)
+  if Data.Entity then
+    log("Entity placed by player: " .. Data.Entity.name)
+  end
+end)
 ```
 
 ## 📘 Available Functions

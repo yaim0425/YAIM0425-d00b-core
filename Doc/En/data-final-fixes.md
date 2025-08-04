@@ -1,81 +1,5 @@
 # 📦 `zzzYAIM0425 0000 lib`
 
-## 🔹 `GPrefix.number_unit(string)`
-
-Parses and converts a string composed of a number with scale prefixes like `k`, `M`, `G`, etc., and physical units like `J` or `W`.
-
-- 🔁 Interprets scale prefixes and converts them to powers of 10.
-- 🔍 Validates and splits the string into a numeric value and unit.
-- ❌ If the string is invalid, returns `nil, nil`.
-
-### 📥 Parameters
-- `string` (string): A string containing a number, prefix, and unit.  
-
-### 📤 Returns
-- `number`: Converted numeric value.  
-- `string`: Detected physical unit.
-
-### 📐 Supported prefixes
-| Prefix | Power   |
-|--------:|---------|
-| (empty) | 10⁰     |
-| `k`     | 10³     |
-| `M`     | 10⁶     |
-| `G`     | 10⁹     |
-| `T`     | 10¹²    |
-| `P`     | 10¹⁵    |
-| `E`     | 10¹⁸    |
-| `Z`     | 10²¹    |
-| `Y`     | 10²⁴    |
-| `R`     | 10²⁷    |
-| `Q`     | 10³⁰    |
-
-### 🧪 Examples
-```lua
-GPrefix.number_unit("0.3MW")   -- 300000, "W"
-GPrefix.number_unit("1.5kJ")   -- 1500, "J"
-GPrefix.number_unit("42")      -- 42, nil
-GPrefix.number_unit("abc")     -- nil, nil
-```
-
-## 🔹 `GPrefix.short_number(number)`
-
-Abbreviates a large number using suffixes like `k`, `M`, `G`, etc., making it easier to read.
-
-- 🔢 Converts numeric values into a compact format.
-- 🧠 Keeps a single decimal digit, removing unnecessary trailing zeros.
-- ⚠️ If the input is not a number, returns `nil`.
-
-### 📥 Parameters
-- `number` (number): The number to abbreviate.
-
-### 📤 Returns
-- `string`: The abbreviated string.
-
-### 📐 Used suffixes
-| Power    | Suffix |
-|---------:|--------|
-| 10⁰      | _(empty)_ |
-| 10³      | `k`    |
-| 10⁶      | `M`    |
-| 10⁹      | `G`    |
-| 10¹²     | `T`    |
-| 10¹⁵     | `P`    |
-| 10¹⁸     | `E`    |
-| 10²¹     | `Z`    |
-| 10²⁴     | `Y`    |
-| 10²⁷     | `R`    |
-| 10³⁰     | `Q`    |
-
-### 🧪 Examples
-```lua
-GPrefix.short_number(300000)     -- "300k"
-GPrefix.short_number(1250000)    -- "1.2M"
-GPrefix.short_number(1200000000) -- "1.2G"
-GPrefix.short_number(532)        -- "532"
-GPrefix.short_number("texto")    -- nil
-```
-
 ## 🔹 `GPrefix.duplicate_item(item)`
 
 Creates a copy of an `item`-type object, duplicating only specific properties.
@@ -116,25 +40,6 @@ local copy = GPrefix.duplicate_item({
 --   order = "a[iron]-b[plate]",
 --   ...
 -- }
-```
-
-## 🔹 `GPrefix.delete_prefix(name)`
-
-Removes the prefix from a name, based on the value of `GPrefix.name`, followed by a hyphen (`-`).
-
-- ⚠️ If the prefix is not found, the name is returned unchanged.
-
-### 📥 Parameters
-- `name` (string): String with a prefix.  
-
-### 📤 Returns
-- `string`: Name without the prefix defined in `GPrefix.name`.  
-
-### 🧪 Example
-```lua
-GPrefix.name = "prefix"
-GPrefix.delete_prefix("prefix-0000-0200-name")
--- "0000-0200-name"
 ```
 
 ## 🔹 `GPrefix.duplicate_subgroup(old_name, new_name)`
@@ -224,6 +129,59 @@ local new_recipe = {
 }
 
 GPrefix.add_recipe_to_tech_with_recipe("advanced-circuit", new_recipe)
+```
+
+## 🔹 `GPrefix.add_recipe_to_tech(tech_name, new_recipe)`
+
+Adds a **new recipe** to an existing technology.  
+If the recipe hasn't been defined yet, it will also be created.
+
+### 📌 Parameters
+- `tech_name`: `string` — Internal name of the technology  
+- `new_recipe`: `table` — Table with the recipe definition to add
+
+### 🔁 Effects
+- Inserts an `"unlock-recipe"` effect into the specified technology  
+- The recipe is **disabled by default** (`enabled = false`)  
+- If the recipe doesn't exist in `data.raw.recipe`, it will be registered using `GPrefix.extend`
+
+### 🔍 Example
+
+```lua
+GPrefix.add_recipe_to_tech("automation", {
+    name = "my-custom-recipe",
+    ingredients = {
+        {"iron-plate", 1},
+        {"copper-plate", 1}
+    },
+    result = "electronic-circuit",
+    enabled = true  -- will be internally set to false
+})
+```
+
+## 🔹 `GPrefix.get_item_create_entity(entity)`
+
+Retrieves the **item** that places the given entity in the world — that is, the item responsible for creating it.
+
+### 📌 Parameters
+- `entity`: `table` — A `data.raw` entity with mining information (`minable`)
+
+### 🔁 Returns
+- The `item` that creates the entity, or `nil` if none is found
+
+### ⚙️ Internal Logic
+- Validates that the entity has `minable` and `minable.results` defined
+- Scans `entity.minable.results` for an item with `place_result` equal to the entity’s name
+
+### 🔍 Example
+
+```lua
+local lamp = data.raw["lamp"]["small-lamp"]
+local item = GPrefix.get_item_create_entity(lamp)
+
+if item then
+    log("The item that creates the lamp is: " .. item.name)
+end
 ```
 
 ## 🔹 `GPrefix.extend(...)`
