@@ -252,6 +252,12 @@ function GPrefix.create_tech(prefix, tech, new_recipe)
 
     --- Crear la nueva tecnología
     GPrefix.extend(Tech)
+
+    --- Crea la receta de ser necesario
+    if not data.raw.recipe[new_recipe.name] then
+        GPrefix.extend(new_recipe)
+    end
+
     return Tech
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
