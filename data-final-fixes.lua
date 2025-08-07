@@ -162,7 +162,6 @@ function GPrefix.get_technology(recipe)
         return old
     end
 
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
