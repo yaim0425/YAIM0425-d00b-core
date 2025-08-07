@@ -258,6 +258,7 @@ function GPrefix.create_tech(prefix, tech, new_recipe)
         GPrefix.extend(new_recipe)
     end
 
+    --- Devolver la tecnología
     return Tech
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
