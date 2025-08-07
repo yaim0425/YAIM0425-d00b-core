@@ -102,6 +102,48 @@ local tech = GPrefix.get_technology(recipe)
 -- tech.name == "advanced-electronics"
 ```
 
+## 🧠 `GPrefix.create_tech(prefix, tech, new_recipe)`
+
+Creates a new technology in the given namespace and links it to a recipe.  
+If a technology with that name already exists, the recipe is simply added to it.
+
+### 📥 Parameters
+
+| Name           | Type   | Description                                                 |
+|----------------|--------|-------------------------------------------------------------|
+| `prefix`       | string | Prefix or namespace used to build the final tech name       |
+| `tech`         | table  | Base definition of the technology to create                 |
+| `new_recipe`   | table  | Recipe to associate with the technology                     |
+
+### 🔁 Returns
+
+The created or existing `Tech` object (`GPrefix.tech.raw[Tech_name]`).
+
+### ⚙️ Behavior
+
+- If the tech already exists, it just adds the recipe to it.
+- If it doesn’t, it copies the definition and renames it using the prefix.
+- Adds `prerequisites`, `effects`, and disables the recipe if needed.
+
+### 💡 Example
+
+```lua
+GPrefix.create_tech("core-", {
+  name = "advanced-circuits",
+  icon = "__mod__/graphics/icons/tech.png",
+  unit = {
+    count = 100,
+    ingredients = {{"automation-science-pack", 1}},
+    time = 30
+  }
+}, {
+  name = "core-advanced-circuits-recipe",
+  ingredients = {{"copper-cable", 2}, {"plastic-bar", 2}},
+  result = "advanced-circuit",
+  enabled = false
+})
+```
+
 ## 🔹 `GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)`
 
 Adds a **new recipe** to a technology that already includes another reference recipe.
