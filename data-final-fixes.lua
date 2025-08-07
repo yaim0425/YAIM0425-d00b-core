@@ -219,6 +219,44 @@ function GPrefix.get_technology(recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Crear la technology en el spacio dado y agregar la receta
+--- @param That_MOD table
+--- @param space table
+--- @param new_recipe table
+--- @return any
+function GPrefix.create_tech(prefix, tech, new_recipe)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validación
+    if not tech then return end
+
+    --- Nombre de la nueva tecnología
+    local Tech_name = tech and tech.name or ""
+    Tech_name = GPrefix.delete_prefix(Tech_name)
+    Tech_name = prefix .. Tech_name
+
+    --- La tecnología ya existe
+    if GPrefix.tech.raw[Tech_name] then
+        GPrefix.add_recipe_to_tech(Tech_name, new_recipe)
+        return GPrefix.tech.raw[Tech_name]
+    end
+
+    --- Preprar la nueva tecnología
+    local Tech = util.copy(tech)
+    Tech.prerequisites = { Tech.name }
+    Tech.name = Tech_name
+    Tech.effects = { {
+        type = "unlock-recipe",
+        recipe = new_recipe.name
+    } }
+
+    --- Crear la nueva tecnología
+    GPrefix.extend(Tech)
+    return Tech
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 --- Agrega una receta nueva a una tecnología que ya tiene otra receta como referencia
 --- @param old_recipe_name string # Nombre de la receta de referencia
 --- @param new_recipe table # Receta a agregar
