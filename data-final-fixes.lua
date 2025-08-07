@@ -220,8 +220,8 @@ function GPrefix.get_technology(recipe)
 end
 
 --- Crear la technology en el spacio dado y agregar la receta
---- @param That_MOD table
---- @param space table
+--- @param prefix string
+--- @param tech table
 --- @param new_recipe table
 --- @return any
 function GPrefix.create_tech(prefix, tech, new_recipe)
