@@ -238,7 +238,7 @@ function GPrefix.create_tech(prefix, tech, new_recipe)
     --- La tecnología ya existe
     if GPrefix.tech.raw[Tech_name] then
         GPrefix.add_recipe_to_tech(Tech_name, new_recipe)
-        return GPrefix.tech.raw[Tech_name]
+        return GPrefix.tech.raw[Tech_name].technology
     end
 
     --- Preprar la nueva tecnología
