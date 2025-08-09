@@ -245,6 +245,7 @@ function GPrefix.create_tech(prefix, tech, new_recipe)
     local Tech = util.copy(tech)
     Tech.prerequisites = { Tech.name }
     Tech.name = Tech_name
+    Tech.localised_description = nil
     Tech.effects = { {
         type = "unlock-recipe",
         recipe = new_recipe.name
