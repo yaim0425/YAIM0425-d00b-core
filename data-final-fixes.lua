@@ -162,7 +162,6 @@ function GPrefix.get_technology(recipe)
         return old
     end
 
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -216,6 +215,52 @@ function GPrefix.get_technology(recipe)
         Tech = compare(Tech, New, true)
     end
     return Tech.technology
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Crear la technology en el spacio dado y agregar la receta
+--- @param prefix string
+--- @param tech table
+--- @param new_recipe table
+--- @return any
+function GPrefix.create_tech(prefix, tech, new_recipe)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validación
+    if not tech then return end
+
+    --- Nombre de la nueva tecnología
+    local Tech_name = tech and tech.name or ""
+    Tech_name = GPrefix.delete_prefix(Tech_name)
+    Tech_name = prefix .. Tech_name
+
+    --- La tecnología ya existe
+    if GPrefix.tech.raw[Tech_name] then
+        GPrefix.add_recipe_to_tech(Tech_name, new_recipe)
+        return GPrefix.tech.raw[Tech_name].technology
+    end
+
+    --- Preprar la nueva tecnología
+    local Tech = util.copy(tech)
+    Tech.prerequisites = { Tech.name }
+    Tech.name = Tech_name
+    Tech.localised_description = nil
+    Tech.effects = { {
+        type = "unlock-recipe",
+        recipe = new_recipe.name
+    } }
+
+    --- Crear la nueva tecnología
+    GPrefix.extend(Tech)
+
+    --- Crea la receta de ser necesario
+    if not data.raw.recipe[new_recipe.name] then
+        GPrefix.extend(new_recipe)
+    end
+
+    --- Devolver la tecnología
+    return Tech
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end

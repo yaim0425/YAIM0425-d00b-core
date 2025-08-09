@@ -207,7 +207,7 @@ end
 
 --- Separa de la cadena dada el id y el nombre
 --- @param full_name string
---- @return any # id del MOD
+--- @return any # id del MOD o los MODs
 --- @return any # Nombre
 function GPrefix.get_id_and_name(full_name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
