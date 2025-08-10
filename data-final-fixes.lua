@@ -224,7 +224,7 @@ end
 --- @param tech table
 --- @param new_recipe table
 --- @return any
-function GPrefix.create_tech(prefix, tech, new_recipe)
+function GPrefix.create_tech(prefix, tech, new_recipe, name_new_tech)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Validación
@@ -233,7 +233,7 @@ function GPrefix.create_tech(prefix, tech, new_recipe)
     --- Nombre de la nueva tecnología
     local Tech_name = tech and tech.name or ""
     Tech_name = GPrefix.delete_prefix(Tech_name)
-    Tech_name = prefix .. Tech_name
+    Tech_name = name_new_tech or prefix .. Tech_name
 
     --- La tecnología ya existe
     if GPrefix.tech.raw[Tech_name] then
