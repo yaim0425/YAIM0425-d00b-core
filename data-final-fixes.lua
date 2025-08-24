@@ -273,8 +273,8 @@ function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Agregar la receta a cada tecnología
-    for tech_name, _ in pairs(GPrefix.tech.recipe[old_recipe_name] or {}) do
-        GPrefix.add_recipe_to_tech(tech_name, new_recipe)
+    for _, tech in pairs(GPrefix.tech.recipe[old_recipe_name] or {}) do
+        GPrefix.add_recipe_to_tech(tech.name, new_recipe)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
