@@ -124,6 +124,20 @@ end
 --- @param recipe table # receta a buscar
 --- @return any # Tecnología que desbloquea la receta dada
 function GPrefix.get_technology(recipe)
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validación
+    if not recipe then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Variable a usar
