@@ -64,7 +64,7 @@ function GPrefix.duplicate_item(item)
 
     --- Copiar las propiedades
     for _, copy_this in pairs(Copy_this) do
-        Item[copy_this] = util.copy(item[copy_this])
+        Item[copy_this] = GPrefix.copy(item[copy_this])
     end
 
     --- Devolver el nuevo objeto
@@ -84,7 +84,7 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
     --- Validación
     if not GPrefix.is_string(old_name) then return nil end
     if not GPrefix.is_string(new_name) then return nil end
-    local Subgroup = util.copy(GPrefix.subgroups[old_name])
+    local Subgroup = GPrefix.copy(GPrefix.subgroups[old_name])
     if GPrefix.subgroups[new_name] then return nil end
     if not Subgroup then return nil end
 
@@ -262,7 +262,7 @@ function GPrefix.create_tech(prefix, tech, new_recipe, info)
     end
 
     --- Preprar la nueva tecnología
-    local Tech = util.copy(tech)
+    local Tech = GPrefix.copy(tech)
     Tech.prerequisites = info.prerequisites or { Tech.name }
     Tech.name = Tech_name
     Tech.localised_description = nil
