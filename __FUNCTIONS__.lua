@@ -185,52 +185,52 @@ function GPrefix.get_tables(array, key, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Coincidencias encontradas
-    local results = {}
-    local addedTables = {}
+    local Results = {}
+    local Added_results = {}
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Buscar las coincidencia
     local function recursiveSearch(tbl)
-      local foundMatch = false
+        local Found = false
 
-      -- Caso: key y value
-      if key ~= nil and value ~= nil then
-        if tbl[key] == value then
-            foundMatch = true
+        -- Caso: key y value
+        if key ~= nil and value ~= nil then
+            if tbl[key] == value then
+                Found = true
+            end
         end
-      end
 
-      -- Caso: solo key
-      if key ~= nil and value == nil then
-        if tbl[key] ~= nil then
-            foundMatch = true
+        -- Caso: solo key
+        if key ~= nil and value == nil then
+            if tbl[key] ~= nil then
+                Found = true
+            end
         end
-      end
 
-      -- Caso: solo value
-      if key == nil and value ~= nil then
+        -- Caso: solo value
+        if key == nil and value ~= nil then
+            for _, v in pairs(tbl) do
+                if v == value then
+                    Found = true
+                    break
+                end
+            end
+        end
+
+        --- Agregar la tabla
+        if Found then
+            if Added_results[tbl] == nil then
+                table.insert(Results, tbl)
+            end
+        end
+
+        --- Buscar en las subtablas
         for _, v in pairs(tbl) do
-          if v == value then
-            foundMatch = true
-            break
-          end
+            if GPrefix.is_table(v) then
+                recursiveSearch(v)
+            end
         end
-      end
-
-      --- Agregar la tabla
-      if foundMatch then
-        if addedTables[tbl] == nil then
-            table.insert(results, tbl)
-        end
-      end
-
-      --- Buscar en las subtablas
-      for _, v in pairs(tbl) do
-        if GPrefix.is_table(v) then
-          recursiveSearch(v)
-        end
-      end
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -241,7 +241,7 @@ function GPrefix.get_tables(array, key, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Devolver el resultado
-    return #results > 0 and results or nil
+    return #Results > 0 and Results or nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
