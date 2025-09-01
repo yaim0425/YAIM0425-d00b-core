@@ -178,29 +178,70 @@ end
 function GPrefix.get_tables(array, key, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Valores a devolver
-    local Result = {}
+    --- Validación
+    if GPrefix.is_table(array) then return end
+    if key == nil and value == nil then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Hacer la busqueda
-    local function get_table(e)
-        for _, element in pairs(e) do
-            if GPrefix.is_table(element) then
-                if element[key] == value then
-                    table.insert(Result, element)
-                else
-                    get_table(element)
-                end
-            end
+    --- Coincidencias encontradas
+    local results = {}
+    local addedTables = {}
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Buscar las coincidencia
+    local function recursiveSearch(tbl)
+      local foundMatch = false
+
+      -- Caso: key y value
+      if key ~= nil and value ~= nil then
+        if tbl[key] == value then
+            foundMatch = true
         end
+      end
+
+      -- Caso: solo key
+      if key ~= nil and value == nil then
+        if tbl[key] ~= nil then
+            foundMatch = true
+        end
+      end
+
+      -- Caso: solo value
+      if key == nil and value ~= nil then
+        for _, v in pairs(tbl) do
+          if v == value then
+            foundMatch = true
+            break
+          end
+        end
+      end
+
+      --- Agregar la tabla
+      if foundMatch then
+        if addedTables[tbl] == nil then
+            table.insert(results, tbl)
+        end
+      end
+
+      --- Buscar en las subtablas
+      for _, v in pairs(tbl) do
+        if GPrefix.is_table(v) then
+          recursiveSearch(v)
+        end
+      end
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Validar la respuesta
-    get_table(array)
-    return #Result > 0 and Result or nil
+    --- Iniciar la busqueda
+    recursiveSearch(array)
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Devolver el resultado
+    return #results > 0 and results or nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
