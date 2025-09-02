@@ -179,7 +179,7 @@ function GPrefix.get_tables(array, key, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Validación
-    if GPrefix.is_table(array) then return end
+    if not GPrefix.is_table(array) then return end
     if key == nil and value == nil then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -191,7 +191,7 @@ function GPrefix.get_tables(array, key, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Buscar las coincidencia
-    local function recursiveSearch(tbl)
+    local function recursive_search(tbl)
         local Found = false
 
         -- Caso: key y value
@@ -228,7 +228,7 @@ function GPrefix.get_tables(array, key, value)
         --- Buscar en las subtablas
         for _, v in pairs(tbl) do
             if GPrefix.is_table(v) then
-                recursiveSearch(v)
+                recursive_search(v)
             end
         end
     end
@@ -236,7 +236,7 @@ function GPrefix.get_tables(array, key, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Iniciar la busqueda
-    recursiveSearch(array)
+    recursive_search(array)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
