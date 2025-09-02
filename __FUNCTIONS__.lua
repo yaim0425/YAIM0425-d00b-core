@@ -170,8 +170,8 @@ end
 
 --- Busca de forma recursiva el key y value en la tabla dada
 --- @param array table # Tabla en la cual buscar
---- @param key string # propiedad a buscar
---- @param value string # Valor a buscar
+--- @param key any # propiedad a buscar
+--- @param value any # Valor a buscar
 --- @return any #
 ---- Array con las tablas que contienen el key y value dado
 ---- o nil si no lo encuentra
