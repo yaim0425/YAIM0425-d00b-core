@@ -344,30 +344,13 @@ end
 function GPrefix.has_id(name, id)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- validar prefijo inicial
-    if not GPrefix.has_prefix(name) then
-        return false
-    end
-
-    --- validar id en el nombre (rodeado de guiones)
-    return name:find("%-" .. id .. "%-") ~= nil
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
---- Valida si el nombre contiene el prefijo
---- @param name string
---- @return boolean
-function GPrefix.has_prefix(name)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- validar prefijo inicial
+    --- Validar prefijo inicial
     if not name:find("^" .. GPrefix.name .. "%-") then
         return false
     end
 
-    --- Lo contiene
-    return true
+    --- Validar id solo si está presente
+    return name:find("%-" .. id .. "%-") ~= nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
