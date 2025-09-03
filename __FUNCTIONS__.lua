@@ -337,11 +337,28 @@ function GPrefix.delete_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
---- Valida si el nombre pertenece al prefijo y opcionalmente contiene el id
+--- Valida si el nombre pertenece al MOD indicado
 --- @param name string
---- @param id string|nil
+--- @param id string
 --- @return boolean
 function GPrefix.has_id(name, id)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- validar prefijo inicial
+    if not GPrefix.has_prefix(name) then
+        return false
+    end
+
+    --- validar id en el nombre (rodeado de guiones)
+    return name:find("%-" .. id .. "%-") ~= nil
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Valida si el nombre contiene el prefijo
+--- @param name string
+--- @return boolean
+function GPrefix.has_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- validar prefijo inicial
@@ -349,13 +366,8 @@ function GPrefix.has_id(name, id)
         return false
     end
 
-    --- si no hay id, solo importa el prefijo
-    if not id then
-        return true
-    end
-
-    --- validar id en el nombre (rodeado de guiones)
-    return name:find("%-" .. id .. "%-") ~= nil
+    --- Lo contiene
+    return true
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
