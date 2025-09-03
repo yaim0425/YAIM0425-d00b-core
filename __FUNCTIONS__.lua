@@ -337,13 +337,25 @@ function GPrefix.delete_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
---- Verifica si un ID específico está contenido exactamente en una cadena
+--- Valida si el nombre pertenece al prefijo y opcionalmente contiene el id
 --- @param name string
---- @param id string
+--- @param id string|nil
+--- @return boolean
 function GPrefix.has_id(name, id)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    return string.find(name, "%-" .. id .. "%-") ~= nil
+    --- validar prefijo inicial
+    if not name:find("^" .. GPrefix.name .. "%-") then
+        return false
+    end
+
+    --- si no hay id, solo importa el prefijo
+    if not id then
+        return true
+    end
+
+    --- validar id en el nombre (rodeado de guiones)
+    return name:find("%-" .. id .. "%-") ~= nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
