@@ -267,59 +267,46 @@ function GPrefix.split_name_folder(that_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Dividir el nombre por guiones
-    local Id, Name = GPrefix.get_id_and_name(Mod_name)
+    local IDs, Name = GPrefix.get_id_and_name(Mod_name)
 
     --- Información propia del mod
-    that_mod.id = Id
+    that_mod.id = IDs and IDs[1] or nil
     that_mod.name = Name
-    that_mod.prefix = GPrefix.name .. "-" .. Id .. "-"
+    that_mod.prefix = GPrefix.name .. "-" .. IDs .. "-"
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
---- Separa de la cadena dada el id y el nombre
+--- Separa de la cadena dada los IDs y el resto del nombre
 --- @param full_name string
---- @return any # id del MOD o los MODs
---- @return any # Nombre
+--- @return table|nil # IDs encontrados como lista
+--- @return string|nil # Nombre sin los IDs ni el prefijo
 function GPrefix.get_id_and_name(full_name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    -- Verificar si comienza con el prefijo esperado
-    if not full_name:match("^" .. GPrefix.name .. "%-") then
-        return nil, nil
-    end
-
-    --- Remover el prefijo obligatorio
-    local Body = full_name:gsub("^" .. GPrefix.name .. "%-", "")
-
-    --- Separar por guiones
+    -- Dividir en partes separadas por guiones
     local Parts = {}
-    for segment in string.gmatch(Body, "[^%-]+") do
-        table.insert(Parts, segment)
+    for segment in string.gmatch(full_name, "[^%-]+") do
+        if segment ~= GPrefix.name then
+            table.insert(Parts, segment)
+        end
     end
 
-    --- Separar IDs (los que son numéricos) del nombre (el resto)
-    local IDs = {}
-    local i = 1
-    while i <= #Parts and Parts[i]:match("^%d%d%d%d$") do
-        table.insert(IDs, Parts[i])
-        i = i + 1
+    -- Extraer los IDs válidos
+    local IDs, Rest_Parts = {}, {}
+    for _, Part in ipairs(Parts) do
+        if Part:match("^[a-z]%d[A-Z]%d[a-z]$") then
+            table.insert(IDs, Part)
+        else
+            table.insert(Rest_Parts, Part)
+        end
     end
 
-    --- No hay IDs
-    if #IDs == 0 then
-        return nil, nil
-    end
+    -- No hay IDs → no se puede separar
+    if #IDs == 0 then return nil, nil end
 
-    --- Resto del nombre (lo que queda luego de los IDs)
-    local Rest = table.concat(Parts, "-", i)
-
-    --- Si hay solo un ID, devolverlo como string
-    if #IDs == 1 then
-        return IDs[1], Rest
-    else
-        return IDs, Rest
-    end
+    -- Devolver IDs y resto del nombre directamente
+    return IDs, #Rest_Parts > 0 and table.concat(Rest_Parts, "-") or nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
