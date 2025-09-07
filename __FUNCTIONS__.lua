@@ -34,6 +34,37 @@ function GPrefix.is_userdata(value) return type(value) == "userdata" end
 ---> Funciones avanzadas <---
 ---------------------------------------------------------------------------------------------------
 
+--- Deep copy simple (cada tabla se copia siempre, sin compartir referencias)
+--- @param orig any
+--- @return any
+function GPrefix.copy(orig)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Valdación
+    if type(orig) ~= "table" then
+        return orig
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Variable de salida
+    local Copy = {}
+
+    --- Copiar la información
+    for k, v in pairs(orig) do
+        local New_key = (type(k) == "table") and GPrefix.copy(k) or k
+        local New_val = (type(v) == "table") and GPrefix.copy(v) or v
+        Copy[New_key] = New_val
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Devolver la copia
+    return Copy
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 --- Contar los elementos en la tabla
 ---- __ADVERTENCIA:__ El conteo NO es recursivo
 --- @param array table # Tabla en la cual buscar
@@ -139,37 +170,78 @@ end
 
 --- Busca de forma recursiva el key y value en la tabla dada
 --- @param array table # Tabla en la cual buscar
---- @param key string # propiedad a buscar
---- @param value string # Valor a buscar
+--- @param key any # propiedad a buscar
+--- @param value any # Valor a buscar
 --- @return any #
 ---- Array con las tablas que contienen el key y value dado
 ---- o nil si no lo encuentra
 function GPrefix.get_tables(array, key, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Valores a devolver
-    local Result = {}
+    --- Validación
+    if not GPrefix.is_table(array) then return end
+    if key == nil and value == nil then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Hacer la busqueda
-    local function get_table(e)
-        for _, element in pairs(e) do
-            if GPrefix.is_table(element) then
-                if element[key] == value then
-                    table.insert(Result, element)
-                else
-                    get_table(element)
+    --- Coincidencias encontradas
+    local Results = {}
+    local Added_results = {}
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Buscar las coincidencia
+    local function recursive_search(tbl)
+        local Found = false
+
+        -- Caso: key y value
+        if key ~= nil and value ~= nil then
+            if tbl[key] == value then
+                Found = true
+            end
+        end
+
+        -- Caso: solo key
+        if key ~= nil and value == nil then
+            if tbl[key] ~= nil then
+                Found = true
+            end
+        end
+
+        -- Caso: solo value
+        if key == nil and value ~= nil then
+            for _, v in pairs(tbl) do
+                if v == value then
+                    Found = true
+                    break
                 end
+            end
+        end
+
+        --- Agregar la tabla
+        if Found then
+            if Added_results[tbl] == nil then
+                table.insert(Results, tbl)
+            end
+        end
+
+        --- Buscar en las subtablas
+        for _, v in pairs(tbl) do
+            if GPrefix.is_table(v) then
+                recursive_search(v)
             end
         end
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Validar la respuesta
-    get_table(array)
-    return #Result > 0 and Result or nil
+    --- Iniciar la busqueda
+    recursive_search(array)
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Devolver el resultado
+    return #Results > 0 and Results or nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -195,59 +267,46 @@ function GPrefix.split_name_folder(that_mod)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Dividir el nombre por guiones
-    local Id, Name = GPrefix.get_id_and_name(Mod_name)
+    local IDs, Name = GPrefix.get_id_and_name(Mod_name)
 
     --- Información propia del mod
-    that_mod.id = Id
+    that_mod.id = IDs and IDs[1] or nil
     that_mod.name = Name
-    that_mod.prefix = GPrefix.name .. "-" .. Id .. "-"
+    that_mod.prefix = GPrefix.name .. "-" .. IDs .. "-"
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
---- Separa de la cadena dada el id y el nombre
+--- Separa de la cadena dada los IDs y el resto del nombre
 --- @param full_name string
---- @return any # id del MOD o los MODs
---- @return any # Nombre
+--- @return table|nil # IDs encontrados como lista
+--- @return string|nil # Nombre sin los IDs ni el prefijo
 function GPrefix.get_id_and_name(full_name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    -- Verificar si comienza con el prefijo esperado
-    if not full_name:match("^" .. GPrefix.name .. "%-") then
-        return nil, nil
-    end
-
-    --- Remover el prefijo obligatorio
-    local Body = full_name:gsub("^" .. GPrefix.name .. "%-", "")
-
-    --- Separar por guiones
+    -- Dividir en partes separadas por guiones
     local Parts = {}
-    for segment in string.gmatch(Body, "[^%-]+") do
-        table.insert(Parts, segment)
+    for segment in string.gmatch(full_name, "[^%-]+") do
+        if segment ~= GPrefix.name then
+            table.insert(Parts, segment)
+        end
     end
 
-    --- Separar IDs (los que son numéricos) del nombre (el resto)
-    local IDs = {}
-    local i = 1
-    while i <= #Parts and Parts[i]:match("^%d%d%d%d$") do
-        table.insert(IDs, Parts[i])
-        i = i + 1
+    -- Extraer los IDs válidos
+    local IDs, Rest_Parts = {}, {}
+    for _, Part in ipairs(Parts) do
+        if Part:match("^[a-z]%d[A-Z]%d[a-z]$") then
+            table.insert(IDs, Part)
+        else
+            table.insert(Rest_Parts, Part)
+        end
     end
 
-    --- No hay IDs
-    if #IDs == 0 then
-        return nil, nil
-    end
+    -- No hay IDs → no se puede separar
+    if #IDs == 0 then return nil, nil end
 
-    --- Resto del nombre (lo que queda luego de los IDs)
-    local Rest = table.concat(Parts, "-", i)
-
-    --- Si hay solo un ID, devolverlo como string
-    if #IDs == 1 then
-        return IDs[1], Rest
-    else
-        return IDs, Rest
-    end
+    -- Devolver IDs y resto del nombre directamente
+    return IDs, #Rest_Parts > 0 and table.concat(Rest_Parts, "-") or nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -265,13 +324,14 @@ function GPrefix.delete_prefix(name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
---- Verifica si un ID específico está contenido exactamente en una cadena
+--- Valida si el nombre contiene el id indicado
 --- @param name string
 --- @param id string
+--- @return boolean
 function GPrefix.has_id(name, id)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    return string.find(name, "%-" .. id .. "%-") ~= nil
+    return name:find("%-" .. id .. "%-") ~= nil
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end

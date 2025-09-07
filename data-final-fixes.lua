@@ -64,7 +64,7 @@ function GPrefix.duplicate_item(item)
 
     --- Copiar las propiedades
     for _, copy_this in pairs(Copy_this) do
-        Item[copy_this] = util.copy(item[copy_this])
+        Item[copy_this] = GPrefix.copy(item[copy_this])
     end
 
     --- Devolver el nuevo objeto
@@ -84,7 +84,7 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
     --- Validación
     if not GPrefix.is_string(old_name) then return nil end
     if not GPrefix.is_string(new_name) then return nil end
-    local Subgroup = util.copy(GPrefix.subgroups[old_name])
+    local Subgroup = GPrefix.copy(GPrefix.subgroups[old_name])
     if GPrefix.subgroups[new_name] then return nil end
     if not Subgroup then return nil end
 
@@ -124,6 +124,20 @@ end
 --- @param recipe table # receta a buscar
 --- @return any # Tecnología que desbloquea la receta dada
 function GPrefix.get_technology(recipe)
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validación
+    if not recipe then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Variable a usar
@@ -224,16 +238,22 @@ end
 --- @param tech table
 --- @param new_recipe table
 --- @return any
-function GPrefix.create_tech(prefix, tech, new_recipe, name_new_tech)
+function GPrefix.create_tech(prefix, tech, new_recipe, info)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Validación
     if not tech then return end
+    info = info or {}
+
+    --- Crea la receta de ser necesario
+    if not data.raw.recipe[new_recipe.name] then
+        GPrefix.extend(new_recipe)
+    end
 
     --- Nombre de la nueva tecnología
     local Tech_name = tech and tech.name or ""
     Tech_name = GPrefix.delete_prefix(Tech_name)
-    Tech_name = name_new_tech or prefix .. Tech_name
+    Tech_name = info.name or prefix .. Tech_name
 
     --- La tecnología ya existe
     if GPrefix.tech.raw[Tech_name] then
@@ -242,8 +262,8 @@ function GPrefix.create_tech(prefix, tech, new_recipe, name_new_tech)
     end
 
     --- Preprar la nueva tecnología
-    local Tech = util.copy(tech)
-    Tech.prerequisites = { Tech.name }
+    local Tech = GPrefix.copy(tech)
+    Tech.prerequisites = info.prerequisites or { Tech.name }
     Tech.name = Tech_name
     Tech.localised_description = nil
     Tech.effects = { {
@@ -253,11 +273,6 @@ function GPrefix.create_tech(prefix, tech, new_recipe, name_new_tech)
 
     --- Crear la nueva tecnología
     GPrefix.extend(Tech)
-
-    --- Crea la receta de ser necesario
-    if not data.raw.recipe[new_recipe.name] then
-        GPrefix.extend(new_recipe)
-    end
 
     --- Devolver la tecnología
     return Tech
@@ -271,34 +286,9 @@ end
 function GPrefix.add_recipe_to_tech_with_recipe(old_recipe_name, new_recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Crea la receta de ser necesario
-    if not data.raw.recipe[new_recipe.name] then
-        GPrefix.extend(new_recipe)
-    end
-
-    --- Renombrar la variable
-    local Recipe = GPrefix.tech.recipe
-
-    --- Espacio para guardar la info
-    local Space = Recipe[new_recipe.name] or {}
-    Recipe[new_recipe.name] = Space
-
-    --- Transferir a info al espacio
-    for _, tech in pairs(Recipe[old_recipe_name] or {}) do
-        --- Evitar duplicados
-        if not Space[tech.technology.name] then
-            --- Guardar la info
-            Space[tech.technology.name] = tech
-
-            --- Agregar la nueva receta
-            table.insert(tech.effects, {
-                type = "unlock-recipe",
-                recipe = new_recipe.name
-            })
-
-            --- Desactivar la receta
-            new_recipe.enabled = false
-        end
+    --- Agregar la receta a cada tecnología
+    for _, tech in pairs(GPrefix.tech.recipe[old_recipe_name] or {}) do
+        GPrefix.add_recipe_to_tech(tech.name, new_recipe)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
