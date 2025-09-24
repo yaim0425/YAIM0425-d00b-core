@@ -713,6 +713,7 @@ function This_MOD.filter_data()
 
         --- Vaidación
         if GMOD.is_hidde(recipe) then return end
+        recipe.energy_required = recipe.energy_required or 0.5
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
