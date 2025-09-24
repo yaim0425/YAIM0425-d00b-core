@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---------------------------------------------------------------------------------------------------
 ---> data-final-fixes.lua <---
 ---------------------------------------------------------------------------------------------------
@@ -6,11 +7,17 @@
 if GPrefix and GPrefix.name then return end
 
 ---------------------------------------------------------------------------------------------------
+=======
+---------------------------------------------------------------------------
+---[ data-final-fixes.lua ]---
+---------------------------------------------------------------------------
+>>>>>>> nuevo/main
 
 
 
 
 
+<<<<<<< HEAD
 ---------------------------------------------------------------------------------------------------
 ---> Cargar las funciones y constantes <---
 ---------------------------------------------------------------------------------------------------
@@ -20,11 +27,34 @@ require("__FUNCTIONS__")
 require("util")
 
 ---------------------------------------------------------------------------------------------------
+=======
+---------------------------------------------------------------------------
+---[ Validar si se cargó antes ]---
+---------------------------------------------------------------------------
+
+if GMOD and GMOD.name then return end
+
+---------------------------------------------------------------------------
 
 
 
 
 
+---------------------------------------------------------------------------
+---[ Cargar las funciones y constantes ]---
+---------------------------------------------------------------------------
+
+require("__CONSTANTS__")
+require("__FUNCTIONS__")
+
+---------------------------------------------------------------------------
+>>>>>>> nuevo/main
+
+
+
+
+
+<<<<<<< HEAD
 ---------------------------------------------------------------------------------------------------
 ---> Funciones globales <---
 ---------------------------------------------------------------------------------------------------
@@ -71,6 +101,28 @@ function GPrefix.duplicate_item(item)
     return Item
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+---------------------------------------------------------------------------
+---[ Funciones globales ]---
+---------------------------------------------------------------------------
+
+--- Validar si está oculta
+--- @param element table
+--- @return boolean
+function GMOD.is_hidde(element)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validar los valores
+    local Hidden = false
+    Hidden = Hidden or element.hidden
+    Hidden = Hidden or element.parameter
+    Hidden = Hidden or GMOD.get_key(element.flags or {}, "hidden")
+
+    --- Devolver el resultado
+    return Hidden
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 end
 
 --- Crea un subgroup despues del dado
@@ -78,6 +130,7 @@ end
 --- @param new_name string # Nombre a asignar al duplicado
 --- @return any # Devuelve el duplicado
 --- o una tabla vacio si se poduce un error
+<<<<<<< HEAD
 function GPrefix.duplicate_subgroup(old_name, new_name)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -89,6 +142,28 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
     if not Subgroup then return nil end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+function GMOD.duplicate_subgroup(old_name, new_name)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if type(old_name) ~= "string" then return end
+    if type(new_name) ~= "string" then return end
+    if GMOD.subgroups[new_name] then return end
+    local Subgroup = GMOD.copy(GMOD.subgroups[old_name])
+    if not Subgroup then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Buscar un order disponible
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Order de referencia
     local Order = {}
@@ -99,10 +174,17 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
     --- Buscar el siguiente order
     while true do
         Order[2] = Order[2] + 1
+<<<<<<< HEAD
         if Order[2] - Order[3] > 9 then return nil end
         Order[1] = GPrefix.pad_left_zeros(#Order[1], Order[2])
 
         for _, subgroup in pairs(GPrefix.subgroups) do
+=======
+        if Order[2] - Order[3] > 9 then return end
+        Order[1] = GMOD.pad_left_zeros(#Order[1], Order[2])
+
+        for _, subgroup in pairs(GMOD.subgroups) do
+>>>>>>> nuevo/main
             if subgroup.group == Subgroup.group then
                 Order[4] = subgroup.order == Order[1]
                 if Order[4] then break end
@@ -111,12 +193,26 @@ function GPrefix.duplicate_subgroup(old_name, new_name)
         if not Order[4] then break end
     end
 
+<<<<<<< HEAD
     --- Crear el subgroup
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear el subgroup
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+>>>>>>> nuevo/main
     Subgroup.name = new_name
     Subgroup.order = Order[1]
     data:extend({ Subgroup })
     return Subgroup
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
@@ -343,23 +439,243 @@ function GPrefix.get_item_create_entity(entity)
         if result.type == "item" then
             local Item = GPrefix.items[result.name]
             if Item.place_result == entity.name then
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Obtiene el objeto que crea la entidad dada
+--- @param element table
+--- @return any
+function GMOD.get_item_create(element, propiety)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if not element.minable then return end
+    if not element.minable.results then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Buscar el objeto
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for _, result in pairs(element.minable.results) do
+        if result.type == "item" then
+            local Item = GMOD.items[result.name] or {}
+            if Item[propiety] == element.name then
+>>>>>>> nuevo/main
                 return Item
             end
         end
     end
 
+<<<<<<< HEAD
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Devuelve la tecnología que desbloquea una o varias recetas
+--- @param value table # receta (tabla con .name) o lista de recetas
+--- @return table|nil # Tecnología que desbloquea la receta o recetas
+function GMOD.get_technology(value)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Lista de nombres de recetas
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validación
+    if type(value) == "nil" then return end
+
+    --- Enlistar las recetas
+    local Recipe_list = {}
+    if type(value) == "string" then
+        table.insert(Recipe_list, value)
+    elseif value.name then
+        table.insert(Recipe_list, value.name)
+    elseif type(value) == "table" then
+        for _, r in pairs(value) do
+            if type(r) == "string" then
+                table.insert(Recipe_list, r)
+            elseif type(r) == "table" and r.name then
+                table.insert(Recipe_list, r.name)
+            end
+        end
+    end
+
+    --- Validación
+    if #Recipe_list == 0 then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Función auxiliar para comparar dos tecnologías
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function compare(old, new, expensive)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        if not old then return new end
+        if not new then return old end
+
+        local Old_unit = old.unit or {}
+        local New_unit = new.unit or {}
+
+        local Old_count = Old_unit.count or (Old_unit.count_formula and math.huge) or 0
+        local New_count = New_unit.count or (New_unit.count_formula and math.huge) or 0
+
+        local Old_ingredients = Old_unit.ingredients and #Old_unit.ingredients or 0
+        local New_ingredients = New_unit.ingredients and #New_unit.ingredients or 0
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        -- Si buscamos la más barata
+        if not expensive then
+            if Old_ingredients ~= New_ingredients then
+                return (Old_ingredients > New_ingredients) and new or old
+            elseif Old_count ~= New_count then
+                return (Old_count > New_count) and new or old
+            else
+                return (new.name < old.name) and new or old -- desempate por nombre
+            end
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        -- Si buscamos la más cara
+        if Old_ingredients ~= New_ingredients then
+            return (Old_ingredients < New_ingredients) and new or old
+        elseif Old_count ~= New_count then
+            return (Old_count < New_count) and new or old
+        else
+            return (new.name > old.name) and new or old -- desempate por nombre
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Buscar tecnologías que desbloquean las recetas
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function find_techs_for_recipes(recipes)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Techs = {}
+        for _, tech in pairs(data.raw.technology) do
+            for _, effect in pairs(tech.effects or {}) do
+                if effect.type == "unlock-recipe" then
+                    for _, recipe_name in ipairs(recipes) do
+                        if effect.recipe == recipe_name then
+                            Techs[tech.name] = tech
+                        end
+                    end
+                end
+            end
+        end
+        return Techs
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Buscar tecnologías directas
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local Recipe_techs = find_techs_for_recipes(Recipe_list)
+
+    if next(Recipe_techs) then
+        local Key = next(Recipe_techs)
+        local Selected = Recipe_techs[Key]
+        for _, tech in pairs(Recipe_techs) do
+            Selected = compare(Selected, tech, false)
+        end
+        return Selected
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Si no hay directas, buscar por los ingredientes
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local Ingredient_recipes = {}
+    for _, recipe_name in ipairs(Recipe_list) do
+        local Recipe = data.raw.recipe[recipe_name]
+        for _, ingredient in pairs(Recipe.ingredients) do
+            local Name = ingredient.name or ingredient[1]
+            for _, recipe in pairs(GMOD.recipes[Name] or {}) do
+                table.insert(Ingredient_recipes, recipe.name)
+            end
+        end
+    end
+
+    local Ingredient_techs = find_techs_for_recipes(Ingredient_recipes)
+
+    if next(Ingredient_techs) then
+        local Key = next(Ingredient_techs)
+        local Selected = Ingredient_techs[Key]
+        for _, tech in pairs(Ingredient_techs) do
+            Selected = compare(Selected, tech, true)
+        end
+        return Selected
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Elimina el indicador del nombre dado
+--- @param name string # __Ejemplo:__ prefix-i0MOD00-i0MOD20-name
+--- @return string # __Ejemplo:__ # i0MOD00-i0MOD20-name
+---- __ids-name,__ si se cumple el patron
+---- o el nombre dado si no es así
+function GMOD.delete_prefix(name)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    return name:gsub(GMOD.name .. "%-", "") or name
+
+>>>>>>> nuevo/main
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Cargar los prototipos al juego
 --- @param ... any
+<<<<<<< HEAD
 function GPrefix.extend(...)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+function GMOD.extend(...)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Renombrar los parametros dados
     local Prototypes = { ... }
     if #Prototypes == 0 then return end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Clasificar y guardar el prototipo
@@ -503,11 +819,149 @@ function GPrefix.extend(...)
 end
 
 ---------------------------------------------------------------------------------------------------
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
 
 
 
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Clasificar y guardar el prototipo
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function extend(prototype)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Recipes
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        while true do
+            if prototype.type ~= "recipe" then break end
+
+            GMOD.recipes[prototype.name] = GMOD.recipes[prototype.name] or {}
+            table.insert(GMOD.recipes[prototype.name], prototype)
+            return
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Fluids
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        while true do
+            if prototype.type ~= "fluid" then break end
+
+            GMOD.fluids[prototype.name] = prototype
+            return
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Items
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        while true do
+            if not prototype.stack_size then break end
+
+            GMOD.items[prototype.name] = prototype
+            return
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Tiles
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        while true do
+            if prototype.type ~= "tile" then break end
+            local Item = GMOD.get_item_create(prototype, "place_as_tile")
+            if not Item then break end
+
+            GMOD.tiles[Item.name] = GMOD.tiles[Item.name] or {}
+            table.insert(GMOD.tiles[Item.name], prototype)
+            return
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Equipments
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        while true do
+            if not prototype.shape then break end
+
+            GMOD.equipments[prototype.name] = prototype
+            return
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Entities
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        while true do
+            if not prototype.max_health then break end
+            if GMOD.is_hidde(prototype) then break end
+            local Item = GMOD.get_item_create(prototype, "place_result")
+            if not Item then break end
+
+            GMOD.entities[Item.name] = prototype
+            return
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Guardar el nuevo prototipo
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for _, arg in pairs(Prototypes) do
+        data:extend({ arg })
+        extend(arg)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+---------------------------------------------------------------------------
+>>>>>>> nuevo/main
+
+
+
+
+
+<<<<<<< HEAD
 ---------------------------------------------------------------------------------------------------
 ---> Funciones internas <---
 ---------------------------------------------------------------------------------------------------
@@ -553,11 +1007,57 @@ function This_MOD.start()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Crear espacios entre los elementos
+=======
+---------------------------------------------------------------------------
+---[ Contenedor de este archivo ]---
+---------------------------------------------------------------------------
+
+local This_MOD = GMOD.get_id_and_name()
+if not This_MOD then return end
+GMOD[This_MOD.id] = This_MOD
+
+---------------------------------------------------------------------------
+
+
+
+
+
+---------------------------------------------------------------------------
+---[ Inicio del MOD ]---
+---------------------------------------------------------------------------
+
+function This_MOD.start()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Darle formato a las propiedades
+    This_MOD.format_minable()
+    This_MOD.format_icons()
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Clasificar la información de data.raw
+    --- GMOD.items
+    --- GMOD.tiles
+    --- GMOD.fluids
+    --- GMOD.recipes
+    --- GMOD.entities
+    --- GMOD.equipments
+    This_MOD.filter_data()
+
+    --- Clasificar la información de settings.startup
+    --- GMOD.Setting
+    This_MOD.load_setting()
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Cambiar los orders de los elementos
+>>>>>>> nuevo/main
     This_MOD.change_orders()
 
     --- Establecer traducción en todos los elementos
     This_MOD.set_localised()
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
@@ -661,10 +1161,195 @@ function This_MOD.filter_data()
 
         --- No es usable
         if recipe.parameter then return end
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+---------------------------------------------------------------------------
+
+
+
+
+
+---------------------------------------------------------------------------
+---[ Funciones locales ]---
+---------------------------------------------------------------------------
+
+--- Darle formato a la propiedad "minable"
+function This_MOD.format_minable()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Hacer el cambio
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function format(element)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Validar
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        if not element.minable then return end
+        if not element.minable.result then return end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Dar el formato deseado
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        element.minable.results = { {
+            type = "item",
+            name = element.minable.result,
+            amount = element.minable.count or 1
+        } }
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Borrar los valores reubicados
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        element.minable.result = nil
+        element.minable.count = nil
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Hacer el cambio
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for _, elements in pairs(data.raw) do
+        for _, element in pairs(elements) do
+            format(element)
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Darle formato a la propiedad "icons"
+function This_MOD.format_icons()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Hacer el cambio
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function format(element)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Validar
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        if element.icons then return end
+        if not element.icon then return end
+        if type(element.icon) ~= "string" then return end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Dar el formato deseado
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        element.icons = { {
+            icon = element.icon,
+            icon_size = element.icon_size ~= 64 and element.icon_size or nil
+        } }
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Borrar los valores reubicados
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        element.icon_size = nil
+        element.icon = nil
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Hacer el cambio
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for _, elements in pairs(data.raw) do
+        for _, element in pairs(elements) do
+            format(element)
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+---------------------------------------------------------------------------
+
+--- Clasificar la información de data.raw
+--- GMOD.items
+--- GMOD.tiles
+--- GMOD.fluids
+--- GMOD.recipes
+--- GMOD.entities
+--- GMOD.equipments
+function This_MOD.filter_data()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Contenedores finales
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    GMOD.entities = {}
+    GMOD.equipments = {}
+    GMOD.fluids = {}
+    GMOD.items = {}
+    GMOD.recipes = {}
+    GMOD.tiles = {}
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Agrega las Recetas, Suelos y Objetos
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Agregar la receta a GMOD.recipes
+    local function add_recipe(recipe)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- Vaidación
+        if GMOD.is_hidde(recipe) then return end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
         --- Recorrer los resultados
         for _, result in pairs(recipe.results or {}) do
             --- Espacio a usar
+<<<<<<< HEAD
             local Recipes = GPrefix.recipes[result.name] or {}
             GPrefix.recipes[result.name] = Recipes
 
@@ -757,6 +1442,113 @@ function This_MOD.filter_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Cargar las Recetas, Suelos, Fluidos y Objetos
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+            local Recipes = GMOD.recipes[result.name] or {}
+            GMOD.recipes[result.name] = Recipes
+
+            --- Agregar la receta si no se encuentra
+            local Found = GMOD.get_key(Recipes, recipe)
+            if not Found then table.insert(Recipes, recipe) end
+
+            --- Guardar referencia del resultado
+            if result.type == "item" then GMOD.items[result.name] = true end
+            if result.type == "fluid" then GMOD.fluids[result.name] = true end
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- Guardar referencia de los ingredientes
+        for _, ingredient in pairs(recipe.ingredients or {}) do
+            if ingredient.type == "item" then GMOD.items[ingredient.name] = true end
+            if ingredient.type == "fluid" then GMOD.fluids[ingredient.name] = true end
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- Agregar el suelo a GMOD.tiles
+    local function add_tile(tile)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- Validación
+        if not tile.minable then return end
+        if not tile.minable.results then return end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- Verificar cada resultado
+        for _, result in pairs(tile.minable.results) do
+            --- El suelo no tiene receta
+            if not GMOD.items[result.name] then
+                GMOD.items[result.name] = true
+            end
+
+            --- Espacio a usar
+            local Titles = GMOD.tiles[result.name] or {}
+            GMOD.tiles[result.name] = Titles
+
+            --- Agregar el suelo si no se encuentra
+            local Found = GMOD.get_key(Titles, tile)
+            if not Found then table.insert(Titles, tile) end
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- Agregar el item a GMOD.items
+    local function add_item(item)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- Validación
+        if not item.stack_size then return end
+        if GMOD.is_hidde(item) then return end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- Guardar objeto
+        GMOD.items[item.name] = item
+
+        --- Guardar suelo de no estarlo
+        if item.place_as_tile and not GMOD.tiles[item.name] then
+            local Tile = data.raw.tile[item.place_as_tile.result]
+            GMOD.tiles[item.name] = GMOD.tiles[item.name] or {}
+            table.insert(GMOD.tiles[item.name], Tile)
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- Validar las propiedades
+        for index, property in pairs({
+            entities = "place_result",
+            equipments = "place_as_equipment_result"
+        }) do
+            if item[property] then
+                --- Objeto de igual nombre que el resultado
+                if item[property] == item.name then
+                    GMOD[index][item.name] = true
+                end
+
+                --- Objeto de distinto nombre que el resultado
+                if item[property] ~= item.name then
+                    GMOD[index][item[property]] = true
+                    GMOD[index][item.name] = item[property]
+                end
+            end
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Cargar las Recetas, Suelos, Fluidos y Objetos
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Recorrer las recetas
     for _, recipe in pairs(data.raw.recipe) do
@@ -764,9 +1556,15 @@ function This_MOD.filter_data()
     end
 
     --- Cargar los fluidos
+<<<<<<< HEAD
     for name, _ in pairs(GPrefix.fluids) do
         local Fluid = data.raw.fluid[name]
         if Fluid then GPrefix.fluids[name] = Fluid end
+=======
+    for name, _ in pairs(GMOD.fluids) do
+        local Fluid = data.raw.fluid[name]
+        if Fluid then GMOD.fluids[name] = Fluid end
+>>>>>>> nuevo/main
     end
 
     --- Cargar los suelos
@@ -781,6 +1579,7 @@ function This_MOD.filter_data()
         end
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -807,6 +1606,32 @@ function This_MOD.filter_data()
         --- Cargar de forma directa
         for name, value in pairs(Value) do
             if not GPrefix.is_string(value) then
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Buscar y cargar las Entidades y los Equipos
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Evitar estos tipos
+    local Ignore_types = {
+        tile = true,
+        fluid = true,
+        recipe = true
+    }
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Recorrer los elementos
+    for _, elements in pairs({ GMOD.entities, GMOD.equipments }) do
+        --- Cargar de forma directa
+        for name, value in pairs(elements) do
+            if type(value) == "boolean" then
+>>>>>>> nuevo/main
                 for _, element in pairs(data.raw) do
                     --- Buscar la entidad
                     element = element[name]
@@ -814,6 +1639,7 @@ function This_MOD.filter_data()
                     --- El ciclo es solo para saltar
                     --- elementos no deseados
                     repeat
+<<<<<<< HEAD
                         --- Coasa evitar
                         if not element then break end
                         if GPrefix.get_key(ignore_types, element.type) then break end
@@ -822,25 +1648,52 @@ function This_MOD.filter_data()
                             if not element.minable.results then break end
                         end
                         if Key == "equipments" then
+=======
+                        --- Validación
+                        if not element then break end
+                        if Ignore_types[element.type] then break end
+
+                        --- Entidades
+                        if elements == GMOD.entities then
+                            if GMOD.is_hidde(element) then break end
+                            if not element.max_health then break end
+                        end
+
+                        --- Equipos
+                        if elements == GMOD.equipments then
+>>>>>>> nuevo/main
                             if not element.shape then break end
                             if not element.sprite then break end
                         end
 
+<<<<<<< HEAD
                         --- Guardar entidad
                         Value[name] = element
+=======
+                        --- Guardar
+                        elements[name] = element
+>>>>>>> nuevo/main
                     until true
                 end
             end
         end
 
+<<<<<<< HEAD
         --- Cargar las entidades de forma indirecta
         for name, value in pairs(Value) do
             if GPrefix.is_string(value) then
                 Value[name] = Value[value]
+=======
+        --- Cargar de forma indirecta
+        for name, value in pairs(elements) do
+            if type(value) == "string" then
+                elements[name] = elements[value]
+>>>>>>> nuevo/main
             end
         end
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -848,10 +1701,22 @@ function This_MOD.filter_data()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Eliminar los elementos que no se pudieron cargar
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Eliminar los elementos que no se pudieron cargar
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Variable contenedora
     local Info = ""
     local Delete = {}
+<<<<<<< HEAD
     local Array = {}
 
     --- Valores a evaluar
@@ -862,28 +1727,52 @@ function This_MOD.filter_data()
     Array.Equipment = GPrefix.equipments
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    local Array = {
+        Item = GMOD.items,
+        Tile = GMOD.tiles,
+        Fluid = GMOD.fluids,
+        Entity = GMOD.entities,
+        Equipment = GMOD.equipments
+    }
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Identificar valores vacios
     for iKey, elemnts in pairs(Array) do
         for jKey, elemnt in pairs(elemnts) do
+<<<<<<< HEAD
             if GPrefix.is_boolean(elemnt) then
                 Info = Info .. "\n\t\t"
                 Info = Info .. iKey .. " not found or hidden: " .. jKey
                 table.insert(Delete, jKey)
+=======
+            if type(elemnt) == "boolean" then
+                Info = Info .. "\n\t\t"
+                Info = Info .. iKey .. " not found or hidden: " .. jKey
+                table.insert(Delete, { elemnts, jKey })
+>>>>>>> nuevo/main
             end
         end
     end
 
     --- Eliminar valores vacios
+<<<<<<< HEAD
     for _, list in pairs(Array) do
         for _, value in pairs(Delete) do
             list[value] = nil
         end
+=======
+    for _, value in pairs(Delete) do
+        value[1][value[2]] = nil
+>>>>>>> nuevo/main
     end
 
     --- Imprimir un informe de lo eliminados
     if #Delete >= 1 then log(Info) end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
@@ -1005,11 +1894,61 @@ function This_MOD.change_orders()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Inicializar las vaiables
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Clasificar la información de settings.startup
+--- GMOD.Setting
+function This_MOD.load_setting()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if GMOD.setting then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Cargar las opciones de configuración
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Inicializar el contenedor
+    GMOD.setting = {}
+
+    --- Recorrer las opciones de configuración
+    for option, value in pairs(settings.startup) do
+        --- Separar los datos esperados
+        local That_MOD = GMOD.get_id_and_name(option)
+
+        --- Validar los datos obtenidos
+        if That_MOD then
+            GMOD.setting[That_MOD.id] = GMOD.setting[That_MOD.id] or {}
+            GMOD.setting[That_MOD.id][That_MOD.name] = value.value
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+---------------------------------------------------------------------------
+
+--- Cambiar los orders de los elementos
+function This_MOD.change_orders()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Inicializar las vaiables
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     local Orders = {}
     local Source = {}
     local N = 0
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -1017,6 +1956,17 @@ function This_MOD.change_orders()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Grupos
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Grupos
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Inicializar las vaiables
     Orders = {}
@@ -1031,8 +1981,13 @@ function This_MOD.change_orders()
     end
 
     --- Cantidad de afectados
+<<<<<<< HEAD
     N = GPrefix.get_length(data.raw["item-group"])
     N = GPrefix.digit_count(N) + 1
+=======
+    N = GMOD.get_length(data.raw["item-group"])
+    N = GMOD.digit_count(N) + 1
+>>>>>>> nuevo/main
 
     --- Ordenear los orders
     table.sort(Orders)
@@ -1041,13 +1996,18 @@ function This_MOD.change_orders()
     for iKey, order in pairs(Orders) do
         for jKey, element in pairs(Source) do
             if element.order == order then
+<<<<<<< HEAD
                 element.order = GPrefix.pad_left_zeros(N, iKey) .. "0"
+=======
+                element.order = GMOD.pad_left_zeros(N, iKey) .. "0"
+>>>>>>> nuevo/main
                 table.remove(Source, jKey)
                 break
             end
         end
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -1055,12 +2015,24 @@ function This_MOD.change_orders()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Subgrupos
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Subgrupos
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Inicializar las vaiables
     Orders = {}
     Source = {}
 
     --- Agrupar los subgroups
+<<<<<<< HEAD
     for _, element in pairs(GPrefix.subgroups) do
         --- --- --- --- --- --- --- --- --- --- --- --- ---
         Source[element.group] = Source[element.group] or {}
@@ -1069,6 +2041,16 @@ function This_MOD.change_orders()
         Orders[element.group] = Orders[element.group] or {}
         table.insert(Orders[element.group], element.order or element.name)
         --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    for _, element in pairs(GMOD.subgroups) do
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        Source[element.group] = Source[element.group] or {}
+        table.insert(Source[element.group], element)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        Orders[element.group] = Orders[element.group] or {}
+        table.insert(Orders[element.group], element.order or element.name)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
     end
 
     --- Cambiar el order de los subgrupos
@@ -1077,14 +2059,23 @@ function This_MOD.change_orders()
         table.sort(orders)
 
         --- Cantidad de afectados
+<<<<<<< HEAD
         N = GPrefix.get_length(orders)
         N = GPrefix.digit_count(N) + 1
+=======
+        N = GMOD.get_length(orders)
+        N = GMOD.digit_count(N) + 1
+>>>>>>> nuevo/main
 
         --- Remplazar los orders
         for iKey, order in pairs(orders) do
             for jKey, element in pairs(Source[subgroup]) do
                 if element.order == order then
+<<<<<<< HEAD
                     element.order = GPrefix.pad_left_zeros(N, iKey) .. "0"
+=======
+                    element.order = GMOD.pad_left_zeros(N, iKey) .. "0"
+>>>>>>> nuevo/main
                     table.remove(Source[subgroup], jKey)
                     break
                 end
@@ -1092,6 +2083,7 @@ function This_MOD.change_orders()
         end
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -1099,6 +2091,15 @@ function This_MOD.change_orders()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Establecer subgrupos por defecto
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Establecer subgrupos por defecto
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Subgrupos por defecto
     local Empty = {
@@ -1111,6 +2112,7 @@ function This_MOD.change_orders()
     --- Crear el Subgrupos por defecto
     data:extend({ Empty })
 
+<<<<<<< HEAD
     --- Inicializar las vaiables
     Orders = {}
     Source = {}
@@ -1120,6 +2122,14 @@ function This_MOD.change_orders()
 
     --- Objetos, recetas y fluidos
     for Key, Values in pairs(Source) do
+=======
+    --- Objetos, recetas y fluidos
+    for Key, Values in pairs({
+        items = GMOD.items,
+        fluids = GMOD.fluids,
+        recipes = GMOD.recipes
+    }) do
+>>>>>>> nuevo/main
         if Key ~= "recipes" then Values = { Values } end
         for _, values in ipairs(Values) do
             for _, value in pairs(values) do
@@ -1134,6 +2144,7 @@ function This_MOD.change_orders()
         end
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -1141,6 +2152,17 @@ function This_MOD.change_orders()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     ---> Objetos, recetas y demás
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Objetos, recetas y demás
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Inicializar las vaiables
     Orders = {}
@@ -1160,10 +2182,18 @@ function This_MOD.change_orders()
                 if not element.subgroup then break end
                 if not element.order then break end
 
+<<<<<<< HEAD
                 --- Agrupar
                 Source[element.subgroup] = Source[element.subgroup] or {}
                 table.insert(Source[element.subgroup], element)
 
+=======
+                --- Elementos a agrupar
+                Source[element.subgroup] = Source[element.subgroup] or {}
+                table.insert(Source[element.subgroup], element)
+
+                --- Elementos a ordenar
+>>>>>>> nuevo/main
                 Orders[element.subgroup] = Orders[element.subgroup] or {}
                 table.insert(Orders[element.subgroup], element.order)
             until true
@@ -1176,14 +2206,23 @@ function This_MOD.change_orders()
         table.sort(orders)
 
         --- Cantidad de afectados
+<<<<<<< HEAD
         N = GPrefix.get_length(orders)
         N = GPrefix.digit_count(N) + 1
+=======
+        N = GMOD.get_length(orders)
+        N = GMOD.digit_count(N) + 1
+>>>>>>> nuevo/main
 
         --- Remplazar los orders
         for iKey, order in pairs(orders) do
             for jKey, element in pairs(Source[subgroup]) do
                 if element.order == order then
+<<<<<<< HEAD
                     element.order = GPrefix.pad_left_zeros(N, iKey) .. "0"
+=======
+                    element.order = GMOD.pad_left_zeros(N, iKey) .. "0"
+>>>>>>> nuevo/main
                     table.remove(Source[subgroup], jKey)
                     break
                 end
@@ -1191,6 +2230,7 @@ function This_MOD.change_orders()
         end
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -1201,24 +2241,47 @@ function This_MOD.change_orders()
 
     for name, recipes in pairs(GPrefix.recipes) do
         local item = GPrefix.items[name]
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Agrupar las recetas
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for name, recipes in pairs(GMOD.recipes) do
+        local item = GMOD.items[name]
+>>>>>>> nuevo/main
         if item then
             item.order = item.order or "0"
             local order = tonumber(item.order) or 0
             for _, recipe in pairs(recipes) do
                 if #recipe.results == 1 then
                     recipe.subgroup = item.subgroup
+<<<<<<< HEAD
                     recipe.order = GPrefix.pad_left_zeros(#item.order, order)
+=======
+                    recipe.order = GMOD.pad_left_zeros(#item.order, order)
+>>>>>>> nuevo/main
                     order = order + 1
                 end
             end
         end
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 end
 
 --- Establecer traducción en todos los elementos
 function This_MOD.set_localised()
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Funciones a usar
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1229,6 +2292,55 @@ function This_MOD.set_localised()
         local Field = "localised_" .. field
         local fluid = GPrefix.fluids[name]
         local item = GPrefix.items[name]
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Traducir estas secciones
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Establecer la traducción
+    for name, subgroup in pairs({
+        tile = GMOD.tiles,
+        fluid = GMOD.fluids,
+        entity = GMOD.entities,
+        equipment = GMOD.equipments
+    }) do
+        if name ~= "tile" then subgroup = { subgroup } end
+        for _, elements in pairs(subgroup) do
+            for _, element in pairs(elements) do
+                if element.localised_name then
+                    if type(element.localised_name) == "table" and element.localised_name[1] ~= "" then
+                        element.localised_name = { "", element.localised_name }
+                    end
+                end
+                if not element.localised_name then
+                    element.localised_name = { "", { name .. "-name." .. element.name } }
+                end
+                if not element.localised_description then
+                    element.localised_description = { "", { name .. "-description." .. element.name } }
+                end
+            end
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Funciones a usar
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Establece el nombre de la receta
+    local function set_localised(name, recipe, field)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- Valores a usar
+        local Field = "localised_" .. field
+        local fluid = GMOD.fluids[name]
+        local item = GMOD.items[name]
+>>>>>>> nuevo/main
 
         --- El resultado es un objeto
         if item then
@@ -1237,7 +2349,11 @@ function This_MOD.set_localised()
 
             --- Traducción para una entidad
             if item.place_result then
+<<<<<<< HEAD
                 local Entiy = GPrefix.entities[item.place_result]
+=======
+                local Entiy = GMOD.entities[item.place_result]
+>>>>>>> nuevo/main
                 item[Field] = Entiy[Field]
                 recipe[Field] = Entiy[Field]
             end
@@ -1252,18 +2368,28 @@ function This_MOD.set_localised()
             --- Traducción para un equipamiento
             if item.place_as_equipment_result then
                 local result = item.place_as_equipment_result
+<<<<<<< HEAD
                 local equipment = GPrefix.equipments[result]
+=======
+                local equipment = GMOD.equipments[result]
+>>>>>>> nuevo/main
                 if equipment then
                     item[Field] = equipment[Field]
                     recipe[Field] = equipment[Field]
                 end
             end
+<<<<<<< HEAD
+=======
+
+            --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
         end
 
         --- El resultado es un liquido
         if fluid then recipe[Field] = fluid[Field] end
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -1313,6 +2439,22 @@ function This_MOD.set_localised()
     for _, item in pairs(GPrefix.items) do
         if item.localised_name then
             if GPrefix.is_table(item.localised_name) and item.localised_name[1] ~= "" then
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Traducción de los objetos y las recetas
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Establecer la traducción de los objetos
+    for _, item in pairs(GMOD.items) do
+        if item.localised_name then
+            if type(item.localised_name) == "table" and item.localised_name[1] ~= "" then
+>>>>>>> nuevo/main
                 item.localised_name = { "", item.localised_name }
             end
         end
@@ -1326,9 +2468,15 @@ function This_MOD.set_localised()
     end
 
     --- Establecer la traducción en la receta
+<<<<<<< HEAD
     for _, recipes in pairs(GPrefix.recipes) do
         if recipes.localised_name then
             if GPrefix.is_table(recipes.localised_name) and recipes.localised_name[1] ~= "" then
+=======
+    for _, recipes in pairs(GMOD.recipes) do
+        if recipes.localised_name then
+            if type(recipes.localised_name) == "table" and recipes.localised_name[1] ~= "" then
+>>>>>>> nuevo/main
                 recipes.localised_name = { "", recipes.localised_name }
             end
         end
@@ -1359,6 +2507,7 @@ function This_MOD.set_localised()
         end
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -1372,6 +2521,22 @@ function This_MOD.set_localised()
         --- Renombrar
         local Tech = tech.technology
         local Full_name = Tech.name
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Traducción de las tecnologias
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Actualizar el apodo del nombre
+    for _, tech in pairs(data.raw.technology) do
+        --- Renombrar
+        local Full_name = tech.name
+>>>>>>> nuevo/main
 
         --- Separar la información
         local Name, Level = Full_name:match("(.+)-(%d+)")
@@ -1379,11 +2544,16 @@ function This_MOD.set_localised()
         if not Name then Name = Full_name end
 
         --- Corrección para las tecnologías infinitas
+<<<<<<< HEAD
         if Tech.unit and Tech.unit.count_formula then
+=======
+        if tech.unit and tech.unit.count_formula then
+>>>>>>> nuevo/main
             Level = nil
         end
 
         --- Construir el apodo
+<<<<<<< HEAD
         if Tech.localised_name then
             if Tech.localised_name[1] ~= "" then
                 Tech.localised_name = { "", Tech.localised_name }
@@ -1398,11 +2568,28 @@ function This_MOD.set_localised()
 end
 
 ---------------------------------------------------------------------------------------------------
+=======
+        if tech.localised_name then
+            if tech.localised_name[1] ~= "" then
+                tech.localised_name = { "", tech.localised_name }
+            end
+        else
+            tech.localised_name = { "", { "technology-name." .. Name }, Level }
+        end
+        tech.localised_description = { "", { "technology-description." .. Name } }
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+---------------------------------------------------------------------------
+>>>>>>> nuevo/main
 
 
 
 
 
+<<<<<<< HEAD
 ---------------------------------------------------------------------------------------------------
 ---> Ejecutar las funciones internas <---
 ---------------------------------------------------------------------------------------------------
@@ -1411,3 +2598,11 @@ end
 This_MOD.start()
 
 ---------------------------------------------------------------------------------------------------
+=======
+---------------------------------------------------------------------------
+
+--- Iniciar el MOD
+This_MOD.start()
+
+---------------------------------------------------------------------------
+>>>>>>> nuevo/main

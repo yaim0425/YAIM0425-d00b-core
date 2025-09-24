@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "zzzYAIM0425-0000-lib",
   "version": "0.0.1",
   "title": "zzzYAIM0425 0000 lib",
@@ -9,11 +10,24 @@
   "dependencies": [
     "base",
 
+=======
+  "name": "YAIM0425-i5MOD50-core",
+  "version": "0.0.1",
+  "title": "YAIM0425 i5MOD50 core",
+  "author": "YAIM0425",
+  "factorio_version": "2.0",
+  "description": "Base utility library intended to be used by other MODs developed by the user yaim0425. [[I accept suggestions]]",
+  "homepage": "https://github.com/yaim0425/YAIM0425-i5MOD50-core",
+  "dependencies": [
+>>>>>>> nuevo/main
     "? Yuoki",
     "? Krastorio2",
     "? factorioplus",
     "? aai-containers",
+<<<<<<< HEAD
     "? micro-machines",
+=======
+>>>>>>> nuevo/main
 
     "? pyalienlife",
     "? pyalternativeenergy",
@@ -23,6 +37,29 @@
     "? pyindustry",
     "? pypetroleumhandling",
     "? pypostprocessing",
+<<<<<<< HEAD
     "? pyrawores"
+=======
+    "? pyrawores",
+
+    "? bobassembly",
+    "? bobclasses",
+    "? bobelectronics",
+    "? bobenemies",
+    "? bobequipment",
+    "? bobgreenhouse",
+    "? bobinserters",
+    "? boblibrary",
+    "? boblogistics",
+    "? bobmining",
+    "? bobmodules",
+    "? bobores",
+    "? bobplates",
+    "? bobpower",
+    "? bobrevamp",
+    "? bobtech",
+    "? bobvehicleequipment",
+    "? bobwarfare"
+>>>>>>> nuevo/main
   ]
 }

@@ -1,11 +1,18 @@
+<<<<<<< HEAD
 ---------------------------------------------------------------------------------------------------
 ---> __FUNCTIONS__.lua <---
 ---------------------------------------------------------------------------------------------------
+=======
+---------------------------------------------------------------------------
+---[ __FUNCTIONS__.lua ]---
+---------------------------------------------------------------------------
+>>>>>>> nuevo/main
 
 
 
 
 
+<<<<<<< HEAD
 ---------------------------------------------------------------------------------------------------
 ---> Funciones basicas <---
 ---------------------------------------------------------------------------------------------------
@@ -25,11 +32,22 @@ function GPrefix.is_function(value) return type(value) == "function" end
 function GPrefix.is_userdata(value) return type(value) == "userdata" end
 
 ---------------------------------------------------------------------------------------------------
+=======
+---------------------------------------------------------------------------
+---[ Valiación ]---
+---------------------------------------------------------------------------
+
+--- Validar si se cargó antes
+if GMOD.copy then return end
+
+---------------------------------------------------------------------------
+>>>>>>> nuevo/main
 
 
 
 
 
+<<<<<<< HEAD
 ---------------------------------------------------------------------------------------------------
 ---> Funciones avanzadas <---
 ---------------------------------------------------------------------------------------------------
@@ -183,15 +201,150 @@ function GPrefix.get_tables(array, key, value)
     if key == nil and value == nil then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+---------------------------------------------------------------------------
+---[ Funciones globales ]---
+---------------------------------------------------------------------------
+
+--- Obtiener información del nombre de la carpeta
+--- that_mod.id
+--- that_mod.name
+--- that_mod.prefix
+function GMOD.get_id_and_name(value)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if type(value) ~= "nil" then
+        if type(value) ~= "string" then
+            return
+        end
+    else
+        --- Nivel 2 porque se llama desde otra función
+        local Info = debug.getinfo(2, "S")
+        local Source = Info.source
+
+        --- Elimina el prefijo @ si viene de un archivo
+        local Path = Source:sub(1, 1) == "@" and Source:sub(2) or Source
+
+        --- Objetener el nombre del directorio
+        value = Path:match("__([^/]+)__")
+        if not value then return end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Separa de la cadena dada los IDs y el resto del nombre
+    --- @param full_name string
+    --- @return table|nil # IDs encontrados como lista
+    --- @return string|nil # Nombre sin los IDs ni el prefijo
+    local function get_id_and_name(full_name)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- Contenedor del nombre en partes
+        local Parts = {}
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        -- Dividir en partes separadas por guiones
+        for segment in string.gmatch(full_name, "[^%-]+") do
+            if segment ~= GMOD.name then
+                table.insert(Parts, segment)
+            end
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        -- Extraer los IDs válidos
+        local IDs, Rest_parts = {}, {}
+        for _, Part in ipairs(Parts) do
+            if Part:match("^i%dMOD%d%d$") then
+                table.insert(IDs, Part)
+            else
+                table.insert(Rest_parts, Part)
+            end
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- No hay IDs
+        if #IDs == 0 then return end
+
+        --- El MOD no tiene nombre
+        local Rest = nil
+        if #Rest_parts > 0 then Rest = table.concat(Rest_parts, "-") end
+        if not Rest then return end
+        if Rest == "" then return end
+
+        --- Devolver IDs y resto del nombre
+        return IDs, Rest
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Dividir el nombre por guiones
+    local IDs, Name = get_id_and_name(value)
+
+    --- No es un mod valido
+    if not IDs then return end
+
+    --- Información propia del mod
+    local Output = {}
+    Output.id = IDs[#IDs]
+    Output.ids = "-" .. table.concat(IDs, "-") .. "-"
+    Output.name = Name
+    Output.prefix = GMOD.name .. "-" .. Output.id .. "-"
+    return Output
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+---------------------------------------------------------------------------
+
+--- Devuelve el elemento cuyo key y value se igual al dado
+--- @param array table # Tabla en la cual buscar
+--- @param key string|nil # propiedad a buscar
+--- @param value any|nil # Valor a buscar
+--- @return any #
+---- Array con las tablas que contienen el key y value dado
+---- o nil si no lo encuentra
+function GMOD.get_tables(array, key, value)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validación
+    if type(array) ~= "table" then return end
+    if key == nil and value == nil then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Coincidencias encontradas
     local Results = {}
     local Added_results = {}
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Buscar las coincidencia
     local function recursive_search(tbl)
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Buscar las coincidencia
+    local function Search(tbl)
+>>>>>>> nuevo/main
         local Found = false
 
         -- Caso: key y value
@@ -227,22 +380,37 @@ function GPrefix.get_tables(array, key, value)
 
         --- Buscar en las subtablas
         for _, v in pairs(tbl) do
+<<<<<<< HEAD
             if GPrefix.is_table(v) then
                 recursive_search(v)
+=======
+            if type(v) == "table" then
+                Search(v)
+>>>>>>> nuevo/main
             end
         end
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Iniciar la busqueda
     recursive_search(array)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Iniciar la busqueda
+    Search(array)
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Devolver el resultado
     return #Results > 0 and Results or nil
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
@@ -432,18 +600,150 @@ function GPrefix.short_number(number)
     return format(Output) .. Units[3 * Digits]
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Contar los elementos en la tabla
+---- __ADVERTENCIA:__ El conteo NO es recursivo
+--- @param array table # Tabla en la cual buscar
+--- @return any #
+---- Conteo de los elementos de la tabla
+---- o nil si la tabla esta vacia
+function GMOD.get_length(array)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Valdación
+    if type(array) ~= "table" then
+        return
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Variable de salida
+    local Output = 0
+
+    --- Contar campos
+    for _ in pairs(array) do
+        Output = Output + 1
+    end
+
+    --- Devolver el resultado
+    return Output > 0 and Output or nil
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Devuelve el key que le corresponde al valor dado
+--- @param array table # Tabla en la cual buscar
+--- @param value any # Valor a buscar
+--- @return any #
+---- __integer:__ Posición de la primera coincidencia con el valor
+---- __nil:__ El valor dado no es valido
+function GMOD.get_key(array, value)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Valdación
+    if type(array) ~= "table" then return end
+    if type(value) == "nil" then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Buscar el valor
+    for Key, Value in pairs(array) do
+        if value == Value then
+            return Key
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Cuenta la cantidad de caracteres en el valor dado
+--- @param value integer # __Ejemplo:__ _123_
+--- @return any # __Ejemplo:__ _3_
+function GMOD.digit_count(value)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if type(value) ~= "number" then return end
+    return string.len(tostring(value))
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+--- Agrega ceros a la izquierda hasta completar los digitos
+--- @param digits integer # __Ejemplo:__ _5_
+--- @param value integer # __Ejemplo:__ _123_
+--- @return string # __Ejemplo:__ _00123_
+function GMOD.pad_left_zeros(digits, value)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if type(digits) ~= "number" then return "" end
+    if type(value) ~= "number" then return "" end
+    return string.format("%0" .. digits .. "d", value)
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+---------------------------------------------------------------------------
+
+--- Copia cada tabla se copia siempre, sin compartir referencias
+--- @param value any
+--- @return any
+function GMOD.copy(value)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Valdación
+    if type(value) ~= "table" then
+        return value
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Variable de salida
+    local Copy = {}
+
+    --- Copiar la información
+    for k, v in pairs(value) do
+        local New_key = (type(k) == "table") and GMOD.copy(k) or k
+        local New_val = (type(v) == "table") and GMOD.copy(v) or v
+        Copy[New_key] = New_val
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Devolver la copia
+    return Copy
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 end
 
 --- Muestra información detallada de las variables dadas
 --- @param ... any
+<<<<<<< HEAD
 function GPrefix.var_dump(...)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+function GMOD.var_dump(...)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Renombrar los parametros dados
     local Args = { ... }
     if #Args == 0 then return end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Convierte una variable a string legible
     --- @param value any
@@ -451,24 +751,41 @@ function GPrefix.var_dump(...)
     --- @param seen table<table, string>  -- Guarda referencias ya vistas y sus rutas
     --- @param path string
     local function to_string(value, indent, seen, path)
+<<<<<<< HEAD
         --- --- --- --- --- --- --- --- --- --- --- --- ---
         ---> Variables a usar
         --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---[ Variables a usar
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+>>>>>>> nuevo/main
         indent = indent or ""
         seen = seen or {}
         path = path or "<root>"
 
         local Type = type(value)
 
+<<<<<<< HEAD
         --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
 
 
 
 
+<<<<<<< HEAD
         --- --- --- --- --- --- --- --- --- --- --- --- ---
         ---> Timpo de valor simple
         --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---[ Timpo de valor simple
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
         if Type == "string" then
             if string.find(value, "\n") then
@@ -476,7 +793,11 @@ function GPrefix.var_dump(...)
                 value = value:gsub("\t", "")
                 value = value:gsub("  ", " ")
                 value = "[[\n\t" .. value .. "\n]]"
+<<<<<<< HEAD
                 for i = 1, GPrefix.get_length(seen), 1 do
+=======
+                for i = 1, GMOD.get_length(seen), 1 do
+>>>>>>> nuevo/main
                     value = value:gsub("\n", "\n\t")
                 end
                 return value
@@ -501,15 +822,25 @@ function GPrefix.var_dump(...)
             return '"<unknown>"'
         end
 
+<<<<<<< HEAD
         --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
 
 
 
 
+<<<<<<< HEAD
         --- --- --- --- --- --- --- --- --- --- --- --- ---
         ---> Tablas
         --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        ---[ Tablas
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
         --- Evitar referencias circular
         if seen[value] then
@@ -531,7 +862,11 @@ function GPrefix.var_dump(...)
             table.insert(Items, Val_str)
         end
 
+<<<<<<< HEAD
         --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
         --- Permite reutilizar la tabla en otras ramas sin error
         seen[value] = nil
@@ -541,25 +876,46 @@ function GPrefix.var_dump(...)
             return "{ }"
         end
 
+<<<<<<< HEAD
         return "{" .. table.concat(Items, ",") .. "\n" .. indent .. "}"
 
         --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+=======
+        --- Devolver el resultado
+        return "{" .. table.concat(Items, ",") .. "\n" .. indent .. "}"
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+>>>>>>> nuevo/main
 
     --- Contendor del texto de salida
     local Output = {}
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     -- Recorrer los valores dados
+=======
+    --- Recorrer los valores dados
+>>>>>>> nuevo/main
     for i, v in ipairs(Args) do
         local Name = (type(v) == "table" and type(v.name) == "string") and "'" .. v.name .. "'" or "" .. i
         local Result = "[" .. Name .. "] = " .. to_string(v, "", {}, Name)
         table.insert(Output, Result)
     end
 
+<<<<<<< HEAD
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     log("\n>>>\n" .. table.concat(Output, "\n") .. "\n<<<")
@@ -568,3 +924,12 @@ function GPrefix.var_dump(...)
 end
 
 ---------------------------------------------------------------------------------------------------
+=======
+    ---[ Mostrar el resultado
+    log("\n>>>\n" .. table.concat(Output, "\n") .. "\n<<<")
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+---------------------------------------------------------------------------
+>>>>>>> nuevo/main
