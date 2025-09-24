@@ -39,6 +39,9 @@ _G.GMOD = _G.GMOD or {}
 --- Prefijo a usar en los MODs
 GMOD.name = "YAIM0425"
 
+--- Espacio de almacenamiento para los MODs activados
+GMOD.MODs = {}
+
 ---------------------------------------------------------------------------------------------------
 
 
