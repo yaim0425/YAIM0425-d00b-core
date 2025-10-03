@@ -301,6 +301,91 @@ function GMOD.has_id(name, id)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+--- Separa el número de la cadena teninedo encuenta
+--- indicadores tipo k, M, G y unidades como J, W
+--- @param value string # __Ejemplo:__ 0.3Mw
+--- @return any, any #
+---- __Ejemplo:__ 300000 W
+function GMOD.number_unit(value)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Funciones internas
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Separar la cadena en tres parte
+    local function split_string()
+        local Parts = {
+            "([-]?[%d%.]+)",   -- Valor numerico
+            "([kMGTPEZYRQ]?)", -- Unidades de valores posible
+            "([JW]?)"          -- Unidades de energia posible
+        }
+        local Pattern = "^" .. table.concat(Parts) .. "$"
+        return string.match(value, Pattern)
+    end
+
+    --- Validar si la cadena es un numero valido
+    local function is_valid_number(str)
+        return
+            string.match(str, "^[-]?%d*%.?%d+$") ~= nil or
+            string.match(str, "^[-]?%.%d+$") ~= nil
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validaciones
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Separar la cadena en tres parte
+    local Number, Prefix, Unit = split_string()
+
+    --- Validar si la cadena es un numero valido
+    if not Number then return nil, nil end
+    if tonumber(Number) == 0 then return nil, nil end
+    if not is_valid_number(Number) then return nil, nil end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Conversión de unidades
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Inidesdes posibles
+    local Units = {}
+    Units[""] = 0
+    Units["k"] = 3
+    Units["M"] = 6
+    Units["G"] = 9
+    Units["T"] = 12
+    Units["P"] = 15
+    Units["E"] = 18
+    Units["Z"] = 21
+    Units["Y"] = 24
+    Units["R"] = 27
+    Units["Q"] = 30
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Devuelve el resultado
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    return tonumber(Number) * (10 ^ Units[Prefix]), Unit
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 ---------------------------------------------------------------------------
 
 --- Copia cada tabla se copia siempre, sin compartir referencias
