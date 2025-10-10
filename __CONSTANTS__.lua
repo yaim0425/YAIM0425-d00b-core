@@ -78,7 +78,8 @@ end
 ---------------------------------------------------------------------------------------------------
 
 GMOD.defines = {}
-GMOD.defines.place_result = "place_result"
-GMOD.defines.place_as_tile = "place_as_tile"
+GMOD.defines.get_item_create = {}
+GMOD.defines.get_item_create.place_result = "place_result"
+GMOD.defines.get_item_create.place_as_tile = "place_as_tile"
 
 ---------------------------------------------------------------------------------------------------
