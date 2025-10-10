@@ -77,6 +77,7 @@ end
 
 ---------------------------------------------------------------------------------------------------
 
+--- Parametros para las funciones
 GMOD.parameter = {}
 GMOD.parameter.get_item_create = {}
 GMOD.parameter.get_item_create.place_result = "place_result"
