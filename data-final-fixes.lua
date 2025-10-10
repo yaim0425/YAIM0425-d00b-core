@@ -413,7 +413,7 @@ function GMOD.extend(...)
 
         while true do
             if prototype.type ~= "tile" then break end
-            local Item = GMOD.get_item_create(prototype, "place_as_tile")
+            local Item = GMOD.get_item_create(prototype, GMOD.defines.place_as_tile)
             if not Item then break end
 
             GMOD.tiles[Item.name] = GMOD.tiles[Item.name] or {}
