@@ -413,7 +413,7 @@ function GMOD.extend(...)
 
         while true do
             if prototype.type ~= "tile" then break end
-            local Item = GMOD.get_item_create(prototype, GMOD.defines.get_item_create.place_as_tile)
+            local Item = GMOD.get_item_create(prototype, GMOD.parameter.get_item_create.place_as_tile)
             if not Item then break end
 
             GMOD.tiles[Item.name] = GMOD.tiles[Item.name] or {}
@@ -451,7 +451,7 @@ function GMOD.extend(...)
         while true do
             if not prototype.max_health then break end
             if GMOD.is_hidde(prototype) then break end
-            local Item = GMOD.get_item_create(prototype, GMOD.defines.place_result)
+            local Item = GMOD.get_item_create(prototype, GMOD.parameter.get_item_create.place_result)
             if not Item then break end
 
             GMOD.entities[Item.name] = prototype
