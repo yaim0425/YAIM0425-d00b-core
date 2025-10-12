@@ -327,14 +327,22 @@ end
 ---- __nil:__ El valor dado no es valido
 function GMOD.get_key(array, value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
     --- Valdación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     if type(array) ~= "table" then return end
     if type(value) == "nil" then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Buscar el valor
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     for Key, Value in pairs(array) do
         if value == Value then
             return Key
