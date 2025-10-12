@@ -508,25 +508,30 @@ end
 --- @return any
 function GMOD.copy(value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Copiar una unidad
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Valdación
-    if type(value) ~= "table" then
-        return value
-    end
+    if type(value) ~= "table" then return value end
 
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Copiar una tabla
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Variable de salida
     local Copy = {}
 
     --- Copiar la información
-    for k, v in pairs(value) do
-        local New_key = (type(k) == "table") and GMOD.copy(k) or k
-        local New_val = (type(v) == "table") and GMOD.copy(v) or v
-        Copy[New_key] = New_val
+    for Key, Value in pairs(value) do
+        local New_key = (type(Key) == "table") and GMOD.copy(Key) or Key
+        local New_value = (type(Value) == "table") and GMOD.copy(Value) or Value
+        Copy[New_key] = New_value
     end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Devolver la copia
     return Copy
