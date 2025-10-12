@@ -42,8 +42,8 @@ function GMOD.get_id_and_name(value)
             end
         end
 
-        --- Nivel 2 porque se llama desde otro archivo
-        local Info = debug.getinfo(2, "S")
+        --- Nivel 3 porque se llama desde tres funciones
+        local Info = debug.getinfo(3, "S")
         local Source = Info.source
 
         --- Elimina el prefijo @ si viene de un archivo
