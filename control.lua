@@ -352,6 +352,8 @@ function This_MOD.filter_data()
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear la  estructura
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Renombrar las variables
     GMOD.items = prototypes.item
