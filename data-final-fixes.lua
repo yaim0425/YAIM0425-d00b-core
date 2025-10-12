@@ -579,19 +579,6 @@ function This_MOD.format_minable()
         } }
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Borrar los valores reubicados
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        element.minable.result = nil
-        element.minable.count = nil
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -642,19 +629,6 @@ function This_MOD.format_icons()
             icon = element.icon,
             icon_size = element.icon_size ~= 64 and element.icon_size or nil
         } }
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Borrar los valores reubicados
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        element.icon_size = nil
-        element.icon = nil
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
