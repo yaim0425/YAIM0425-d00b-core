@@ -39,7 +39,7 @@ require("__FUNCTIONS__")
 --- @param element table
 --- @return boolean
 function GMOD.is_hidde(element)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Validar los valores
     local Hidden = false
@@ -50,7 +50,7 @@ function GMOD.is_hidde(element)
     --- Devolver el resultado
     return Hidden
 
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Crea un subgroup despues del dado
@@ -59,9 +59,9 @@ end
 --- @return any # Devuelve el duplicado
 --- o una tabla vacio si se poduce un error
 function GMOD.duplicate_subgroup(old_name, new_name)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Validación
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     if type(old_name) ~= "string" then return end
     if type(new_name) ~= "string" then return end
@@ -69,15 +69,15 @@ function GMOD.duplicate_subgroup(old_name, new_name)
     local Subgroup = GMOD.copy(GMOD.subgroups[old_name])
     if not Subgroup then return end
 
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
 
 
 
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Buscar un order disponible
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Order de referencia
     local Order = {}
@@ -100,22 +100,22 @@ function GMOD.duplicate_subgroup(old_name, new_name)
         if not Order[4] then break end
     end
 
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
 
 
 
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Crear el subgroup
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     Subgroup.name = new_name
     Subgroup.order = Order[1]
     data:extend({ Subgroup })
     return Subgroup
 
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Obtiene el objeto que crea la entidad dada
