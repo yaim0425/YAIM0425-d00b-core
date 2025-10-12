@@ -543,8 +543,9 @@ end
 --- @param ... any
 function GMOD.var_dump(...)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
     --- Renombrar los parametros dados
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     local Args = { ... }
     if #Args == 0 then return end
 
@@ -556,14 +557,14 @@ function GMOD.var_dump(...)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Convierte una variable a string legible
+    --- Convierte una variable a lua
     --- @param value any
     --- @param indent string|nil
     --- @param seen table<table, string>  -- Guarda referencias ya vistas y sus rutas
     --- @param path string
     local function to_string(value, indent, seen, path)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        ---[ Variables a usar
+        --- Variables a usar
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         indent = indent or ""
@@ -579,7 +580,7 @@ function GMOD.var_dump(...)
 
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        ---[ Timpo de valor simple
+        --- Tipo de valor simple
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         if Type == "string" then
@@ -620,7 +621,7 @@ function GMOD.var_dump(...)
 
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        ---[ Tablas
+        --- Tablas
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         --- Evitar referencias circular
@@ -648,7 +649,7 @@ function GMOD.var_dump(...)
         --- Permite reutilizar la tabla en otras ramas sin error
         seen[value] = nil
 
-        --- Tabla vicia
+        --- Tabla vacia
         if not Has_items then
             return "{ }"
         end
@@ -666,14 +667,16 @@ function GMOD.var_dump(...)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Procesar los valores dados
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Contendor del texto de salida
     local Output = {}
 
     --- Recorrer los valores dados
-    for i, v in ipairs(Args) do
-        local Name = (type(v) == "table" and type(v.name) == "string") and "'" .. v.name .. "'" or "" .. i
-        local Result = "[" .. Name .. "] = " .. to_string(v, "", {}, Name)
+    for i, Value in ipairs(Args) do
+        local Name = (type(Value) == "table" and type(Value.name) == "string") and "'" .. Value.name .. "'" or "" .. i
+        local Result = "[" .. Name .. "] = " .. to_string(Value, "", {}, Name)
         table.insert(Output, Result)
     end
 
