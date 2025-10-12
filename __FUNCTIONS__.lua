@@ -115,7 +115,7 @@ function GMOD.get_id_and_name(value)
 
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Devolver el resultado
+        --- Valiación
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         --- No hay IDs
@@ -127,7 +127,16 @@ function GMOD.get_id_and_name(value)
         if not Rest then return end
         if Rest == "" then return end
 
-        --- Devolver IDs y resto del nombre
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Devolver el resultado
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
         return IDs, Rest
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
