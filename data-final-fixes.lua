@@ -154,7 +154,7 @@ end
 --- Devuelve la tecnología que desbloquea una o varias recetas
 --- @param value table # receta (tabla con .name) o lista de recetas
 --- @return table|nil # Tecnología que desbloquea la receta o recetas
-function GMOD.get_technology(value)
+function GMOD.get_technology(value, only_result)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Lista de nombres de recetas
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -283,6 +283,8 @@ function GMOD.get_technology(value)
         end
         return Selected
     end
+
+    if only_result then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
