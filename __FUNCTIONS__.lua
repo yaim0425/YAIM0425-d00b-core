@@ -29,13 +29,20 @@ if GMOD.copy then return end
 --- that_mod.prefix
 function GMOD.get_id_and_name(value)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Valiación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    if type(value) ~= "nil" then
-        if type(value) ~= "string" then
-            return
+    local Full_name = (function()
+        --- Validar el tipo
+        if type(value) ~= "nil" then
+            if type(value) == "string" then
+                return value
+            else
+                return
+            end
         end
-    else
-        --- Nivel 2 porque se llama desde otra función
+
+        --- Nivel 2 porque se llama desde otro archivo
         local Info = debug.getinfo(2, "S")
         local Source = Info.source
 
@@ -44,8 +51,10 @@ function GMOD.get_id_and_name(value)
 
         --- Objetener el nombre del directorio
         value = Path:match("__([^/]+)__")
-        if not value then return end
-    end
+        if value then return value end
+    end)()
+
+    if not Full_name then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -54,21 +63,27 @@ function GMOD.get_id_and_name(value)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
     --- Separa de la cadena dada los IDs y el resto del nombre
-    --- @param full_name string
-    --- @return table|nil # IDs encontrados como lista
-    --- @return string|nil # Nombre sin los IDs ni el prefijo
-    local function get_id_and_name(full_name)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local IDs, Name = (function()
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Contenedor del nombre en partes
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        --- Contenedor del nombre en partes
         local Parts = {}
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         -- Dividir en partes separadas por guiones
-        for segment in string.gmatch(full_name, "[^%-]+") do
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        for segment in string.gmatch(Full_name, "[^%-]+") do
             if segment ~= GMOD.name then
                 table.insert(Parts, segment)
             end
@@ -76,7 +91,14 @@ function GMOD.get_id_and_name(value)
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         -- Extraer los IDs válidos
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
         local IDs, Rest_parts = {}, {}
         for _, Part in ipairs(Parts) do
             if Part:match("^[A-Za-z]%d%d[A-Za-z]$") then
@@ -86,6 +108,14 @@ function GMOD.get_id_and_name(value)
             end
         end
 
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Devolver el resultado
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         --- No hay IDs
@@ -101,23 +131,20 @@ function GMOD.get_id_and_name(value)
         return IDs, Rest
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    end
+    end)()
 
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Dividir el nombre por guiones
-    local IDs, Name = get_id_and_name(value)
-
-    --- No es un mod valido
     if not IDs then return end
 
-    --- Información propia del mod
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Devolver el resultado
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     local Output = {}
     Output.id = IDs[#IDs]
     Output.ids = "-" .. table.concat(IDs, "-") .. "-"
