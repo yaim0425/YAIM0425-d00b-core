@@ -530,9 +530,7 @@ function This_MOD.start()
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Cambiar los orders de los elementos
-    This_MOD.change_orders___group()
-    This_MOD.change_orders___subgroup()
-    This_MOD.change_orders___crafting()
+    This_MOD.change_orders()
 
     --- Establecer traducción en todos los elementos
     This_MOD.set_localised()
@@ -974,9 +972,9 @@ end
 ---------------------------------------------------------------------------
 
 --- Cambiar los orders de los elementos
-function This_MOD.change_orders___group()
+function This_MOD.change_orders()
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Inicializar las variables
+    --- Inicializar las vaiables
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local Orders = {}
@@ -990,10 +988,14 @@ function This_MOD.change_orders___group()
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Actualizar orders
+    --- Grupos
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Obtener los orders
+    --- Inicializar las vaiables
+    Orders = {}
+    Source = {}
+
+    --- Agrupar los Grupos
     for _, element in pairs(data.raw["item-group"]) do
         if element.order then
             table.insert(Source, element)
@@ -1020,28 +1022,20 @@ function This_MOD.change_orders___group()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
-function This_MOD.change_orders___subgroup()
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Inicializar las variables
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    local Orders = {}
-    local Source = {}
-    local N = 0
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
 
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Actualizar orders
+    --- Subgrupos
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Obtener los orders
+    --- Inicializar las vaiables
+    Orders = {}
+    Source = {}
+
+    --- Agrupar los subgroups
     for _, element in pairs(GMOD.subgroups) do
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         Source[element.group] = Source[element.group] or {}
@@ -1074,20 +1068,6 @@ function This_MOD.change_orders___subgroup()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
-function This_MOD.change_orders___crafting()
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Inicializar las variables
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    local Orders = {}
-    local Source = {}
-    local N = 0
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
 
 
 
@@ -1104,9 +1084,7 @@ function This_MOD.change_orders___crafting()
     }
 
     --- Crear el Subgrupos por defecto
-    if not GMOD.subgroups["subgroup-empty"] then
-        data:extend({ Empty })
-    end
+    data:extend({ Empty })
 
     --- Objetos, recetas y fluidos
     for Key, Values in pairs({
@@ -1136,6 +1114,10 @@ function This_MOD.change_orders___crafting()
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Objetos, recetas y fluidos
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Inicializar las vaiables
+    Orders = {}
+    Source = {}
 
     --- Agrupar	los objetos, recetas y demás
     for Key, Values in pairs({
