@@ -530,7 +530,7 @@ function This_MOD.start()
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Cambiar los orders de los elementos
-    This_MOD.change_orders()
+    This_MOD.change_orders(true)
 
     --- Establecer traducción en todos los elementos
     This_MOD.set_localised()
@@ -972,7 +972,7 @@ end
 ---------------------------------------------------------------------------
 
 --- Cambiar los orders de los elementos
-function This_MOD.change_orders()
+function This_MOD.change_orders(agroup_recipe)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Inicializar las vaiables
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1170,7 +1170,11 @@ function This_MOD.change_orders()
     --- Agrupar las recetas
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    for name, recipes in pairs(GMOD.recipes) do
+    for name, recipes in pairs(
+        agroup_recipe and
+        GMOD.recipes or
+        {}
+    ) do
         local item = GMOD.items[name]
         if item then
             item.order = item.order or "0"
