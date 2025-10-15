@@ -1161,6 +1161,31 @@ function This_MOD.change_orders()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Agrupar las recetas
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for name, recipes in pairs(GMOD.recipes) do
+        local item = GMOD.items[name]
+        if item then
+            item.order = item.order or "0"
+            local order = tonumber(item.order) or 0
+            for _, recipe in pairs(recipes) do
+                if #recipe.results == 1 then
+                    recipe.subgroup = item.subgroup
+                    recipe.order = GMOD.pad_left_zeros(#item.order, order)
+                    order = order + 1
+                end
+            end
+        end
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Establecer traducción en todos los elementos
