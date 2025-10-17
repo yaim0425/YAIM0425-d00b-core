@@ -1005,7 +1005,7 @@ function This_MOD.change_orders(agroup_recipe)
 
     --- Cantidad de afectados
     N = GMOD.get_length(data.raw["item-group"])
-    N = GMOD.digit_count(N) + 1
+    N = GMOD.digit_count(N)
 
     --- Ordenear los orders
     table.sort(Orders)
@@ -1014,7 +1014,7 @@ function This_MOD.change_orders(agroup_recipe)
     for iKey, order in pairs(Orders) do
         for jKey, element in pairs(Source) do
             if element.order == order then
-                element.order = GMOD.pad_left_zeros(N, iKey) .. "0"
+                element.order = 1 .. GMOD.pad_left_zeros(N, iKey) .. "0"
                 table.remove(Source, jKey)
                 break
             end
@@ -1053,53 +1053,15 @@ function This_MOD.change_orders(agroup_recipe)
 
         --- Cantidad de afectados
         N = GMOD.get_length(orders)
-        N = GMOD.digit_count(N) + 1
+        N = GMOD.digit_count(N)
 
         --- Remplazar los orders
         for iKey, order in pairs(orders) do
             for jKey, element in pairs(Source[subgroup]) do
                 if element.order == order then
-                    element.order = GMOD.pad_left_zeros(N, iKey) .. "0"
+                    element.order = 1 .. GMOD.pad_left_zeros(N, iKey) .. "0"
                     table.remove(Source[subgroup], jKey)
                     break
-                end
-            end
-        end
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Establecer subgrupos por defecto
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Subgrupos por defecto
-    local Empty = {
-        type = "item-subgroup",
-        name = "subgroup-empty",
-        group = "other",
-        order = "999"
-    }
-
-    --- Crear el Subgrupos por defecto
-    data:extend({ Empty })
-
-    --- Objetos, recetas y fluidos
-    for Key, Values in pairs({
-        items = GMOD.items,
-        fluids = GMOD.fluids,
-        recipes = GMOD.recipes
-    }) do
-        if Key ~= "recipes" then Values = { Values } end
-        for _, values in pairs(Values) do
-            for _, element in pairs(values) do
-                if not element.subgroup then
-                    element.subgroup = Empty.name
-                end
-                if not element.order then
-                    element.order = element.name
                 end
             end
         end
@@ -1119,15 +1081,10 @@ function This_MOD.change_orders(agroup_recipe)
     Orders = {}
     Source = {}
 
-    --- Agrupar	los objetos, recetas y demás
-    for Key, Values in pairs({
-        items = GMOD.items,
-        fluids = GMOD.fluids,
-        recipes = GMOD.recipes
-    }) do
-        if Key ~= "recipes" then Values = { Values } end
-        for _, values in pairs(Values) do
-            for _, element in pairs(values) do
+    --- Posicionar los objetos y fluidos
+    for _, elements in pairs({ GMOD.items, GMOD.fluids }) do
+        for _, element in pairs(elements) do
+            if element.subgroup then
                 --- Elementos a agrupar
                 Source[element.subgroup] = Source[element.subgroup] or {}
                 table.insert(Source[element.subgroup], element)
@@ -1146,13 +1103,13 @@ function This_MOD.change_orders(agroup_recipe)
 
         --- Cantidad de afectados
         N = GMOD.get_length(orders)
-        N = GMOD.digit_count(N) + 1
+        N = GMOD.digit_count(N)
 
         --- Remplazar los orders
         for iKey, order in pairs(orders) do
             for jKey, element in pairs(Source[subgroup]) do
                 if element.order == order then
-                    element.order = GMOD.pad_left_zeros(N, iKey) .. "0"
+                    element.order = 1 .. GMOD.pad_left_zeros(N, iKey) .. "0"
                     table.remove(Source[subgroup], jKey)
                     break
                 end
@@ -1167,26 +1124,51 @@ function This_MOD.change_orders(agroup_recipe)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Agrupar las recetas
+    --- Evitar agrupar las recetas con los objetos o fluidos
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    for name, recipes in pairs(
-        agroup_recipe and
-        GMOD.recipes or
-        {}
-    ) do
-        local item = GMOD.items[name]
-        if item then
-            item.order = item.order or "0"
-            local order = tonumber(item.order) or 0
-            for _, recipe in pairs(recipes) do
-                if #recipe.results == 1 then
-                    recipe.subgroup = item.subgroup
-                    recipe.order = GMOD.pad_left_zeros(#item.order, order)
-                    order = order + 1
-                end
-            end
-        end
+    if not agroup_recipe then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Agrupar las recetas con los objetos o fluidos
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Inicializar las vaiables
+    Orders = {}
+
+    --- Recorrer las recetas
+    for _, recipe in pairs(data.raw.recipe) do
+        repeat
+            --- Validación
+            if not recipe.results then break end
+            if #recipe.results == 0 then break end
+            if recipe.results[1].type ~= "item" then break end
+            local Item = GMOD.items[recipe.results[1].name]
+            if not Item then break end
+
+            --- Posición actual
+            Orders[Item.name] =
+                Orders[Item.name] or
+                (tonumber(Item.order:sub(2)) or 0)
+
+            --- Igualar subgrupo
+            recipe.subgroup = Item.subgroup
+
+            --- Cambiar la posición
+            recipe.order = 1 .. GMOD.pad_left_zeros(
+                #Item.order - 1,
+                Orders[Item.name]
+            )
+
+            --- Preparar la siguiente posición
+            Orders[Item.name] = Orders[Item.name] + 1
+        until true
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
