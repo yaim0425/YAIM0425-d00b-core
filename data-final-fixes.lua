@@ -1161,7 +1161,7 @@ function This_MOD.change_orders(agroup_recipe)
             recipe.subgroup = Item.subgroup
 
             --- Cambiar la posición
-            recipe.order = 1 .. GMOD.pad_left_zeros(
+            recipe.order = 5 .. GMOD.pad_left_zeros(
                 #Item.order - 1,
                 Orders[Item.name]
             )
