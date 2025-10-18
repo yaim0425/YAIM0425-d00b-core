@@ -1096,6 +1096,26 @@ function This_MOD.change_orders(agroup_recipe)
         end
     end
 
+    for _, recipe in pairs(
+        agroup_recipe and
+        data.raw.recipe or
+        {}
+    ) do
+        repeat
+            --- Validación
+            if not recipe.subgroup then break end
+            if not recipe.results then break end
+            if #recipe.results == 0 then break end
+                --- Elementos a agrupar
+                Source[recipe.subgroup] = Source[recipe.subgroup] or {}
+                table.insert(Source[recipe.subgroup], recipe)
+
+                --- Elementos a ordenar
+                Orders[recipe.subgroup] = Orders[recipe.subgroup] or {}
+                table.insert(Orders[recipe.subgroup], recipe.order)
+        until true
+    end
+
     --- Cambiar el order de los subgrupos
     for subgroup, orders in pairs(Orders) do
         --- Ordenear los orders
@@ -1124,18 +1144,6 @@ function This_MOD.change_orders(agroup_recipe)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Evitar agrupar las recetas con los objetos o fluidos
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    if not agroup_recipe then return end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Agrupar las recetas con los objetos o fluidos
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -1143,9 +1151,14 @@ function This_MOD.change_orders(agroup_recipe)
     Orders = {}
 
     --- Recorrer las recetas
-    for _, recipe in pairs(data.raw.recipe) do
+    for _, recipe in pairs(
+        agroup_recipe and
+        data.raw.recipe or
+        {}
+    ) do
         repeat
             --- Validación
+            if recipe.subgroup then break end
             if not recipe.results then break end
             if #recipe.results == 0 then break end
             if recipe.results[1].type ~= "item" then break end
