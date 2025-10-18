@@ -1014,7 +1014,7 @@ function This_MOD.change_orders(agroup_recipe)
     for iKey, order in pairs(Orders) do
         for jKey, element in pairs(Source) do
             if element.order == order then
-                element.order = 1 .. GMOD.pad_left_zeros(N, iKey) .. "0"
+                element.order = 5 .. GMOD.pad_left_zeros(N, iKey) .. 0
                 table.remove(Source, jKey)
                 break
             end
@@ -1059,7 +1059,7 @@ function This_MOD.change_orders(agroup_recipe)
         for iKey, order in pairs(orders) do
             for jKey, element in pairs(Source[subgroup]) do
                 if element.order == order then
-                    element.order = 1 .. GMOD.pad_left_zeros(N, iKey) .. "0"
+                    element.order = 5 .. GMOD.pad_left_zeros(N, iKey) .. 0
                     table.remove(Source[subgroup], jKey)
                     break
                 end
@@ -1109,7 +1109,7 @@ function This_MOD.change_orders(agroup_recipe)
         for iKey, order in pairs(orders) do
             for jKey, element in pairs(Source[subgroup]) do
                 if element.order == order then
-                    element.order = 1 .. GMOD.pad_left_zeros(N, iKey) .. "0"
+                    element.order = 5 .. GMOD.pad_left_zeros(N, iKey) .. 0
                     table.remove(Source[subgroup], jKey)
                     break
                 end
