@@ -1106,13 +1106,14 @@ function This_MOD.change_orders(agroup_recipe)
             if not recipe.subgroup then break end
             if not recipe.results then break end
             if #recipe.results == 0 then break end
-                --- Elementos a agrupar
-                Source[recipe.subgroup] = Source[recipe.subgroup] or {}
-                table.insert(Source[recipe.subgroup], recipe)
 
-                --- Elementos a ordenar
-                Orders[recipe.subgroup] = Orders[recipe.subgroup] or {}
-                table.insert(Orders[recipe.subgroup], recipe.order)
+            --- Elementos a agrupar
+            Source[recipe.subgroup] = Source[recipe.subgroup] or {}
+            table.insert(Source[recipe.subgroup], recipe)
+
+            --- Elementos a ordenar
+            Orders[recipe.subgroup] = Orders[recipe.subgroup] or {}
+            table.insert(Orders[recipe.subgroup], recipe.order)
         until true
     end
 
