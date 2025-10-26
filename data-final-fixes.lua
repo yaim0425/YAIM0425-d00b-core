@@ -142,7 +142,11 @@ function GMOD.get_item_create(element, propiety)
     for _, result in pairs(element.minable.results) do
         if result.type == "item" then
             local Item = GMOD.items[result.name] or {}
-            if Item[propiety] == element.name then
+            local Value = Item[propiety]
+            if propiety == "place_as_tile" then
+                Value = Value.result
+            end
+            if Value and Value == element.name then
                 return Item
             end
         end
@@ -357,7 +361,8 @@ function GMOD.extend(...)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Recipes
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        while true do
+
+        repeat
             if prototype.type ~= "recipe" then break end
 
             for _, result in pairs(prototype.results) do
@@ -367,7 +372,7 @@ function GMOD.extend(...)
                 end
             end
             return
-        end
+        until true
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -379,12 +384,14 @@ function GMOD.extend(...)
         --- Fluids
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        while true do
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        repeat
             if prototype.type ~= "fluid" then break end
 
             GMOD.fluids[prototype.name] = prototype
             return
-        end
+        until true
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -396,12 +403,14 @@ function GMOD.extend(...)
         --- Items
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        while true do
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        repeat
             if not prototype.stack_size then break end
 
             GMOD.items[prototype.name] = prototype
             return
-        end
+        until true
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -413,15 +422,17 @@ function GMOD.extend(...)
         --- Tiles
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        while true do
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        repeat
             if prototype.type ~= "tile" then break end
-            local Item = GMOD.get_item_create(prototype, GMOD.parameter.get_item_create.place_as_tile)
+            local Item = GMOD.get_item_create(prototype, "place_as_tile")
             if not Item then break end
 
             GMOD.tiles[Item.name] = GMOD.tiles[Item.name] or {}
             table.insert(GMOD.tiles[Item.name], prototype)
             return
-        end
+        until true
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -433,12 +444,14 @@ function GMOD.extend(...)
         --- Equipments
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        while true do
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        repeat
             if not prototype.shape then break end
 
             GMOD.equipments[prototype.name] = prototype
             return
-        end
+        until true
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -450,15 +463,17 @@ function GMOD.extend(...)
         --- Entities
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        while true do
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        repeat
             if not prototype.max_health then break end
             if GMOD.is_hidde(prototype) then break end
-            local Item = GMOD.get_item_create(prototype, GMOD.parameter.get_item_create.place_result)
+            local Item = GMOD.get_item_create(prototype, "place_result")
             if not Item then break end
 
             GMOD.entities[Item.name] = prototype
             return
-        end
+        until true
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
