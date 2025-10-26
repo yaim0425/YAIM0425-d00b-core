@@ -144,7 +144,7 @@ function GMOD.get_item_create(element, propiety)
             local Item = GMOD.items[result.name] or {}
             local Value = Item[propiety]
             if propiety == "place_as_tile" then
-                Value = Value.result
+                Value = Value and Value.result or nil
             end
             if Value and Value == element.name then
                 return Item
