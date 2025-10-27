@@ -1105,6 +1105,7 @@ function This_MOD.change_orders(agroup_recipe)
                 table.insert(Source[element.subgroup], element)
 
                 --- Elementos a ordenar
+                element.order = element.order or element.name
                 Orders[element.subgroup] = Orders[element.subgroup] or {}
                 table.insert(Orders[element.subgroup], element.order)
             end
@@ -1184,7 +1185,7 @@ function This_MOD.change_orders(agroup_recipe)
             --- Posición actual
             Orders[Item.name] =
                 Orders[Item.name] or
-                (tonumber(Item.order:sub(2)) or 0)
+                tonumber(Item.order:sub(2))
 
             --- Igualar subgrupo
             recipe.subgroup = Item.subgroup
