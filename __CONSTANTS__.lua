@@ -60,6 +60,7 @@ _G.log = _G.log or function(...) end
 _G.prototypes = _G.prototypes or {}
 _G.settings = _G.settings or {}
 _G.defines = _G.defines or {}
+_G.helpers = _G.helpers or {}
 _G.script = _G.script or {}
 _G.game = _G.game or {}
 _G.mods = _G.mods or {}
