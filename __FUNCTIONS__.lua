@@ -459,7 +459,7 @@ function GMOD.number_unit(value)
 
     --- Validar si la cadena es un numero valido
     if not Number then return nil, nil end
-    if tonumber(Number) == 0 then return nil, nil end
+    if tonumber(Number) == 0 then return nil, Unit end
     if not is_valid_number(Number) then return nil, nil end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
