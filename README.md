@@ -2,28 +2,36 @@
 
 ---
 
-### 📌 Description
+## 📌 Description
 
-**YAIM0425 d00b Core** is a technical **core / framework MOD** for Factorio, designed to act as a shared utility library for all other MODs developed under the **YAIM0425** ecosystem.
+**YAIM0425 d00b Core** is a **required support MOD** for other YAIM0425 mods.
 
-This MOD does **not add gameplay content by itself**. Instead, it provides a unified and consistent infrastructure that simplifies development, improves compatibility, and reduces duplicated logic across multiple MODs.
+By itself, this MOD does **not add new items, machines, or gameplay mechanics**. Its purpose is to work silently in the background and make sure other YAIM0425 mods run correctly, smoothly, and with maximum compatibility.
 
-Its main responsibilities include:
+If you are using any MOD from the **YAIM0425** series, this core MOD provides:
 
-- Initializing a global shared container (`GMOD`) for all YAIM0425 MODs
-- Providing reusable utility functions and helpers
-- Safely consolidating event data (players, entities, forces, GUI, storage)
-- Classifying and indexing prototypes:
-  - Items
-  - Fluids
-  - Entities
-  - Equipments
-  - Tiles (grouped by mining results)
-  - Recipes (grouped by results)
-- Ensuring correct execution across **settings**, **data-final-fixes** and **control** stages
-- Offering a stable base compatible with large overhaul MODs (Bob’s, Py, Krastorio 2, Space Exploration, etc.)
+* Shared systems used by all YAIM0425 mods
+* Better compatibility with large overhaul mods
+* Safer loading and fewer conflicts between mods
+* Consistent behavior across different saves and mod packs
 
-This MOD is intended to be used as a **dependency** by other MODs, not as a standalone experience.
+You can think of this MOD as the **engine behind the scenes**: players normally don’t interact with it directly, but it is essential for other mods to function properly.
 
-🔗 **GitHub Repository**  
-https://github.com/yaim0425/YAIM0425-d00b-core
+🔗 **GitHub Repository**
+[https://github.com/yaim0425/YAIM0425-d00b-core](https://github.com/yaim0425/YAIM0425-d00b-core)
+
+---
+
+## ⚠️ Warnings & Usage Notes
+
+* ❗ This MOD **does nothing by itself**
+* ❗ Do **not remove or disable** it if another YAIM0425 MOD depends on it
+* ❗ Removing it from an existing save may break other YAIM0425 mods
+* ✔ Safe to use in any mod pack
+* ✔ Designed to be compatible with most major overhaul mods
+
+---
+
+## 🖼️ Screenshots
+
+![Screenshot 1](https://github.com/yaim0425/YAIM0425-d00b-core/blob/main/screenshot/\(1\).png)
