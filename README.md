@@ -17,9 +17,6 @@ If you are using any MOD from the **YAIM0425** series, this core MOD provides:
 
 You can think of this MOD as the **engine behind the scenes**: players normally don’t interact with it directly, but it is essential for other mods to function properly.
 
-🔗 **GitHub Repository**
-[https://github.com/yaim0425/YAIM0425-d00b-core](https://github.com/yaim0425/YAIM0425-d00b-core)
-
 ---
 
 ## ⚠️ Warnings & Usage Notes
@@ -29,6 +26,24 @@ You can think of this MOD as the **engine behind the scenes**: players normally 
 * ❗ Removing it from an existing save may break other YAIM0425 mods
 * ✔ Safe to use in any mod pack
 * ✔ Designed to be compatible with most major overhaul mods
+
+---
+
+## 🔗 Repository
+
+**MOD**
+
+* [YAIM0425 d00b Core](https://github.com/yaim0425/YAIM0425-d00b-core)
+
+**DOC**
+
+* [DOC](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/README.md)
+
+---
+
+## ❤️ Support
+
+Suggestions, ideas and balance feedback are welcome on the GitHub repository.
 
 ---
 
@@ -51,9 +66,3 @@ You can think of this MOD as the **engine behind the scenes**: players normally 
 ![Screenshot 8](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(8).png)
 
 ![Screenshot 9](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(9).png)
-
----
-
-## ❤️ Support
-
-Suggestions, ideas, and balance feedback are welcome on the GitHub repository.
