@@ -219,5 +219,3 @@ end)
 * All functions are **safe to use across multiple MODs**
 * Functions are designed to avoid duplication and conflicts
 * This API may grow over time but aims to remain backward-compatible
-
----
