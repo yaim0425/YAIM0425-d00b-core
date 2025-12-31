@@ -1,9 +1,9 @@
-# YAIM0425 d00b Core – API Reference
+# YAIM904 d00b Core – API Reference
 
 ---
 
-> 📘 This document describes the **publicly usable functions** provided by **YAIM0425 d00b Core**.
-> It is intended for **MOD authors using YAIM0425 mods**, not for internal implementation details.
+> 📘 This document describes the **publicly usable functions** provided by **YAIM904 d00b Core**.
+> It is intended for **MOD authors using YAIM904 mods**, not for internal implementation details.
 >
 > Examples are written in **Lua (Factorio MOD environment)**.
 
@@ -17,7 +17,7 @@ All functions are exposed through the global table:
 GMOD
 ```
 
-This table is created automatically when the core is loaded and is shared by all YAIM0425 MODs.
+This table is created automatically when the core is loaded and is shared by all YAIM904 MODs.
 
 ---
 
@@ -39,7 +39,7 @@ Returned table contains:
 
 * `id` → short internal ID of the MOD
 * `name` → MOD name
-* `prefix` → prefix used by YAIM0425
+* `prefix` → prefix used by YAIM904
 * `ids` → concatenated ID string
 
 #### 🧪 Example
