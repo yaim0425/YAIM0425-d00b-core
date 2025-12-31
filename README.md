@@ -1,16 +1,16 @@
-# YAIM0425 d00b Core
+# YAIM904 d00b Core
 
 ---
 
 ## 📌 Description
 
-**YAIM0425 d00b Core** is a **required support MOD** for other YAIM0425 mods.
+**YAIM904 d00b Core** is a **required support MOD** for other YAIM904 mods.
 
-By itself, this MOD does **not add new items, machines, or gameplay mechanics**. Its purpose is to work silently in the background and make sure other YAIM0425 mods run correctly, smoothly, and with maximum compatibility.
+By itself, this MOD does **not add new items, machines, or gameplay mechanics**. Its purpose is to work silently in the background and make sure other YAIM904 mods run correctly, smoothly, and with maximum compatibility.
 
-If you are using any MOD from the **YAIM0425** series, this core MOD provides:
+If you are using any MOD from the **YAIM904** series, this core MOD provides:
 
-* Shared systems used by all YAIM0425 mods
+* Shared systems used by all YAIM904 mods
 * Better compatibility with large overhaul mods
 * Safer loading and fewer conflicts between mods
 * Consistent behavior across different saves and mod packs
@@ -22,8 +22,8 @@ You can think of this MOD as the **engine behind the scenes**: players normally 
 ## ⚠️ Warnings & Usage Notes
 
 * ❗ This MOD **does nothing by itself**
-* ❗ Do **not remove or disable** it if another YAIM0425 MOD depends on it
-* ❗ Removing it from an existing save may break other YAIM0425 mods
+* ❗ Do **not remove or disable** it if another YAIM904 MOD depends on it
+* ❗ Removing it from an existing save may break other YAIM904 mods
 * ✔ Safe to use in any mod pack
 * ✔ Designed to be compatible with most major overhaul mods
 
@@ -32,10 +32,10 @@ You can think of this MOD as the **engine behind the scenes**: players normally 
 ## 🔗 Repository
 
 **MOD**
-[YAIM0425 d00b Core](https://github.com/yaim0425/YAIM0425-d00b-core)
+[YAIM904 d00b Core](https://github.com/yaim0425/YAIM904-d00b-core)
 
 **DOC**
-[DOC](https://github.com/yaim0425/YAIM0425-d00b-core/blob/code/DOC.md)
+[DOC](https://github.com/yaim0425/YAIM904-d00b-core/blob/code/DOC.md)
 
 ---
 
@@ -47,20 +47,20 @@ Suggestions, ideas and balance feedback are welcome on the GitHub repository.
 
 ## 🖼️ Screenshots
 
-![Screenshot 1](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(1).png)
+![Screenshot 1](https://github.com/yaim0425/YAIM904-d00b-core/raw/code/screenshot/(1).png)
 
-![Screenshot 2](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(2).png)
+![Screenshot 2](https://github.com/yaim0425/YAIM904-d00b-core/raw/code/screenshot/(2).png)
 
-![Screenshot 3](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(3).png)
+![Screenshot 3](https://github.com/yaim0425/YAIM904-d00b-core/raw/code/screenshot/(3).png)
 
-![Screenshot 4](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(4).png)
+![Screenshot 4](https://github.com/yaim0425/YAIM904-d00b-core/raw/code/screenshot/(4).png)
 
-![Screenshot 5](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(5).png)
+![Screenshot 5](https://github.com/yaim0425/YAIM904-d00b-core/raw/code/screenshot/(5).png)
 
-![Screenshot 6](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(6).png)
+![Screenshot 6](https://github.com/yaim0425/YAIM904-d00b-core/raw/code/screenshot/(6).png)
 
-![Screenshot 7](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(7).png)
+![Screenshot 7](https://github.com/yaim0425/YAIM904-d00b-core/raw/code/screenshot/(7).png)
 
-![Screenshot 8](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(8).png)
+![Screenshot 8](https://github.com/yaim0425/YAIM904-d00b-core/raw/code/screenshot/(8).png)
 
-![Screenshot 9](https://github.com/yaim0425/YAIM0425-d00b-core/raw/code/screenshot/(9).png)
+![Screenshot 9](https://github.com/yaim0425/YAIM904-d00b-core/raw/code/screenshot/(9).png)
