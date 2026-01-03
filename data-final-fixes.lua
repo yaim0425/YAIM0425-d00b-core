@@ -1196,7 +1196,6 @@ function This_MOD.change_orders(agroup_recipe)
             if recipe.results[1].type ~= "item" then break end
             local Item = GMOD.items[recipe.results[1].name]
             if not Item then break end
-            -- if not Item.order then Item.order = "999999" end
 
             --- Posición actual
             Orders[Item.name] =
